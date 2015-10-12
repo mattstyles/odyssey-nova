@@ -4,6 +4,9 @@ import canvas from './canvas'
 import config from 'stores/config'
 
 
+/**
+ * Creates and manages a list of Pixi.renderers
+ */
 class RenderManager {
     constructor() {
         this.renderers = new Map()

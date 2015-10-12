@@ -1,6 +1,9 @@
 
 import config from 'stores/config'
 
+/**
+ * Creates and manages raw native canvas elements
+ */
 class CanvasManager {
     constructor() {
         this.canvases = new Map()
