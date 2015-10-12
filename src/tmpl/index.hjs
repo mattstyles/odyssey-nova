@@ -9,7 +9,7 @@
     <script src="./polyfill.js" charset="utf-8"></script>
 </head>
 <body>
-    <div class="Main js-main"></div>
+    <div class="App js-app u-fit"></div>
     <script src="./main.js" charset="utf-8"></script>
 </body>
 </html>

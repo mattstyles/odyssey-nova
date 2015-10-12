@@ -1,10 +1,24 @@
 
+html, body {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow:hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+
 body {
     margin: 0;
     font-family: 'Helvetica Neue', 'Helvetica', 'Lucida Grande', 'Arial', sans-serif;
-    font-size: 15px;
+    font-size: 10px;
     color: @--color-black20;
     background: @--color-white10;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: greyscale;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.App {
+    z-index: 0;
 }
