@@ -1,0 +1,109 @@
+{
+  "name": "odyssey-nova",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Odyssey Nova Web-only Client",
+  "scripts": {
+    "prepublish": "npm run build",
+    "prepack": "npm run make",
+    "watch": "parallelshell 'npm run watch:styles' 'npm run watch:scripts' 'npm run watch:html'",
+    "test": "babel-node ./spec/index.js ./src/**/*.test.js",
+    "clean": "rm -rf ./dist/ && mkdir ./dist",
+    "serve": "serve -CJS --no-less ./dist",
+    "livereload": "livereload ./dist -i 400",
+    "lint": "eslint ./src/*.js",
+    "build:styles": "ho compile -d -e src/styles.less -o dist/styles.css -p src:node_modules:src/components:src/core/styles -c .hodevrc",
+    "make:styles": "ho compile -e src/styles.less -o dist/styles.css -p src:node_modules:src/components:src/core/styles -c package.json",
+    "watch:styles": "ho watch -d -w 'src/**/*.less' -e src/styles.less -o dist/pq-styles.css -p src:node_modules:src/components:src/core/styles -c .hodevrc",
+    "build:scripts": "DEBUG=true NODE_PATH=./src/components:./src browserify ./src/main.jsx --extension .jsx -t babelify -t flowcheck -t envify -t brfs --debug > ./dist/main.js",
+    "make:scripts": "NODE_PATH=./src/components:./src NODE_ENV=prod browserify ./src/main.jsx --extension .jsx -t babelify -t brfs | uglifyjs > ./dist/main.js",
+    "watch:scripts": "DEBUG=true NODE_PATH=./src/components:./src watchify ./src/main.jsx --extension .jsx -t babelify -t flowcheck -t envify -t brfs --debug -o ./dist/main.js -v",
+    "make:polyfill": "browserify ./src/polyfill.js | uglifyjs > ./dist/polyfill.js",
+    "make:assets": "cp -r ./src/assets ./dist/",
+    "make:html": "mustache package.json ./src/tmpl/index.hjs > ./dist/index.html",
+    "watch:html": "watch 'npm run make:html' ./src/tmpl",
+    "prebuild": "npm run clean",
+    "build": "npm run make:assets && npm run make:html && npm run make:polyfill && npm run build:scripts && npm run build:styles",
+    "premake": "npm run clean",
+    "make": "NODE_ENV=prod npm run make:assets && npm run make:html && npm run make:polyfill && npm run make:scripts && npm run make:styles",
+    "predeploy": "npm run make",
+    "deploy": "echo \"sort out the deploy, you chump\""
+  },
+  "ho": {
+    "autoprefixer-transform": {
+      "browsers": [
+        "last 3 versions"
+      ]
+    },
+    "cleancss-transform": {
+      "compatibility": "ie9"
+    }
+  },
+  "bundler": {
+    "paths": [
+      "src",
+      "node_modules",
+      "src/components"
+    ],
+    "extensions": [
+      ".js",
+      ".jsx"
+    ]
+  },
+  "author": "Matt Styles",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mattstyles/odyssey-nova.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mattstyles/odyssey-nova/issues"
+  },
+  "homepage": "https://github.com/mattstyles/odyssey-nova",
+  "license": "MIT",
+  "dependencies": {
+    "@mattstyles/tick": "^0.1.0",
+    "babel": "^5.8.23",
+    "bezier-easing": "^1.1.1",
+    "classnames": "^2.1.5",
+    "debounce": "^1.0.0",
+    "errno": "^0.1.4",
+    "eventemitter3": "^1.1.1",
+    "fast-simplex-noise": "^1.0.0",
+    "flux": "^2.1.1",
+    "heightmap": "^0.2.1",
+    "ho-grid": "^2.0.0",
+    "immutable": "^3.7.5",
+    "mathutil": "^0.1.0",
+    "normalize.css": "^3.0.3",
+    "pixi-starfield": "^0.5.0",
+    "qs": "^5.2.0",
+    "quay": "^0.2.0",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "underscore.string": "^3.2.2",
+    "webfontloader": "^1.6.10",
+    "whatwg-fetch": "^0.10.0"
+  },
+  "devDependencies": {
+    "autoprefixer-transform": "^0.3.1",
+    "babel-eslint": "^4.1.3",
+    "babelify": "^6.3.0",
+    "brfs": "^1.4.1",
+    "browserify": "^11.2.0",
+    "cleancss-transform": "^0.1.1",
+    "envify": "^3.4.0",
+    "eslint": "^1.6.0",
+    "eslint-plugin-react": "^3.5.1",
+    "flowcheck": "^0.2.7",
+    "ho": "^1.1.2",
+    "livereload": "^0.3.7",
+    "minimist": "^1.2.0",
+    "mustache": "^2.1.3",
+    "parallelshell": "^2.0.0",
+    "serve": "^1.4.0",
+    "tape": "^4.2.1",
+    "uglifyjs": "^2.4.10",
+    "watch": "^0.16.0",
+    "watchify": "^3.4.0"
+  }
+}

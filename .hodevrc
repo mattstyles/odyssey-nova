@@ -1,0 +1,7 @@
+{
+  "autoprefixer-transform": {
+    "browsers": [
+      "last 3 versions"
+    ]
+  }
+}

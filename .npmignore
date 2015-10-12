@@ -1,0 +1,7 @@
+.gitignore
+.eslintrc
+.travis.yml
+dist
+**/*.test.js
+**/__tests__
+**/__test__
