@@ -5,6 +5,7 @@ import Tick from '@mattstyles/tick'
 
 import canvas from './canvas'
 import renderer from './renderer'
+import Stats from './stats'
 
 /**
  * @class
@@ -26,6 +27,10 @@ export default class Main extends React.Component {
         this.renderTick = null
     }
 
+    componentWillMount() {
+        this.stats = new Stats([ 0, 2 ])
+    }
+
     componentDidMount() {
         // Set up the canvas & renderer
         let id = this.props.canvas
@@ -42,7 +47,9 @@ export default class Main extends React.Component {
     }
 
     onRender = dt => {
+        this.stats.begin()
         this.renderer.render( this.stage )
+        this.stats.end()
     }
 
     render() {

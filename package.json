@@ -81,6 +81,7 @@
     "quay": "^0.2.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "stats.js": "mrdoob/stats.js",
     "to-map": "^1.0.0",
     "underscore.string": "^3.2.2",
     "webfontloader": "^1.6.10",
