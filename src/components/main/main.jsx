@@ -56,7 +56,7 @@ export default class Main extends React.Component {
         // @TODO does the canvas want to be buried this deep in the DOM?
         // No problems with creating them from document.body and just reffing them
         return (
-            <div ref="main" className="js-main"></div>
+            <div ref="main" className="js-main u-fit"></div>
         )
     }
 }
