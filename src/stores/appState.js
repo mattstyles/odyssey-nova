@@ -80,16 +80,8 @@ class AppState {
         this.Component = null
 
         /**
-         * App states
+         * App state
          */
-        // this[ _state ] = new Immreact.State( STATE_ID, {
-        //     states: {
-        //         'BOOTSTRAP': <Bootstrap key="bs" />,
-        //         'MAIN': <Main key="main" canvas="main" />,
-        //
-        //         'current': null
-        //     }
-        // })
         this[ _state ] = new Immreact.State()
 
         /**
@@ -137,7 +129,7 @@ class AppState {
      * Akin to App.run in other frameworks
      * @param el <DOMElement> element to render into
      */
-    run( Component, el ) {
+    run( el ) {
         this.el = el || document.querySelector( '.js-app' )
 
         // Register render function
