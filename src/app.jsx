@@ -13,16 +13,15 @@ import Main from 'main/main'
 import Bootstrap from 'bootstrap/bootstrap'
 
 
-// function rootRender() {
-//     ReactDOM.render( <App />, document.querySelector( '.js-app' ) )
-// }
-
-
+/**
+ * @class
+ * Main application class
+ * Takes as props the centralised immutable state object to pass cursors to the
+ * down the class hierarchy
+ */
 class App extends React.Component {
     constructor( props ) {
         super( props )
-
-        //this.currentState = appState.get()
     }
 
     componentWillMount() {
@@ -77,3 +76,7 @@ class App extends React.Component {
 
 // Let's go
 appState.run( App, document.querySelector( '.js-app' ) )
+
+if ( process.env.DEBUG ) {
+    window.appState = appState
+}

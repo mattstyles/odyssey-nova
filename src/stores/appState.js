@@ -17,7 +17,8 @@ const STATE_ID = 'app'
 
 /**
  * @class
- *
+ * Holds the centralised immutable state of the application
+ * Renders are triggered only by mutations to the state object
  */
 class AppState {
     /**
@@ -44,10 +45,14 @@ class AppState {
         /**
          * Main app render function, can only be accessed by state mutation
          */
-        this[ _render ] = function() {
+        this[ _render ] = () => {
             // Pass entire appState through to main app component
             ReactDOM.render( <this.Component appState={ this[ _state ] } />, this.el )
         }
+    }
+
+    get() {
+        return this[ _state ]
     }
 
 

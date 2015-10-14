@@ -7,9 +7,15 @@ import appDispatcher from 'dispatchers/appDispatcher'
 import EVENTS from 'constants/events'
 import { wait } from 'utils/timing'
 
+import appState from 'stores/appState'
+
 export default class Bootstrap extends React.Component {
     constructor( props ) {
         super( props )
+
+        // appState.get().create( 'bs', {
+        //     progress: []
+        // })
     }
 
     state = {
