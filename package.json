@@ -72,6 +72,8 @@
     "flux": "^2.1.1",
     "heightmap": "^0.2.1",
     "ho-grid": "^2.0.0",
+    "immreact": "^0.1.0",
+    "immstruct": "^2.0.0",
     "immutable": "^3.7.5",
     "lodash.random": "^3.0.1",
     "mathutil": "^0.1.0",

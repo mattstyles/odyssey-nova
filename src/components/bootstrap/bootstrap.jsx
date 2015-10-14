@@ -38,9 +38,9 @@ export default class Bootstrap extends React.Component {
 
     onComplete() {
         logger.info( 'Bootstrap complete' )
-        appDispatcher.dispatch({
-            type: EVENTS.get( 'BOOTSTRAP_COMPLETE' )
-        })
+        // appDispatcher.dispatch({
+        //     type: EVENTS.get( 'BOOTSTRAP_COMPLETE' )
+        // })
     }
 
     render() {

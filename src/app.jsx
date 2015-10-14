@@ -13,16 +13,16 @@ import Main from 'main/main'
 import Bootstrap from 'bootstrap/bootstrap'
 
 
-function rootRender() {
-    ReactDOM.render( <App />, document.querySelector( '.js-app' ) )
-}
+// function rootRender() {
+//     ReactDOM.render( <App />, document.querySelector( '.js-app' ) )
+// }
 
 
 class App extends React.Component {
     constructor( props ) {
         super( props )
 
-        this.currentState = appState.get( 'BOOTSTRAP' )
+        //this.currentState = appState.get()
     }
 
     componentWillMount() {
@@ -68,12 +68,12 @@ class App extends React.Component {
 
     /**
      * Simple passthrough to render the current state
-     * @TODO pass props through here
      */
     render() {
         // Return the current state
-        return this.currentState
+        return this.props.appState.get([ 'app', 'states', 'current' ]).toJS()
     }
 }
 
-rootRender()
+// Let's go
+appState.run( App, document.querySelector( '.js-app' ) )
