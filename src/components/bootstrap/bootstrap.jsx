@@ -9,33 +9,30 @@ import { wait } from 'utils/timing'
 
 import appState from 'stores/appState'
 
-export default class Bootstrap extends React.Component {
+const ID = 'bootstrap'
+
+/**
+ * Handles a loading progress indicator, albeit a fake one at present
+ */
+class Loading extends React.Component {
     constructor( props ) {
         super( props )
-
-        // appState.get().create( 'bs', {
-        //     progress: []
-        // })
-    }
-
-    state = {
-        progress: []
-    }
-
-    componentWillMount() {
-        logger.info( 'Bootstrapping...' )
     }
 
     /**
-     * Do some fake loading to test the state transitioning
+     * Do some fake loading, should probably be done in the Bootstrap component
      */
     async componentDidMount() {
         let count = 5
         let time = 2000 / count
         while( count-- ) {
             await wait( time + random( -time * .75, time * .75 ) )
-            this.setState( state => {
-                progress: state.progress.push( true )
+
+            logger.info( 'Bootstrap event' )
+
+            this.props.progress.update( cursor => {
+                cursor = this.props.progress.push( true )
+                return cursor
             })
         }
 
@@ -44,19 +41,39 @@ export default class Bootstrap extends React.Component {
 
     onComplete() {
         logger.info( 'Bootstrap complete' )
+
         // appDispatcher.dispatch({
         //     type: EVENTS.get( 'BOOTSTRAP_COMPLETE' )
         // })
     }
 
     render() {
-        let progress = 'Loading' + this.state.progress.reduce( prev => {
+        let progress = 'Loading' + this.props.progress.reduce( prev => {
             return prev + '.'
         }, '' )
 
+        return <span className="BS-loading">{ progress }</span>
+    }
+}
+
+/**
+ * Master component
+ * Passes cursors down to children to actually do the work
+ */
+export default class Bootstrap extends React.Component {
+    constructor( props ) {
+        super( props )
+    }
+
+    componentWillMount() {
+        logger.info( 'Bootstrapping...' )
+    }
+
+    render() {
+        // Pass cursors to child components
         return (
             <div className="BS u-fit">
-                <span className="BS-loading">{ progress }</span>
+                <Loading progress={ this.props.state.cursor( 'progress' ) } />
             </div>
         )
     }

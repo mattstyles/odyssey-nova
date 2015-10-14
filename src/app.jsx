@@ -70,7 +70,7 @@ class App extends React.Component {
      */
     render() {
         // Return the current state
-        return this.props.appState.get([ 'app', 'states', 'current' ]).toJS()
+        return this.props.appState.get([ 'app', 'currentState' ]).toJS()
     }
 }
 
