@@ -73,6 +73,7 @@ export default class Main extends React.Component {
         // Set up the render tick
         this.renderTick = new Tick()
             .on( 'data', this.onRender )
+            .on( 'data', this.onUpdate )
     }
 
     addHandlers() {
@@ -84,6 +85,14 @@ export default class Main extends React.Component {
         this.quay.on( '<down>', this.user.backward )
         this.quay.on( '<left>', this.user.left )
         this.quay.on( '<right>', this.user.right )
+
+        this.quay.stream( '<shift>' )
+            .on( 'keydown', () => {
+                this.user.accelerationForce = 3.2
+            })
+            .on( 'keyup', () => {
+                this.user.accelerationForce = 1.1
+            })
     }
 
     onUpdate = dt => {
@@ -95,7 +104,7 @@ export default class Main extends React.Component {
     onRender = dt => {
         this.stats.begin()
 
-        this.onUpdate()
+        //this.onUpdate()
 
         this.renderer.render( this.stage )
 

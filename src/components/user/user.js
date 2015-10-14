@@ -56,7 +56,7 @@ export default class User {
             this.acceleration = .5
         }
 
-        if ( this.acceleration < 2.75 ) {
+        if ( this.acceleration < 4.75 ) {
             this.acceleration *= this.accelerationForce
         }
     }
