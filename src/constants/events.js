@@ -5,7 +5,7 @@ import toMap from 'to-map'
 const EVENTS = toMap({
     UPDATE: 'app:update',
 
-    BOOTSTRAP_COMPLETE: 'app:bootstrap:complete'
+    CHANGE_STATE: 'app:changeState'
 })
 
 

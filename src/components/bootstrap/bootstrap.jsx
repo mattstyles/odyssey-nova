@@ -42,9 +42,13 @@ class Loading extends React.Component {
     onComplete() {
         logger.info( 'Bootstrap complete' )
 
-        // appDispatcher.dispatch({
-        //     type: EVENTS.get( 'BOOTSTRAP_COMPLETE' )
-        // })
+        // Change app state to the main frame
+        appDispatcher.dispatch({
+            type: EVENTS.get( 'CHANGE_STATE' ),
+            payload: {
+                requestedStateID: 'main'
+            }
+        })
     }
 
     render() {

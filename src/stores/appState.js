@@ -5,6 +5,8 @@ import Immreact from 'immreact'
 import toMap from 'to-map'
 
 import logger from 'utils/logger'
+import appDispatcher from 'dispatchers/appDispatcher'
+import EVENTS from 'constants/events'
 
 import Bootstrap from 'bootstrap/bootstrap'
 import Main from 'main/main'
@@ -43,6 +45,21 @@ class StateFactory {
         }
 
         return <Bootstrap key="bs" state={ this.appState.cursor( 'bootstrap' ) } />
+    }
+
+    main( opts ) {
+        // Create default bootstrap data if none exists
+        if ( !this.appState.get( 'main' ) ) {
+            this.appState.create( 'main', {
+                progress: []
+            })
+        }
+
+        return <Main
+            key="main"
+            state={ this.appState.cursor( 'main' ) }
+            canvas="main"
+        />
     }
 }
 
@@ -90,10 +107,20 @@ class AppState {
          */
         this[ _render ] = () => {
             // Pass entire appState through to main app component
-            //ReactDOM.render( <this.Component appState={ this[ _state ] } />, this.el )
             ReactDOM.render( this.factory.get( this[ _state ].get([ STATE_ID, 'currentState' ]) ), this.el )
-
         }
+
+        /**
+         * Set up app dispatch listener
+         */
+        appDispatcher.register( dispatch => {
+            // Convert to get function to execute on dispatch
+            if ( dispatch.type === EVENTS.get( 'CHANGE_STATE' ) ) {
+                this[ _state ].cursor([ STATE_ID, 'currentState' ] ).update( cursor => {
+                    return dispatch.payload.requestedStateID
+                })
+            }
+        })
     }
 
     /**
@@ -106,18 +133,12 @@ class AppState {
 
 
     /**
-     * Registers the main component and element to render to and sets up the render listener
+     * Sets up the render listener and starts things off
      * Akin to App.run in other frameworks
-     * @param Component <React.Component> main app component
      * @param el <DOMElement> element to render into
      */
     run( Component, el ) {
-        if ( !Component ) {
-            throw new Error( 'Main AppState Component to render must be specified' )
-        }
-
         this.el = el || document.querySelector( '.js-app' )
-        this.Component = Component
 
         // Register render function
         this[ _state ].on( 'update', this[ _render ] )
