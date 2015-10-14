@@ -8,6 +8,7 @@ import EVENTS from 'constants/events'
 import { wait } from 'utils/timing'
 
 import appState from 'stores/appState'
+import resources from 'stores/resources'
 
 const ID = 'bootstrap'
 
@@ -24,7 +25,7 @@ class Loading extends React.Component {
      */
     async componentDidMount() {
         let count = 5
-        let time = 2000 / count
+        let time = 750 / count
         while( count-- ) {
             await wait( time + random( -time * .75, time * .75 ) )
 
@@ -36,7 +37,9 @@ class Loading extends React.Component {
             })
         }
 
-        this.onComplete()
+        // Do some actual loading
+        resources.loadTextures()
+            .then( this.onComplete )
     }
 
     onComplete() {

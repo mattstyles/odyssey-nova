@@ -80,6 +80,8 @@
     "normalize.css": "^3.0.3",
     "pixi-starfield": "^0.5.0",
     "pixi.js": "^3.0.7",
+    "preload.io": "^1.2.0",
+    "preload.io-pixi": "^0.2.0",
     "qs": "^5.2.0",
     "quay": "^0.2.0",
     "react": "^0.14.0",
