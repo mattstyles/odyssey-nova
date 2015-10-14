@@ -8,60 +8,13 @@ import logger from 'utils/logger'
 import appDispatcher from 'dispatchers/appDispatcher'
 import EVENTS from 'constants/events'
 
-import Bootstrap from 'bootstrap/bootstrap'
-import Main from 'main/main'
+import stateFactory from 'stores/stateFactory'
 
 
 const _state = Symbol( 'state' )
 const _render = Symbol( 'render' )
 const STATE_ID = 'app'
 
-
-/**
- * State factory
- * Creates the various high level application states and default data to accompany them
- * Creating data within each component is preferable (as this.state does), however,
- * to diff between states and use pure render functions everything needs to be passed
- * down as props so components can not create their own data as it must be passed.
- * @class
- */
-class StateFactory {
-    constructor( appState ) {
-        this.appState = appState
-    }
-
-    get( id, opts ) {
-        if ( this[ id ] ) {
-            return this[ id ]( opts )
-        }
-    }
-
-    bootstrap( opts ) {
-        // Create default bootstrap data if none exists
-        if ( !this.appState.get( 'bootstrap' ) ) {
-            this.appState.create( 'bootstrap', {
-                progress: []
-            })
-        }
-
-        return <Bootstrap key="bs" state={ this.appState.cursor( 'bootstrap' ) } />
-    }
-
-    main( opts ) {
-        // Create default bootstrap data if none exists
-        if ( !this.appState.get( 'main' ) ) {
-            this.appState.create( 'main', {
-                progress: []
-            })
-        }
-
-        return <Main
-            key="main"
-            state={ this.appState.cursor( 'main' ) }
-            canvas="main"
-        />
-    }
-}
 
 
 /**
