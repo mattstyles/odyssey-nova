@@ -8,7 +8,7 @@ import logger from 'utils/logger'
 import appDispatcher from 'dispatchers/appDispatcher'
 import EVENTS from 'constants/events'
 
-import stateFactory from 'stores/stateFactory'
+import StateFactory from 'stores/stateFactory'
 
 
 const _state = Symbol( 'state' )

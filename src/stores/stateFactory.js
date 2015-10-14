@@ -1,4 +1,6 @@
 
+import React from 'react'
+
 import Bootstrap from 'bootstrap/bootstrap'
 import Main from 'main/main'
 
