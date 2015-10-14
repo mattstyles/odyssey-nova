@@ -17,7 +17,7 @@ class RenderManager {
             antialiasing: false,
             transparency: false,
             resolution: config.get( 'dp' ),
-            canvas: view || canvas.get()
+            view: view || canvas.get()
         })
         this.renderers.set( id, renderer )
         return renderer

@@ -23,10 +23,8 @@ class Resources {
                 })
             })
 
-            this.preloader.on( 'load', resource => {
-                this.textures.set( resource.id, resource.texture )
-                resolve()
-            })
+            this.preloader.on( 'load', resource => this.textures.set( resource.id, resource.texture ) )
+            this.preloader.on( 'preload:complete', resources => resolve( resources ) )
         })
     }
 

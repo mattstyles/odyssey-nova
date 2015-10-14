@@ -2,10 +2,14 @@
 import React from 'react'
 import Pixi from 'pixi.js'
 import Tick from '@mattstyles/tick'
+import Starfield from 'pixi-starfield'
 
 import canvas from './canvas'
 import renderer from './renderer'
 import Stats from './stats'
+
+import resources from 'stores/resources'
+import config from 'stores/config'
 
 /**
  * @class
@@ -41,6 +45,21 @@ export default class Main extends React.Component {
         // Set up the stage
         this.stage = new Pixi.Container()
 
+        // Set up the starfield object @TODO extract elsewhere
+        this.starfield = new Starfield({
+            schema: {
+                tex: [ resources.getTexture( 'circle4.png' ) ],
+                rotation: false
+            },
+            density: 500,
+            size: {
+                width: config.get( 'width' ),
+                height: config.get( 'height' )
+            }
+        })
+
+        this.stage.addChild( this.starfield.container )
+
         // Set up the render tick
         this.renderTick = new Tick()
             .on( 'data', this.onRender )
@@ -48,7 +67,11 @@ export default class Main extends React.Component {
 
     onRender = dt => {
         this.stats.begin()
+
+        this.starfield.update()
+
         this.renderer.render( this.stage )
+
         this.stats.end()
     }
 
