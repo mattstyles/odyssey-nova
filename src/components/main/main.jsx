@@ -140,7 +140,7 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.engineForce = .15
+                this.user.engineForce = .25
             })
             .on( 'keyup', () => {
                 this.user.engineForce = .05
@@ -152,6 +152,8 @@ export default class Main extends React.Component {
         this.user.update()
 
         // Dampen star movement
+        // Entities should move fast compared to each other, not compared to the backdrop
+        // There might also need to be a planet layer that sits somewhere in between speeds
         this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
 
         // This translation effectively simulates the camera moving, although simple

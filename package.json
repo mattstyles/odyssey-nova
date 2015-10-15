@@ -1,7 +1,7 @@
 {
   "name": "odyssey-nova",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Odyssey Nova Web-only Client",
   "scripts": {
     "prepublish": "npm run build",
