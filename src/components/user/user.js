@@ -43,7 +43,7 @@ export default class User {
         this.graphics.arc(
             this.body.position[ 0 ],
             this.body.position[ 1 ],
-            this.circularSize * this.shape.radius,
+            this.circularSize,
             toRadians( 220 ), toRadians( 320 ), false
         )
         this.graphics.lineTo( 0, this.circularSize )
