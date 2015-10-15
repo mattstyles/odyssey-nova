@@ -60,8 +60,10 @@ export default class Main extends React.Component {
         })
         this.world.addBody( this.user.body )
 
-        // Set up the stage
+        // Set up the stage - offset so 0,0 ends up screen center
+        // @TODO extract offset to a camera class
         this.stage = new Pixi.Container()
+        this.stage.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
 
         // Set up the starfield object @TODO extract elsewhere
         this.starfield = new Starfield({
@@ -77,6 +79,14 @@ export default class Main extends React.Component {
         })
 
         this.stage.addChild( this.starfield.container )
+
+        // @TODO debug user render
+        this.stage.addChild( this.user.graphics )
+        window.stage = this.stage
+        window.world = this.world
+        window.user = this.user
+        window.starfield = this.starfield
+        window.config = config
 
         // Set up the render tick
         this.renderTick = new Tick()
@@ -113,7 +123,14 @@ export default class Main extends React.Component {
     onUpdate = dt => {
         this.world.step( dt )
         this.user.update()
-        this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+        //this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+
+        // This translation effectively simulates the camera moving, although simple
+        // it should still be extracted into a camera class
+        this.stage.position.set(
+            ( config.get( 'width' ) / 2 ) - this.user.body.position[ 0 ],
+            ( config.get( 'height' ) / 2 ) - this.user.body.position[ 1 ]
+        )
         this.starfield.update()
     }
 

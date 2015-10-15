@@ -16,8 +16,8 @@ export default class User {
         this.posX = document.querySelector( '.posx' )
         this.posY = document.querySelector( '.posy' )
 
-        this.angularForce = 4
-        this.engineForce = .05
+        this.angularForce = .04
+        this.engineForce = .025
 
         // Bounds
         this.shape = new P2.Circle({
@@ -28,18 +28,33 @@ export default class User {
         this.body = new P2.Body({
             mass: 1,
             position: [ 0, 0 ],
-            angularVelocity: 0
+            angularVelocity: 0,
+            angle: 0
         })
         this.body.addShape( this.shape )
 
 
         // @TODO just for debug
+        this.graphics = new Pixi.Graphics()
+        // this.graphics.beginFill( 0xb3e5fc )
+        this.graphics.lineStyle( 1, 0xb3e5fc, 1 )
+        this.graphics.arc(
+            this.body.position[ 0 ],
+            this.body.position[ 1 ],
+            10 * this.shape.radius,
+            toRadians( 220 ), toRadians( 320 ), false
+        )
+        this.graphics.lineTo( 0, 10 )
     }
 
     update() {
         // @TODO update this debug info
         this.posX.innerHTML = this.body.position[ 0 ].toFixed( 2 )
         this.posY.innerHTML = this.body.position[ 1 ].toFixed( 2 )
+
+        this.graphics.position.x = this.body.position[ 0 ]
+        this.graphics.position.y = this.body.position[ 1 ]
+        this.graphics.rotation = this.body.angle
 
     }
 
@@ -53,14 +68,10 @@ export default class User {
     }
 
     left = () => {
-        this.body.angularVelocity = this.angularForce
-    }
-
-    right = () => {
         this.body.angularVelocity = -this.angularForce
     }
 
-    render() {
-
+    right = () => {
+        this.body.angularVelocity = this.angularForce
     }
 }

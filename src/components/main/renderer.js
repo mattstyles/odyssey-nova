@@ -14,7 +14,7 @@ class RenderManager {
 
     create( id = 'js-main', view = null ) {
         let renderer = new Pixi.autoDetectRenderer( config.get( 'width' ), config.get( 'height' ), {
-            antialiasing: false,
+            antialiasing: true,
             transparency: false,
             resolution: config.get( 'dp' ),
             view: view || canvas.get()
