@@ -57,17 +57,23 @@ export default class Main extends React.Component {
         this.addHandlers()
 
         // Set up physics
-        this.world = new P2.World({
+        this.engine = new P2.World({
             gravity: [ 0, 0 ]
         })
-        this.world.addBody( this.user.body )
+        this.engine.addBody( this.user.body )
 
-        // Set up the stage - offset so 0,0 ends up screen center
-        // @TODO extract offset to a camera class
+        // Master stage, renderer renders this
         this.stage = new Pixi.Container()
-        this.stage.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
+
+        // Set up the world - offset so 0,0 ends up screen center
+        // @TODO extract offset to a camera class
+        // @TODO extract this with this.engine, so adding an entity adds to both automatically
+        this.world = new Pixi.Container()
+        this.world.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
 
         // Set up the starfield object @TODO extract elsewhere
+        // Dont add the starfield to the world, it sits outside and moves at
+        // a different pace.
         this.starfield = new Starfield({
             schema: {
                 tex: [ resources.getTexture( 'circle4.png' ) ],
@@ -88,18 +94,20 @@ export default class Main extends React.Component {
                 width: config.get( 'width' ),
                 height: config.get( 'height' )
             },
-            offset: {
-                x: 0,
-                y: 0
-            },
-            static: true
+            // offset: {
+            //     x: 0,
+            //     y: 0
+            // },
+            // static: true
         })
 
+        // Add actors to the stage
         this.stage.addChild( this.starfield.container )
+        this.stage.addChild( this.world )
 
 
         // @TODO debug user render
-        this.stage.addChild( this.user.graphics )
+        this.world.addChild( this.user.graphics )
         window.stage = this.stage
         window.world = this.world
         window.user = this.user
@@ -132,24 +140,27 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.accelerationForce = 3.2
+                this.user.engineForce = .15
             })
             .on( 'keyup', () => {
-                this.user.accelerationForce = 1.1
+                this.user.engineForce = .05
             })
     }
 
     onUpdate = dt => {
-        this.world.step( dt )
+        this.engine.step( dt )
         this.user.update()
-        this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+
+        // Dampen star movement
+        this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
-        this.stage.position.set(
+        this.world.position.set(
             ( config.get( 'width' ) / 2 ) - this.user.body.position[ 0 ],
             ( config.get( 'height' ) / 2 ) - this.user.body.position[ 1 ]
         )
+
         this.starfield.update()
     }
 
