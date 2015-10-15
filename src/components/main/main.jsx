@@ -2,6 +2,7 @@
 import React from 'react'
 import Pixi from 'pixi.js'
 import Tick from '@mattstyles/tick'
+import Bezier from 'bezier-easing'
 import Starfield from 'pixi-starfield'
 import Quay from 'quay'
 import P2 from 'p2'
@@ -69,16 +70,32 @@ export default class Main extends React.Component {
         this.starfield = new Starfield({
             schema: {
                 tex: [ resources.getTexture( 'circle4.png' ) ],
-                rotation: false
+                rotation: false,
+                alpha: {
+                    min: .1,
+                    max: 1
+                },
+                scale: {
+                    min: .25,
+                    max: .8
+                },
+                tempCurve: new Bezier( .75, .1, .85, 1 ),
+                threshold: .05
             },
-            density: 500,
+            density: .0005 * config.get( 'width' ) * config.get( 'height' ),
             size: {
                 width: config.get( 'width' ),
                 height: config.get( 'height' )
-            }
+            },
+            offset: {
+                x: 0,
+                y: 0
+            },
+            static: true
         })
 
         this.stage.addChild( this.starfield.container )
+
 
         // @TODO debug user render
         this.stage.addChild( this.user.graphics )
@@ -123,7 +140,10 @@ export default class Main extends React.Component {
     onUpdate = dt => {
         this.world.step( dt )
         this.user.update()
-        //this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+        this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+
+        // @TODO update pixi-starfield to 0.7.0 and drop this
+        //this.starfield.container.position.set( 0, 0 )
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
