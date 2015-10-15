@@ -6,11 +6,13 @@ import Bezier from 'bezier-easing'
 import Starfield from 'pixi-starfield'
 import Quay from 'quay'
 import P2 from 'p2'
+import random from 'lodash.random'
 
 import canvas from './canvas'
 import renderer from './renderer'
 import Stats from './stats'
 
+import Entity from 'entities/entity'
 import User from 'user/user'
 import Debug from 'debug/debug'
 
@@ -62,6 +64,7 @@ export default class Main extends React.Component {
         })
         this.engine.addBody( this.user.body )
 
+
         // Master stage, renderer renders this
         this.stage = new Pixi.Container()
 
@@ -105,6 +108,16 @@ export default class Main extends React.Component {
         this.stage.addChild( this.starfield.container )
         this.stage.addChild( this.world )
 
+        // Create a few extra entities, just for funsies
+        this.entities = []
+        for ( let i = 0; i < random( 10, 20 ); i++ ) {
+            let entity = new Entity()
+            entity.body.position = [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+            this.entities.push( entity )
+            this.engine.addBody( entity.body )
+            this.world.addChild( entity.graphics )
+        }
+
 
         // @TODO debug user render
         this.world.addChild( this.user.graphics )
@@ -112,6 +125,7 @@ export default class Main extends React.Component {
         window.world = this.world
         window.user = this.user
         window.starfield = this.starfield
+        window.entities = this.entities
         window.config = config
 
 
@@ -148,8 +162,10 @@ export default class Main extends React.Component {
     }
 
     onUpdate = dt => {
+        // Sync engine and entity by updating both
         this.engine.step( dt )
         this.user.update()
+        this.entities.forEach( entity => entity.update() )
 
         // Dampen star movement
         // Entities should move fast compared to each other, not compared to the backdrop
