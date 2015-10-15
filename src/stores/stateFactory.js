@@ -69,7 +69,7 @@ export default class StateFactory {
         // Create default data if none exists
         if ( !this.appState.get( key ) ) {
             this.appState.create( key, {
-                progress: []
+                debug: {}
             })
         }
 

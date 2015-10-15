@@ -12,6 +12,7 @@ import renderer from './renderer'
 import Stats from './stats'
 
 import User from 'user/user'
+import Debug from 'debug/debug'
 
 import resources from 'stores/resources'
 import config from 'stores/config'
@@ -105,6 +106,7 @@ export default class Main extends React.Component {
         window.starfield = this.starfield
         window.config = config
 
+
         // Set up the render tick
         this.renderTick = new Tick()
             .on( 'data', this.onRender )
@@ -142,9 +144,6 @@ export default class Main extends React.Component {
         this.user.update()
         this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
 
-        // @TODO update pixi-starfield to 0.7.0 and drop this
-        //this.starfield.container.position.set( 0, 0 )
-
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
         this.stage.position.set(
@@ -163,6 +162,8 @@ export default class Main extends React.Component {
     }
 
     render() {
+        console.log( 'main render' )
+
         // @TODO does the canvas want to be buried this deep in the DOM?
         // No problems with creating them from document.body and just reffing them
         return (
@@ -171,6 +172,7 @@ export default class Main extends React.Component {
                     <span className="posx"></span>
                     <span className="posy"></span>
                 </div>
+                <Debug data={ this.props.state.cursor( 'debug' ) } />
             </div>
         )
     }
