@@ -24,12 +24,12 @@ export default class User {
         // @TODO remove, or at least sort out a better debug
         // this.posX = document.querySelector( '.posx' )
         // this.posY = document.querySelector( '.posy' )
-        updateDebug({
-            'user': {
-                'position x': 400,
-                'position y': 400
-            }
-        })
+        // updateDebug({
+        //     'user': {
+        //         'position x': 400,
+        //         'position y': 400
+        //     }
+        // })
 
         this.angularForce = .04
         this.engineForce = .025
@@ -65,9 +65,13 @@ export default class User {
     }
 
     update() {
-        // @TODO update this debug info
-        // this.posX.innerHTML = this.body.position[ 0 ].toFixed( 2 )
-        // this.posY.innerHTML = this.body.position[ 1 ].toFixed( 2 )
+        // update this debug info
+        updateDebug({
+            'user': {
+                'position x': this.body.position[ 0 ].toFixed( 2 ),
+                'position y': this.body.position[ 1 ].toFixed( 2 )
+            }
+        })
 
         this.graphics.position.x = this.body.position[ 0 ]
         this.graphics.position.y = this.body.position[ 1 ]

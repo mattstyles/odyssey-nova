@@ -168,10 +168,6 @@ export default class Main extends React.Component {
         // No problems with creating them from document.body and just reffing them
         return (
             <div ref="main" className="js-main u-fit">
-                <div className="position-debug">
-                    <span className="posx"></span>
-                    <span className="posy"></span>
-                </div>
                 <Debug data={ this.props.state.cursor( 'debug' ) } />
             </div>
         )
