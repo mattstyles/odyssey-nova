@@ -4,6 +4,7 @@ import Pixi from 'pixi.js'
 import Tick from '@mattstyles/tick'
 import Starfield from 'pixi-starfield'
 import Quay from 'quay'
+import P2 from 'p2'
 
 import canvas from './canvas'
 import renderer from './renderer'
@@ -13,6 +14,7 @@ import User from 'user/user'
 
 import resources from 'stores/resources'
 import config from 'stores/config'
+
 
 /**
  * @class
@@ -52,6 +54,12 @@ export default class Main extends React.Component {
         this.quay = new Quay()
         this.addHandlers()
 
+        // Set up physics
+        this.world = new P2.World({
+            gravity: [ 0, 0 ]
+        })
+        this.world.addBody( this.user.body )
+
         // Set up the stage
         this.stage = new Pixi.Container()
 
@@ -74,6 +82,13 @@ export default class Main extends React.Component {
         this.renderTick = new Tick()
             .on( 'data', this.onRender )
             .on( 'data', this.onUpdate )
+
+        window.pause = () => {
+            this.renderTick.pause()
+        }
+        window.resume = () => {
+            this.renderTick.resume()
+        }
     }
 
     addHandlers() {
@@ -96,15 +111,14 @@ export default class Main extends React.Component {
     }
 
     onUpdate = dt => {
+        this.world.step( dt )
         this.user.update()
-        this.starfield.setPosition( this.user.pos.x, this.user.pos.y )
+        this.starfield.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
         this.starfield.update()
     }
 
     onRender = dt => {
         this.stats.begin()
-
-        //this.onUpdate()
 
         this.renderer.render( this.stage )
 
