@@ -21,16 +21,6 @@ export default class User {
     constructor() {
         this.sprite = new Pixi.Sprite()
 
-        // @TODO remove, or at least sort out a better debug
-        // this.posX = document.querySelector( '.posx' )
-        // this.posY = document.querySelector( '.posy' )
-        // updateDebug({
-        //     'user': {
-        //         'position x': 400,
-        //         'position y': 400
-        //     }
-        // })
-
         this.angularForce = .04
         this.engineForce = .025
 
@@ -69,7 +59,9 @@ export default class User {
         updateDebug({
             'user': {
                 'position x': this.body.position[ 0 ].toFixed( 2 ),
-                'position y': this.body.position[ 1 ].toFixed( 2 )
+                'position y': this.body.position[ 1 ].toFixed( 2 ),
+                'force x': this.body.force[ 0 ].toFixed( 2 ),
+                'force y': this.body.force[ 1 ].toFixed( 2 )
             }
         })
 
