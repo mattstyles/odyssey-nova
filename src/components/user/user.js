@@ -19,14 +19,16 @@ export default class User {
         this.angularForce = .04
         this.engineForce = .025
 
+        this.circularSize = 10
+
         // Bounds
         this.shape = new P2.Circle({
-            radius: 1
+            radius: this.circularSize
         })
 
         // Body physics
         this.body = new P2.Body({
-            mass: 1,
+            mass: 2,
             position: [ 0, 0 ],
             angularVelocity: 0,
             angle: 0
@@ -36,15 +38,15 @@ export default class User {
 
         // @TODO just for debug
         this.graphics = new Pixi.Graphics()
-        // this.graphics.beginFill( 0xb3e5fc )
+        this.graphics.beginFill( 0x040414 )
         this.graphics.lineStyle( 1, 0xb3e5fc, 1 )
         this.graphics.arc(
             this.body.position[ 0 ],
             this.body.position[ 1 ],
-            10 * this.shape.radius,
+            this.circularSize * this.shape.radius,
             toRadians( 220 ), toRadians( 320 ), false
         )
-        this.graphics.lineTo( 0, 10 )
+        this.graphics.lineTo( 0, this.circularSize )
     }
 
     update() {
@@ -60,6 +62,7 @@ export default class User {
 
     forward = () => {
         // Apply thrust from directly behind the ship
+        // Use force local to account for body rotation
         this.body.applyForceLocal( [ 0, this.engineForce ] )
     }
 
