@@ -30,7 +30,7 @@ export default class Entity extends P2.Body {
 
         //Play with the damping
         this.damping = .0025
-        this.angularDamping = .005
+        this.angularDamping = .00085
 
         this.container = new Pixi.Container()
         this.graphics = new Pixi.Graphics()

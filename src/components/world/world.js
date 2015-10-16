@@ -22,7 +22,8 @@ export default class World {
         // Keep as an array for now -is it even needed? We can grab bodies and containers
         // from their own lists to remove them, no need for more splicing
         // The engine.bodies list becomes the entity list
-        this.entities = []
+        //this.entities = []
+        this.entities = this.engine.bodies
 
         // Play with detecting collisions
         this.engine.on( 'impact', event => {
