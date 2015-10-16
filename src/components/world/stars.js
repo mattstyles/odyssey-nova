@@ -16,37 +16,70 @@ export default class Stars {
 
         this.container = new Pixi.Container
 
-        this.starfield = new Starfield({
-            schema: {
-                tex: [ resources.getTexture( 'circle4.png' ) ],
-                rotation: false,
-                alpha: {
-                    min: .1,
-                    max: 1
+        this.layer = []
+        this.layer.push({
+            speed: .1,
+            field: new Starfield({
+                schema: {
+                    tex: [ resources.getTexture( 'circle4.png' ) ],
+                    rotation: false,
+                    alpha: {
+                        min: .1,
+                        max: 1
+                    },
+                    scale: {
+                        min: .25,
+                        max: .8
+                    },
+                    tempCurve: new Bezier( .75, .1, .85, 1 ),
+                    threshold: .05
                 },
-                scale: {
-                    min: .25,
-                    max: .8
-                },
-                tempCurve: new Bezier( .75, .1, .85, 1 ),
-                threshold: .05
-            },
-            density: .0005 * config.get( 'width' ) * config.get( 'height' ),
-            size: {
-                width: config.get( 'width' ),
-                height: config.get( 'height' )
-            }
+                density: .0005 * config.get( 'width' ) * config.get( 'height' ),
+                size: {
+                    width: config.get( 'width' ),
+                    height: config.get( 'height' )
+                }
+            })
         })
 
-        this.container.addChild( this.starfield.container )
+        this.layer.push({
+            speed: .2,
+            field: new Starfield({
+                schema: {
+                    tex: [ resources.getTexture( 'circle4.png' ) ],
+                    rotation: false,
+                    alpha: {
+                        min: .1,
+                        max: 1
+                    },
+                    scale: {
+                        min: .25,
+                        max: .8
+                    },
+                    color: {
+                        from: [ 0x02, 0x88, 0xd1 ],
+                        to: [ 0xb3, 0xe5, 0xfc ]
+                    }
+                },
+                density: .0005 * config.get( 'width' ) * config.get( 'height' ),
+                size: {
+                    width: config.get( 'width' ),
+                    height: config.get( 'height' )
+                }
+            })
+        })
+
+        this.layer.forEach( layer => {
+            this.container.addChild( layer.field.container )
+        })
     }
 
     update() {
-        this.starfield.update()
+        this.layer.forEach( layer => layer.field.update() )
     }
 
     setPosition( x, y ) {
-        this.starfield.setPosition( x / 10, y / 10 )
+        this.layer.forEach( layer => layer.field.setPosition( x * layer.speed, y * layer.speed ) )
     }
 
 }
