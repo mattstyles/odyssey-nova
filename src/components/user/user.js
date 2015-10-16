@@ -29,6 +29,7 @@ export default class User extends Entity {
 
         this.turnThrust = .005
         this.thrust = .05
+        this.bankThrust = .025
 
         this.position[1] = 80
         this.angularDamping = .05
@@ -89,5 +90,13 @@ export default class User extends Entity {
 
     right = () => {
         this.angularVelocity = this.turnThrust
+    }
+
+    // Banking is almost like strafing, but results in a slight opposite turn as well
+    bankLeft = () => {
+        this.applyForceLocal( [ this.bankThrust, 0 ], [ 0, -1 ] )
+    }
+    bankRight = () => {
+        this.applyForceLocal( [ -this.bankThrust, 0 ], [ 0, -1 ] )
     }
 }

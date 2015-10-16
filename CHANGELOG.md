@@ -1,5 +1,7 @@
 #
 
+* _add_ user craft banking maneuver
+* _add_ crude bullet entity system
 * _add_ entities base class
 * _add_ material properties for collisions
 

@@ -149,6 +149,8 @@ export default class Main extends React.Component {
         this.quay.on( '<down>', this.user.backward )
         this.quay.on( '<left>', this.user.left )
         this.quay.on( '<right>', this.user.right )
+        this.quay.on( 'Q', this.user.bankLeft )
+        this.quay.on( 'E', this.user.bankRight )
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
