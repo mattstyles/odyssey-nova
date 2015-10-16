@@ -3,6 +3,7 @@ import Pixi from 'pixi.js'
 import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
+import Entity from 'entities/entity'
 import materials from 'entities/materials'
 
 // @TODO only for registering debug info
@@ -19,59 +20,39 @@ function updateDebug( obj ) {
  * User data should be bounced back to the appState, but, benchmark it once there
  * are some tick updates updating the physics
  */
-export default class User {
+export default class User extends Entity {
     constructor() {
-        this.sprite = new Pixi.Sprite()
+        super({
+            radius: 10,
+            mass: 20
+        })
 
         this.angularForce = .005
         this.engineForce = .05
 
-        this.radius = 10
+        // @TODO replace with sprite
+        this.ship = new Pixi.Graphics()
+        this.container.addChild( this.ship )
 
-        // Bounds
-        this.shape = new P2.Circle({
-            radius: this.radius
-        })
-        this.shape.material = materials.get( '_default' )
+        this._drawShip()
+    }
 
-        // Body physics
-        this.body = new P2.Body({
-            mass: 20,
-            position: [ 0, 0 ],
-            angularVelocity: 0,
-            angle: 0
-        })
-        this.body.addShape( this.shape )
-
-        // Play with the damping
-        this.body.damping = .005
-        this.body.angularDamping = .05
-
-
-        // @TODO just for debug
-        this.graphics = new Pixi.Graphics()
-        this.graphics.beginFill( 0xffffff, .25 )
-        this.graphics.drawCircle(
-            this.body.position[ 0 ],
-            this.body.position[ 1 ],
-            this.radius )
-        this.graphics.endFill()
-        this.graphics.beginFill( 0x040414 )
-        this.graphics.lineStyle( 1, 0xb3e5fc, 1 )
-        this.graphics.arc(
-            this.body.position[ 0 ],
-            this.body.position[ 1 ],
+    _drawShip() {
+        this.ship.beginFill( 0x040414 )
+        this.ship.lineStyle( 1, 0xb3e5fc, 1 )
+        this.ship.arc(
+            0,
+            0,
             this.radius * .5,
             toRadians( 220 ), toRadians( 320 ), false
         )
-        this.graphics.lineTo( 0, this.radius * .5 )
-        this.graphics.endFill()
-
-        this.container = new Pixi.Container()
-        this.container.addChild( this.graphics )
+        this.ship.lineTo( 0, this.radius * .75 )
+        this.ship.endFill()
     }
 
     update() {
+        super()
+
         // update this debug info
         updateDebug({
             'user': {
@@ -84,10 +65,8 @@ export default class User {
             }
         })
 
-        this.graphics.position.x = this.body.position[ 0 ]
-        this.graphics.position.y = this.body.position[ 1 ]
-        this.graphics.rotation = this.body.angle
-
+        this.ship.position.set( ...this.body.position )
+        this.ship.rotation = this.body.angle
     }
 
     forward = () => {

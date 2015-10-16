@@ -59,9 +59,11 @@ export default class Stars {
                     color: {
                         from: [ 0x02, 0x88, 0xd1 ],
                         to: [ 0xb3, 0xe5, 0xfc ]
-                    }
+                    },
+                    tempCurve: new Bezier( .75, .1, .85, 1 ),
+                    threshold: .1
                 },
-                density: .0005 * config.get( 'width' ) * config.get( 'height' ),
+                density: .00025 * config.get( 'width' ) * config.get( 'height' ),
                 size: {
                     width: config.get( 'width' ),
                     height: config.get( 'height' )

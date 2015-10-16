@@ -49,20 +49,20 @@ export default class Entity {
 
     // All movement values are relative to graphics.position, which is body.position
     _drawDebug() {
-        //this.graphics.clear()
-        this.graphics.beginFill( 0xb3e5fc, .15 )
+        this.graphics.clear()
+        this.graphics.beginFill( 0xffffff, .1 )
         this.graphics.drawCircle(
             0,
             0,
             this.radius
         )
         this.graphics.endFill()
-        this.graphics.lineStyle( 1, 0xb3e5fc, .5 )
+        this.graphics.lineStyle( 1, 0xffffff, .3 )
         this.graphics.arc(
             0,
             0,
             this.radius,
-            0, Math.PI * 2, false
+            Math.PI * .5, Math.PI * 2.5, false
         )
         this.graphics.lineTo( 0, 0 )
     }

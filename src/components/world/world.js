@@ -2,6 +2,7 @@
 import Pixi from 'pixi.js'
 import P2 from 'p2'
 
+import materials from 'entities/materials'
 import config from 'stores/config'
 
 export default class World {
@@ -9,11 +10,8 @@ export default class World {
         this.engine = new P2.World({
             gravity: [ 0, 0 ]
         })
-
-        Object.assign( this.engine.defaultContactMaterial, {
-            friction: .5,
-            restitution: 3
-        })
+        
+        this.engine.addContactMaterial( materials.get( '_defaultContact' ) )
 
         this.container = new Pixi.Container()
         this.container.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
