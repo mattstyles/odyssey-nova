@@ -48,8 +48,8 @@ export default class World {
     }
 
     update( dt ) {
-        this.engine.step( dt )
         this.engine.bodies.forEach( entity => entity.update() )
+        this.engine.step( dt )
     }
 
 }

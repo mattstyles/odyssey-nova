@@ -125,12 +125,13 @@ export default class Main extends React.Component {
         window.entities = this.entities
         window.config = config
         window.materials = materials
+        window.ent = entity
 
 
         // Set up the render tick
         this.renderTick = new Tick()
+            // .on( 'data', this.onUpdate )
             .on( 'data', this.onRender )
-            .on( 'data', this.onUpdate )
 
         window.pause = () => {
             this.renderTick.pause()
@@ -154,14 +155,14 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.thurst = .12
+                this.user.thrust = .12
             })
             .on( 'keyup', () => {
                 this.user.thrust = .05
             })
 
         var lastFire = 0
-        var reloadTime = 200
+        var reloadTime = 100
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
@@ -174,19 +175,30 @@ export default class Main extends React.Component {
                 lastFire = this.world.engine.time
 
                 // User radius plus bullet radius plus a little extra
-                let radius = ( this.user.radius + 3 ) * 1.2
+                let radius = ( this.user.radius + 3 ) + 1.2
                 let angle = this.user.angle + Math.PI * .5
+                let mag = .85
                 let turretPos = [
                     radius * Math.cos( angle ) + this.user.position[ 0 ],
                     radius * Math.sin( angle ) + this.user.position[ 1 ]
                 ]
+                let bulletVel = [
+                    mag * Math.cos( angle ) + this.user.velocity[ 0 ],
+                    mag * Math.sin( angle ) + this.user.velocity[ 1 ]
+                ]
                 let bullet = new Bullet({
                     position: turretPos,
+                    velocity: bulletVel,
                     angle: this.user.angle
                 })
 
+                // Applying a force doesnt really cut, just manually calc velocity
+                // based on craft velocity and magnitude
+                // bullet.applyForceLocal([ 0, .5 ])
+
                 bullet.update()
                 bullet._drawDebug()
+
                 this.world.addEntity( bullet )
             })
     }
@@ -214,6 +226,7 @@ export default class Main extends React.Component {
     onRender = dt => {
         this.stats.begin()
 
+        this.onUpdate( dt )
         this.renderer.render( this.stage )
 
         this.stats.end()
