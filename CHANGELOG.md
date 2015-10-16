@@ -1,4 +1,4 @@
-#
+# 0.0.2
 
 * _add_ user craft banking maneuver
 * _add_ crude bullet entity system
