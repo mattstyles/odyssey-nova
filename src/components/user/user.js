@@ -30,6 +30,9 @@ export default class User extends Entity {
         this.angularForce = .005
         this.engineForce = .05
 
+        this.body.position[1] = 80
+
+
         // @TODO replace with sprite
         this.ship = new Pixi.Graphics()
         this.container.addChild( this.ship )

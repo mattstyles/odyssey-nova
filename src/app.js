@@ -11,4 +11,7 @@ if ( process.env.DEBUG ) {
     window.appState = appState
 
     window.resources = resources
+
+    window.Pixi = require( 'pixi.js' )
+    window.P2 = require( 'p2' )
 }

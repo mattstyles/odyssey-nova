@@ -9,24 +9,28 @@ export default class Entity {
     constructor( opts = {
         radius: random( 10, 30 ),
         mass: random( 10, 30 ),
-        position: [ 0, 0 ]
+        position: [ 0, 0 ],
+        angle: 0
     }) {
         this.sprite = new Pixi.Sprite()
 
         this.radius = opts.radius
 
-        this.shape = new P2.Circle({
-            radius: this.radius,
-            material: materials.get( '_default' )
-        })
+        this.shapes = []
 
         this.body = new P2.Body({
             mass: opts.mass,
             position: opts.position,
-            angularVelocity: 0
+            angularVelocity: 0,
+            angle: opts.angle
         })
 
-        this.body.addShape( this.shape )
+        this.addShape( new P2.Circle({
+            radius: this.radius,
+            material: materials.get( '_default' ),
+            position: [ 0, 0 ],
+            angle: this.body.angle + Math.PI * .5
+        }))
 
         // Play with the damping
         this.body.damping = .0025
@@ -36,35 +40,40 @@ export default class Entity {
         this.graphics = new Pixi.Graphics()
 
         this.container.addChild( this.graphics )
-
-        this._drawDebug()
     }
 
-    setRadius( r ) {
-        this.radius = r
-        this.shape.radius = r
-
-        this._drawDebug()
+    addShape( shape ) {
+        this.shapes.push( shape )
+        this.body.addShape( shape, shape.position, shape.angle )
     }
 
     // All movement values are relative to graphics.position, which is body.position
     _drawDebug() {
         this.graphics.clear()
-        this.graphics.beginFill( 0xffffff, .1 )
-        this.graphics.drawCircle(
-            0,
-            0,
-            this.radius
-        )
-        this.graphics.endFill()
-        this.graphics.lineStyle( 1, 0xffffff, .3 )
-        this.graphics.arc(
-            0,
-            0,
-            this.radius,
-            Math.PI * .5, Math.PI * 2.5, false
-        )
-        this.graphics.lineTo( 0, 0 )
+
+        var drawCircle = ( x, y, r, angle ) => {
+            this.graphics.moveTo( x, y )
+            this.graphics.beginFill( 0xffffff, .1 )
+            this.graphics.drawCircle(
+                x,
+                y,
+                r
+            )
+            this.graphics.endFill()
+            this.graphics.lineStyle( 1, 0xffffff, .3 )
+            this.graphics.arc(
+                x,
+                y,
+                r,
+                angle, angle + Math.PI * 2, false
+            )
+            this.graphics.lineTo( x, y )
+        }
+
+        this.shapes.forEach( shape => {
+            drawCircle( shape.position[ 0 ], shape.position[ 1 ], shape.radius, shape.angle )
+        })
+
     }
 
     /**

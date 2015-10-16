@@ -55,6 +55,7 @@ export default class Main extends React.Component {
 
         // Set up a user
         this.user = new User()
+        this.user._drawDebug()
 
         // Set up input
         this.quay = new Quay()
@@ -86,8 +87,34 @@ export default class Main extends React.Component {
                 position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
             })
             entity.update()
+            entity._drawDebug()
             this.world.addEntity( entity )
         }
+
+        // Create a complex entity
+        let entity = new Entity({
+            radius: 40,
+            mass: 50,
+            position: [ 0, 0 ],
+            angle: 0
+        })
+
+        entity.addShape( new P2.Circle({
+            radius: 20,
+            position: [ 38, -38 ],
+            material: materials.get( '_default' ),
+            angle: Math.PI * 1.5
+        }))
+        entity.addShape( new P2.Circle({
+            radius: 20,
+            position: [ -38, -38 ],
+            material: materials.get( '_default' ),
+            angle: Math.PI * 1.5
+        }))
+        entity.update()
+        entity._drawDebug()
+
+        this.world.addEntity( entity )
 
 
         // @TODO debug user render
@@ -125,7 +152,7 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.engineForce = .25
+                this.user.engineForce = .12
             })
             .on( 'keyup', () => {
                 this.user.engineForce = .05
