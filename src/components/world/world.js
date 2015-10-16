@@ -2,8 +2,11 @@
 import Pixi from 'pixi.js'
 import P2 from 'p2'
 
+import Bullet from 'entities/bullet'
 import materials from 'entities/materials'
 import config from 'stores/config'
+
+import { XOR } from 'utils/logical'
 
 export default class World {
     constructor() {
@@ -21,9 +24,16 @@ export default class World {
 
         // Play with detecting collisions
         this.engine.on( 'impact', event => {
-            console.log( 'world impact', event )
+            // XNOR
+            if ( !XOR( event.bodyA instanceof Bullet, event.bodyB instanceof Bullet ) ) {
+                // Not a bullet involved, ignore for now
+                return
+            }
 
-            // this.engine.removeBody( event.bodyA )
+            let bullet = event.bodyA instanceof Bullet ? event.bodyA : event.bodyB
+
+            this.engine.removeBody( bullet )
+            this.container.removeChild( bullet.container )
 
             // Need a way to get an entity from the entities array by searching through
             // the bodies, need a good way and then can effectively remove an entity
