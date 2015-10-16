@@ -23,7 +23,7 @@ export default class World {
         this.engine.on( 'impact', event => {
             console.log( 'world impact', event )
 
-            this.engine.removeBody( event.bodyA )
+            // this.engine.removeBody( event.bodyA )
 
             // Need a way to get an entity from the entities array by searching through
             // the bodies, need a good way and then can effectively remove an entity
@@ -32,7 +32,7 @@ export default class World {
     }
 
     addEntity( entity ) {
-        this.engine.addBody( entity.body )
+        this.engine.addBody( entity )
         this.container.addChild( entity.container )
         this.entities.push( entity )
     }

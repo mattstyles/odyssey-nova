@@ -5,50 +5,37 @@ import random from 'lodash.random'
 
 import materials from 'entities/materials'
 
-export default class Entity {
-    constructor( opts = {} ) {
+export default class Entity extends P2.Body {
+    constructor( options = {} ) {
         opts = Object.assign({
             radius: random( 10, 30 ),
             mass: random( 10, 30 ),
             position: [ 0, 0 ],
             velocity: [ 0, 0 ],
             angle: 0
-        }, opts )
+        }, options )
+
+        super( opts )
 
         this.sprite = new Pixi.Sprite()
 
         this.radius = opts.radius
 
-        this.shapes = []
-
-        this.body = new P2.Body({
-            mass: opts.mass,
-            position: opts.position,
-            velocity: opts.velocity,
-            angularVelocity: 0,
-            angle: opts.angle
-        })
-
         this.addShape( new P2.Circle({
             radius: this.radius,
             material: materials.get( '_default' ),
             position: [ 0, 0 ],
-            angle: this.body.angle + Math.PI * .5
+            angle: this.angle + Math.PI * .5
         }))
 
-        // Play with the damping
-        this.body.damping = .0025
-        this.body.angularDamping = .05
+        //Play with the damping
+        this.damping = .0025
+        this.angularDamping = .005
 
         this.container = new Pixi.Container()
         this.graphics = new Pixi.Graphics()
 
         this.container.addChild( this.graphics )
-    }
-
-    addShape( shape ) {
-        this.shapes.push( shape )
-        this.body.addShape( shape, shape.position, shape.angle )
     }
 
     // All movement values are relative to graphics.position, which is body.position
@@ -69,7 +56,7 @@ export default class Entity {
                 x,
                 y,
                 r,
-                angle, angle + Math.PI * 2, false
+                angle + Math.PI * .5, angle + Math.PI * 2.5, false
             )
             this.graphics.lineTo( x, y )
         }
@@ -84,10 +71,10 @@ export default class Entity {
      * Moves visuals in line with the underlying physics body
      */
     update() {
-        this.graphics.position.set( ...this.body.position )
-        this.graphics.rotation = this.body.angle
+        this.graphics.position.set( ...this.position )
+        this.graphics.rotation = this.angle
 
-        this.sprite.position.set( ...this.body.position )
-        this.sprite.rotation = this.body.angle
+        this.sprite.position.set( ...this.position )
+        this.sprite.rotation = this.angle
     }
 }

@@ -27,10 +27,11 @@ export default class User extends Entity {
             mass: 20
         })
 
-        this.angularForce = .005
-        this.engineForce = .05
+        this.turnThrust = .005
+        this.thrust = .05
 
-        this.body.position[1] = 80
+        this.position[1] = 80
+        this.angularDamping = .05
 
 
         // @TODO replace with sprite
@@ -59,23 +60,23 @@ export default class User extends Entity {
         // update this debug info
         updateDebug({
             'user': {
-                'px': this.body.position[ 0 ].toFixed( 2 ),
-                'py': this.body.position[ 1 ].toFixed( 2 ),
-                'pa': wrap( toDegrees( this.body.angle ), 0, 360 ).toFixed( 2 ),
-                'vx': this.body.velocity[ 0 ].toFixed( 4 ),
-                'vy': this.body.velocity[ 1 ].toFixed( 4 ),
-                'va': this.body.angularVelocity.toFixed( 4 )
+                'px': this.position[ 0 ].toFixed( 2 ),
+                'py': this.position[ 1 ].toFixed( 2 ),
+                'pa': wrap( toDegrees( this.angle ), 0, 360 ).toFixed( 2 ),
+                'vx': this.velocity[ 0 ].toFixed( 4 ),
+                'vy': this.velocity[ 1 ].toFixed( 4 ),
+                'va': this.angularVelocity.toFixed( 4 )
             }
         })
 
-        this.ship.position.set( ...this.body.position )
-        this.ship.rotation = this.body.angle
+        this.ship.position.set( ...this.position )
+        this.ship.rotation = this.angle
     }
 
     forward = () => {
         // Apply thrust from directly behind the ship
         // Use force local to account for body rotation
-        this.body.applyForceLocal( [ 0, this.engineForce ] )
+        this.applyForceLocal( [ 0, this.thrust ] )
     }
 
     backward = () => {
@@ -83,10 +84,10 @@ export default class User extends Entity {
     }
 
     left = () => {
-        this.body.angularVelocity = -this.angularForce
+        this.angularVelocity = -this.turnThrust
     }
 
     right = () => {
-        this.body.angularVelocity = this.angularForce
+        this.angularVelocity = this.turnThrust
     }
 }

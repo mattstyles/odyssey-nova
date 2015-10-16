@@ -104,16 +104,13 @@ export default class Main extends React.Component {
 
         entity.addShape( new P2.Circle({
             radius: 20,
-            position: [ 38, -38 ],
-            material: materials.get( '_default' ),
-            angle: Math.PI * 1.5
-        }))
+            material: materials.get( '_default' )
+        }), [ 32, -32 ], Math.PI )
         entity.addShape( new P2.Circle({
             radius: 20,
-            position: [ -38, -38 ],
-            material: materials.get( '_default' ),
-            angle: Math.PI * 1.5
-        }))
+            material: materials.get( '_default' )
+        }), [ -32, -32 ], Math.PI )
+
         entity.update()
         entity._drawDebug()
 
@@ -176,14 +173,14 @@ export default class Main extends React.Component {
 
                 // User radius plus bullet radius plus a little extra
                 let radius = ( this.user.radius + 3 ) * 1.2
-                let angle = this.user.body.angle + Math.PI * .5
+                let angle = this.user.angle + Math.PI * .5
                 let turretPos = [
-                    radius * Math.cos( angle ) + this.user.body.position[ 0 ],
-                    radius * Math.sin( angle ) + this.user.body.position[ 1 ]
+                    radius * Math.cos( angle ) + this.user.position[ 0 ],
+                    radius * Math.sin( angle ) + this.user.position[ 1 ]
                 ]
                 let bullet = new Bullet({
                     position: turretPos,
-                    angle: this.user.body.angle
+                    angle: this.user.angle
                 })
 
                 bullet.update()
@@ -200,13 +197,13 @@ export default class Main extends React.Component {
         // Entities should move fast compared to each other, not compared to the backdrop
         // There might also need to be a planet layer that sits somewhere in between speeds
         //this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
-        this.stars.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
+        this.stars.setPosition( ...this.user.position )
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
         this.world.container.position.set(
-            ( config.get( 'width' ) / 2 ) - this.user.body.position[ 0 ],
-            ( config.get( 'height' ) / 2 ) - this.user.body.position[ 1 ]
+            ( config.get( 'width' ) / 2 ) - this.user.position[ 0 ],
+            ( config.get( 'height' ) / 2 ) - this.user.position[ 1 ]
         )
 
         this.stars.update()
