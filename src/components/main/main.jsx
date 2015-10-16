@@ -17,6 +17,7 @@ import Entity from 'entities/entity'
 import User from 'user/user'
 import Debug from 'debug/debug'
 
+import materials from 'entities/materials'
 import resources from 'stores/resources'
 import config from 'stores/config'
 
@@ -92,6 +93,7 @@ export default class Main extends React.Component {
         window.starfield = this.starfield
         window.entities = this.entities
         window.config = config
+        window.materials = materials
 
 
         // Set up the render tick

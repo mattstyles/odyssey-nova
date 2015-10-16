@@ -3,6 +3,8 @@ import Pixi from 'pixi.js'
 import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
+import materials from 'entities/materials'
+
 // @TODO only for registering debug info
 import appState from 'stores/appState'
 
@@ -24,12 +26,13 @@ export default class User {
         this.angularForce = .005
         this.engineForce = .05
 
-        this.circularSize = 10
+        this.radius = 10
 
         // Bounds
         this.shape = new P2.Circle({
-            radius: this.circularSize
+            radius: this.radius
         })
+        this.shape.material = materials.get( '_default' )
 
         // Body physics
         this.body = new P2.Body({
@@ -51,17 +54,17 @@ export default class User {
         this.graphics.drawCircle(
             this.body.position[ 0 ],
             this.body.position[ 1 ],
-            this.circularSize )
+            this.radius )
         this.graphics.endFill()
         this.graphics.beginFill( 0x040414 )
         this.graphics.lineStyle( 1, 0xb3e5fc, 1 )
         this.graphics.arc(
             this.body.position[ 0 ],
             this.body.position[ 1 ],
-            this.circularSize * .5,
+            this.radius * .5,
             toRadians( 220 ), toRadians( 320 ), false
         )
-        this.graphics.lineTo( 0, this.circularSize * .5 )
+        this.graphics.lineTo( 0, this.radius * .5 )
         this.graphics.endFill()
 
         this.container = new Pixi.Container()

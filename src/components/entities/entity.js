@@ -1,25 +1,35 @@
 
 import Pixi from 'pixi.js'
 import P2 from 'p2'
+import random from 'lodash.random'
 
-const PI2 = Math.PI * 2
+import materials from 'entities/materials'
 
 export default class Entity {
-    constructor() {
+    constructor( opts = {
+        radius: random( 10, 30 ),
+        mass: random( 10, 30 )
+    }) {
         this.sprite = new Pixi.Sprite()
 
-        this.radius = 8 + Math.random() * 20
+        this.radius = opts.radius
+        opts.mass = opts.radius
 
         this.shape = new P2.Circle({
             radius: this.radius
         })
+        this.shape.material = materials.get( '_default' )
         this.body = new P2.Body({
-            mass: 20,
+            mass: opts.mass,
             position: [ 0, 0 ],
             angularVelocity: 0
         })
 
         this.body.addShape( this.shape )
+
+        // Play with the damping
+        this.body.damping = .005
+        this.body.angularDamping = .05
 
         this.container = new Pixi.Container()
         this.graphics = new Pixi.Graphics()
@@ -52,7 +62,7 @@ export default class Entity {
             0,
             0,
             this.radius,
-            0, PI2, false
+            0, Math.PI * 2, false
         )
         this.graphics.lineTo( 0, 0 )
     }

@@ -10,6 +10,11 @@ export default class World {
             gravity: [ 0, 0 ]
         })
 
+        Object.assign( this.engine.defaultContactMaterial, {
+            friction: .5,
+            restitution: 3
+        })
+
         this.container = new Pixi.Container()
         this.container.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
 
