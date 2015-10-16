@@ -3,7 +3,6 @@ import React from 'react'
 import Pixi from 'pixi.js'
 import Tick from '@mattstyles/tick'
 import Bezier from 'bezier-easing'
-import Starfield from 'pixi-starfield'
 import Quay from 'quay'
 import P2 from 'p2'
 import random from 'lodash.random'
@@ -13,6 +12,7 @@ import renderer from './renderer'
 import Stats from './stats'
 
 import World from 'world/world'
+import Stars from 'world/stars'
 import Entity from 'entities/entity'
 import User from 'user/user'
 import Debug from 'debug/debug'
@@ -67,33 +67,12 @@ export default class Main extends React.Component {
         this.world = new World()
         this.world.addEntity( this.user )
 
-        // Set up the starfield object @TODO extract elsewhere
-        // Dont add the starfield to the world, it sits outside and moves at
-        // a different pace.
-        this.starfield = new Starfield({
-            schema: {
-                tex: [ resources.getTexture( 'circle4.png' ) ],
-                rotation: false,
-                alpha: {
-                    min: .1,
-                    max: 1
-                },
-                scale: {
-                    min: .25,
-                    max: .8
-                },
-                tempCurve: new Bezier( .75, .1, .85, 1 ),
-                threshold: .05
-            },
-            density: .0005 * config.get( 'width' ) * config.get( 'height' ),
-            size: {
-                width: config.get( 'width' ),
-                height: config.get( 'height' )
-            }
-        })
+        // Generate background
+        this.stars = new Stars()
+
 
         // Add actors to the stage
-        this.stage.addChild( this.starfield.container )
+        this.stage.addChild( this.stars.container )
         this.stage.addChild( this.world.container )
 
         // Create a few extra entities, just for funsies
@@ -154,7 +133,8 @@ export default class Main extends React.Component {
         // Dampen star movement
         // Entities should move fast compared to each other, not compared to the backdrop
         // There might also need to be a planet layer that sits somewhere in between speeds
-        this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
+        //this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
+        this.stars.setPosition( this.user.body.position[ 0 ], this.user.body.position[ 1 ] )
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
@@ -163,7 +143,7 @@ export default class Main extends React.Component {
             ( config.get( 'height' ) / 2 ) - this.user.body.position[ 1 ]
         )
 
-        this.starfield.update()
+        this.stars.update()
     }
 
     onRender = dt => {
