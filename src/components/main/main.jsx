@@ -185,10 +185,7 @@ export default class Main extends React.Component {
                     position: turretPos,
                     angle: this.user.body.angle
                 })
-                // Force is linked to mass, but this should all be controlled
-                // somewhere else. To negate mass manually set velocity, but thats
-                // a bit shit
-                bullet.body.applyForceLocal( [ 0, .1 ] )
+
                 bullet.update()
                 bullet._drawDebug()
                 this.world.addEntity( bullet )
@@ -224,7 +221,7 @@ export default class Main extends React.Component {
     }
 
     render() {
-        console.log( 'main render' )
+        // console.log( 'main render' )
 
         // @TODO does the canvas want to be buried this deep in the DOM?
         // No problems with creating them from document.body and just reffing them
