@@ -1,3 +1,8 @@
+#
+
+* _add_ entities base class
+* _add_ material properties for collisions
+
 # 0.0.1
 
 * _add_ Debug panel—starting work on panels

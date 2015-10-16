@@ -29,7 +29,7 @@ export default class Entity {
         this.body.addShape( this.shape )
 
         // Play with the damping
-        this.body.damping = .005
+        this.body.damping = .0025
         this.body.angularDamping = .05
 
         this.container = new Pixi.Container()
