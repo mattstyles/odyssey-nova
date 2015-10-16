@@ -6,6 +6,7 @@ import Bezier from 'bezier-easing'
 import Quay from 'quay'
 import P2 from 'p2'
 import random from 'lodash.random'
+import debounce from 'debounce'
 
 import canvas from './canvas'
 import renderer from './renderer'
@@ -14,6 +15,7 @@ import Stats from './stats'
 import World from 'world/world'
 import Stars from 'world/stars'
 import Entity from 'entities/entity'
+import Bullet from 'entities/bullet'
 import User from 'user/user'
 import Debug from 'debug/debug'
 
@@ -55,6 +57,7 @@ export default class Main extends React.Component {
 
         // Set up a user
         this.user = new User()
+        this.user.update()
         this.user._drawDebug()
 
         // Set up input
@@ -156,6 +159,39 @@ export default class Main extends React.Component {
             })
             .on( 'keyup', () => {
                 this.user.engineForce = .05
+            })
+
+        var lastFire = 0
+        var reloadTime = 200
+
+        this.quay.stream( '<space>' )
+            .on( 'data', () => {
+                if ( this.world.engine.time - lastFire < reloadTime ) {
+                    return
+                }
+
+                console.log( 'firing' )
+
+                lastFire = this.world.engine.time
+
+                // User radius plus bullet radius plus a little extra
+                let radius = ( this.user.radius + 3 ) * 1.2
+                let angle = this.user.body.angle + Math.PI * .5
+                let turretPos = [
+                    radius * Math.cos( angle ) + this.user.body.position[ 0 ],
+                    radius * Math.sin( angle ) + this.user.body.position[ 1 ]
+                ]
+                let bullet = new Bullet({
+                    position: turretPos,
+                    angle: this.user.body.angle
+                })
+                // Force is linked to mass, but this should all be controlled
+                // somewhere else. To negate mass manually set velocity, but thats
+                // a bit shit
+                bullet.body.applyForceLocal( [ 0, .1 ] )
+                bullet.update()
+                bullet._drawDebug()
+                this.world.addEntity( bullet )
             })
     }
 

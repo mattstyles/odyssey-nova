@@ -6,12 +6,15 @@ import random from 'lodash.random'
 import materials from 'entities/materials'
 
 export default class Entity {
-    constructor( opts = {
-        radius: random( 10, 30 ),
-        mass: random( 10, 30 ),
-        position: [ 0, 0 ],
-        angle: 0
-    }) {
+    constructor( opts = {} ) {
+        opts = Object.assign({
+            radius: random( 10, 30 ),
+            mass: random( 10, 30 ),
+            position: [ 0, 0 ],
+            velocity: [ 0, 0 ],
+            angle: 0
+        }, opts )
+
         this.sprite = new Pixi.Sprite()
 
         this.radius = opts.radius
@@ -21,6 +24,7 @@ export default class Entity {
         this.body = new P2.Body({
             mass: opts.mass,
             position: opts.position,
+            velocity: opts.velocity,
             angularVelocity: 0,
             angle: opts.angle
         })
@@ -80,8 +84,6 @@ export default class Entity {
      * Moves visuals in line with the underlying physics body
      */
     update() {
-        // this.graphics.position.x = this.body.position[ 0 ]
-        // this.graphics.position.y = this.body.position[ 1 ]
         this.graphics.position.set( ...this.body.position )
         this.graphics.rotation = this.body.angle
 
