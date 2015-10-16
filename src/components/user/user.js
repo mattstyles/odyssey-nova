@@ -1,7 +1,7 @@
 
 import Pixi from 'pixi.js'
 import P2 from 'p2'
-import { Vector2, toRadians } from 'mathutil'
+import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 // @TODO only for registering debug info
 import appState from 'stores/appState'
@@ -71,6 +71,7 @@ export default class User {
             'user': {
                 'px': this.body.position[ 0 ].toFixed( 2 ),
                 'py': this.body.position[ 1 ].toFixed( 2 ),
+                'pa': wrap( toDegrees( this.body.angle ), 0, 360 ).toFixed( 2 ),
                 'vx': this.body.velocity[ 0 ].toFixed( 4 ),
                 'vy': this.body.velocity[ 1 ].toFixed( 4 ),
                 'va': this.body.angularVelocity.toFixed( 4 )

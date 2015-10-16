@@ -113,6 +113,7 @@ export default class Main extends React.Component {
         for ( let i = 0; i < random( 10, 20 ); i++ ) {
             let entity = new Entity()
             entity.body.position = [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+            entity.update()
             this.entities.push( entity )
             this.engine.addBody( entity.body )
             this.world.addChild( entity.graphics )

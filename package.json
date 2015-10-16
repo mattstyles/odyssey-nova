@@ -76,7 +76,7 @@
     "immstruct": "^2.0.0",
     "immutable": "^3.7.5",
     "lodash.random": "^3.0.1",
-    "mathutil": "^0.1.0",
+    "mathutil": "^0.2.0",
     "normalize.css": "^3.0.3",
     "p2": "^0.7.0",
     "pixi-starfield": "^0.7.0",
