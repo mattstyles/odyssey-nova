@@ -19,37 +19,36 @@ export default class World {
         this.container = new Pixi.Container()
         this.container.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
 
-        // Keep as an array for now
+        // Keep as an array for now -is it even needed? We can grab bodies and containers
+        // from their own lists to remove them, no need for more splicing
+        // The engine.bodies list becomes the entity list
         this.entities = []
 
         // Play with detecting collisions
         this.engine.on( 'impact', event => {
-            // XNOR
             if ( !XOR( event.bodyA instanceof Bullet, event.bodyB instanceof Bullet ) ) {
                 // Not a bullet involved, ignore for now
+                // Or maybe 2 bullets? I've gone cross-eyed
                 return
             }
 
             let bullet = event.bodyA instanceof Bullet ? event.bodyA : event.bodyB
 
+            // If perf becomes an issue consider pooling rather than GC and create
             this.engine.removeBody( bullet )
             this.container.removeChild( bullet.container )
-
-            // Need a way to get an entity from the entities array by searching through
-            // the bodies, need a good way and then can effectively remove an entity
-            // from both the engine and the render container
         })
     }
 
     addEntity( entity ) {
         this.engine.addBody( entity )
         this.container.addChild( entity.container )
-        this.entities.push( entity )
+        // this.entities.push( entity )
     }
 
     update( dt ) {
         this.engine.step( dt )
-        this.entities.forEach( entity => entity.update() )
+        this.engine.bodies.forEach( entity => entity.update() )
     }
 
 }
