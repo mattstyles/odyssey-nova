@@ -12,6 +12,7 @@ import canvas from './canvas'
 import renderer from './renderer'
 import Stats from './stats'
 
+import World from 'world/world'
 import Entity from 'entities/entity'
 import User from 'user/user'
 import Debug from 'debug/debug'
@@ -58,21 +59,13 @@ export default class Main extends React.Component {
         this.quay = new Quay()
         this.addHandlers()
 
-        // Set up physics
-        this.engine = new P2.World({
-            gravity: [ 0, 0 ]
-        })
-        this.engine.addBody( this.user.body )
-
 
         // Master stage, renderer renders this
         this.stage = new Pixi.Container()
 
-        // Set up the world - offset so 0,0 ends up screen center
-        // @TODO extract offset to a camera class
-        // @TODO extract this with this.engine, so adding an entity adds to both automatically
-        this.world = new Pixi.Container()
-        this.world.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
+        // Use World class
+        this.world = new World()
+        this.world.addEntity( this.user )
 
         // Set up the starfield object @TODO extract elsewhere
         // Dont add the starfield to the world, it sits outside and moves at
@@ -96,17 +89,12 @@ export default class Main extends React.Component {
             size: {
                 width: config.get( 'width' ),
                 height: config.get( 'height' )
-            },
-            // offset: {
-            //     x: 0,
-            //     y: 0
-            // },
-            // static: true
+            }
         })
 
         // Add actors to the stage
         this.stage.addChild( this.starfield.container )
-        this.stage.addChild( this.world )
+        this.stage.addChild( this.world.container )
 
         // Create a few extra entities, just for funsies
         this.entities = []
@@ -114,14 +102,11 @@ export default class Main extends React.Component {
             let entity = new Entity()
             entity.body.position = [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
             entity.update()
-            this.entities.push( entity )
-            this.engine.addBody( entity.body )
-            this.world.addChild( entity.graphics )
+            this.world.addEntity( entity )
         }
 
 
         // @TODO debug user render
-        this.world.addChild( this.user.graphics )
         window.stage = this.stage
         window.world = this.world
         window.user = this.user
@@ -163,10 +148,8 @@ export default class Main extends React.Component {
     }
 
     onUpdate = dt => {
-        // Sync engine and entity by updating both
-        this.engine.step( dt )
-        this.user.update()
-        this.entities.forEach( entity => entity.update() )
+        // Update the physics world
+        this.world.update( dt )
 
         // Dampen star movement
         // Entities should move fast compared to each other, not compared to the backdrop
@@ -175,7 +158,7 @@ export default class Main extends React.Component {
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
-        this.world.position.set(
+        this.world.container.position.set(
             ( config.get( 'width' ) / 2 ) - this.user.body.position[ 0 ],
             ( config.get( 'height' ) / 2 ) - this.user.body.position[ 1 ]
         )

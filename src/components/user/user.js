@@ -63,6 +63,9 @@ export default class User {
         )
         this.graphics.lineTo( 0, this.circularSize * .5 )
         this.graphics.endFill()
+
+        this.container = new Pixi.Container()
+        this.container.addChild( this.graphics )
     }
 
     update() {

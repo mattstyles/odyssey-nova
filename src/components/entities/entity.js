@@ -21,7 +21,10 @@ export default class Entity {
 
         this.body.addShape( this.shape )
 
+        this.container = new Pixi.Container()
         this.graphics = new Pixi.Graphics()
+
+        this.container.addChild( this.graphics )
 
         this._drawDebug()
     }
