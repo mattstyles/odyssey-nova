@@ -154,10 +154,10 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.engineForce = .12
+                this.user.thurst = .12
             })
             .on( 'keyup', () => {
-                this.user.engineForce = .05
+                this.user.thrust = .05
             })
 
         var lastFire = 0
