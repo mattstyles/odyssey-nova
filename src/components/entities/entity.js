@@ -8,20 +8,21 @@ import materials from 'entities/materials'
 export default class Entity {
     constructor( opts = {
         radius: random( 10, 30 ),
-        mass: random( 10, 30 )
+        mass: random( 10, 30 ),
+        position: [ 0, 0 ]
     }) {
         this.sprite = new Pixi.Sprite()
 
         this.radius = opts.radius
-        opts.mass = opts.radius
 
         this.shape = new P2.Circle({
-            radius: this.radius
+            radius: this.radius,
+            material: materials.get( '_default' )
         })
-        this.shape.material = materials.get( '_default' )
+
         this.body = new P2.Body({
             mass: opts.mass,
-            position: [ 0, 0 ],
+            position: opts.position,
             angularVelocity: 0
         })
 
@@ -48,16 +49,15 @@ export default class Entity {
 
     // All movement values are relative to graphics.position, which is body.position
     _drawDebug() {
-        this.update()
-        this.graphics.clear()
-        this.graphics.beginFill( 0xffffff, .25 )
+        //this.graphics.clear()
+        this.graphics.beginFill( 0xb3e5fc, .15 )
         this.graphics.drawCircle(
             0,
             0,
             this.radius
         )
         this.graphics.endFill()
-        this.graphics.lineStyle( 1, 0xffffff, .85 )
+        this.graphics.lineStyle( 1, 0xb3e5fc, .5 )
         this.graphics.arc(
             0,
             0,
@@ -67,9 +67,16 @@ export default class Entity {
         this.graphics.lineTo( 0, 0 )
     }
 
+    /**
+     * Moves visuals in line with the underlying physics body
+     */
     update() {
-        this.graphics.position.x = this.body.position[ 0 ]
-        this.graphics.position.y = this.body.position[ 1 ]
+        // this.graphics.position.x = this.body.position[ 0 ]
+        // this.graphics.position.y = this.body.position[ 1 ]
+        this.graphics.position.set( ...this.body.position )
         this.graphics.rotation = this.body.angle
+
+        this.sprite.position.set( ...this.body.position )
+        this.sprite.rotation = this.body.angle
     }
 }

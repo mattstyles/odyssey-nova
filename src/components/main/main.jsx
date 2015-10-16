@@ -79,8 +79,12 @@ export default class Main extends React.Component {
         // Create a few extra entities, just for funsies
         this.entities = []
         for ( let i = 0; i < random( 10, 20 ); i++ ) {
-            let entity = new Entity()
-            entity.body.position = [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+            let splat = random( 10, 30 )
+            let entity = new Entity({
+                radius: splat,
+                mass: splat,
+                position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+            })
             entity.update()
             this.world.addEntity( entity )
         }

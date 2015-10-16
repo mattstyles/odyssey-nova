@@ -25,6 +25,8 @@ class Materials {
                 restitution: 1.75
             }
         ))
+        this.add( 'metal', new P2.Material() )
+        this.add( 'plasma', new P2.Material() )
     }
 
     get( id ) {
