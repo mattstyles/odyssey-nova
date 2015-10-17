@@ -68,11 +68,12 @@ export default class PhysicalEntity extends Entity {
         this.body.addShape( shape )
 
         this.setMass()
+        this.body.updateBoundingRadius()
     }
 
     // Doesnt work right
     setPosition( x, y ) {
-        this.position = this.body.interpolatedPosition = [ x, y ]
+        this.position = this.body.interpolatedPosition = this.body.position = [ x, y ]
     }
 
     /**
@@ -135,7 +136,6 @@ export default class PhysicalEntity extends Entity {
     }
 
     update() {
-        // this.position = this.body.interpolatedPosition
         this.angle = this.body.interpolatedAngle
 
         this._debugSprite.position.set( ...this.position )

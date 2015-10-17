@@ -59,7 +59,7 @@ export default class Main extends React.Component {
         try {
             // Set up a user
             this.user = new User()
-            // this.user.position[ 1 ] = 80
+            this.user.setPosition( 0, 80 )
 
             // Set up input
             this.quay = new Quay()
