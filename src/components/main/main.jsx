@@ -12,7 +12,7 @@ import canvas from './canvas'
 import renderer from './renderer'
 import Stats from './stats'
 
-import World from 'world/world'
+import Engine from 'world/engine'
 import Stars from 'world/stars'
 import Entity from 'entities/entity'
 import Bullet from 'entities/bullet'
@@ -68,9 +68,9 @@ export default class Main extends React.Component {
         // Master stage, renderer renders this
         this.stage = new Pixi.Container()
 
-        // Use World class
-        this.world = new World()
-        this.world.addEntity( this.user )
+        // Use Engine class
+        this.engine = new Engine()
+        this.engine.addEntity( this.user )
 
         // Generate background
         this.stars = new Stars()
@@ -78,7 +78,7 @@ export default class Main extends React.Component {
 
         // Add actors to the stage
         this.stage.addChild( this.stars.container )
-        this.stage.addChild( this.world.container )
+        this.stage.addChild( this.engine.container )
 
         // Create a few extra entities, just for funsies
         this.entities = []
@@ -91,7 +91,7 @@ export default class Main extends React.Component {
             })
             entity.update()
             entity._drawDebug()
-            this.world.addEntity( entity )
+            this.engine.addEntity( entity )
         }
 
         // Create a complex entity
@@ -114,12 +114,12 @@ export default class Main extends React.Component {
         entity.update()
         entity._drawDebug()
 
-        this.world.addEntity( entity )
+        this.engine.addEntity( entity )
 
 
         // @TODO debug user render
         window.stage = this.stage
-        window.world = this.world
+        window.engine = this.engine
         window.user = this.user
         window.starfield = this.starfield
         window.entities = this.entities
@@ -166,13 +166,13 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
-                if ( this.world.engine.time - lastFire < reloadTime ) {
+                if ( this.engine.world.time - lastFire < reloadTime ) {
                     return
                 }
 
                 console.log( 'firing' )
 
-                lastFire = this.world.engine.time
+                lastFire = this.engine.world.time
 
                 // User radius plus bullet radius plus a little extra
                 let radius = ( this.user.radius + 3 ) + 1.2
@@ -199,13 +199,13 @@ export default class Main extends React.Component {
                 bullet.update()
                 bullet._drawDebug()
 
-                this.world.addEntity( bullet )
+                this.engine.addEntity( bullet )
             })
     }
 
     onUpdate = dt => {
         // Update the physics world
-        this.world.update( dt )
+        this.engine.update( dt )
 
         // Dampen star movement
         // Entities should move fast compared to each other, not compared to the backdrop
@@ -215,7 +215,7 @@ export default class Main extends React.Component {
 
         // This translation effectively simulates the camera moving, although simple
         // it should still be extracted into a camera class
-        this.world.container.position.set(
+        this.engine.container.position.set(
             ( config.get( 'width' ) / 2 ) - this.user.position[ 0 ],
             ( config.get( 'height' ) / 2 ) - this.user.position[ 1 ]
         )
