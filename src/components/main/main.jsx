@@ -144,15 +144,6 @@ export default class Main extends React.Component {
         }
     }
 
-    animLoop = t => {
-        requestAnimationFrame( this.animLoop )
-        var timeSeconds = t / 1000
-        var lastTimeSeconds = lastTimeSeconds || timeSeconds
-
-        deltaTime = timeSeconds - lastTimeSeconds
-        this.engine.world.step( 1 / 60, deltaTime, 10 )
-    }
-
     addHandlers() {
         if ( !this.quay ) {
             logger.warn( 'Quay not instantiated' )
@@ -167,14 +158,14 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.thrust = .12
+                this.user.thrust = 190
             })
             .on( 'keyup', () => {
-                this.user.thrust = .05
+                this.user.thrust = 150
             })
 
         var lastFire = 0
-        var reloadTime = 100
+        var reloadTime = 1.2
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
@@ -188,11 +179,11 @@ export default class Main extends React.Component {
 
                 // User radius plus bullet radius plus a little extra
                 let radius = ( this.user.radius + 3 ) + 1.2
-                let angle = this.user.angle + Math.PI * .5
-                let mag = .85
+                let angle = this.user.interpolatedAngle + Math.PI * .5
+                let mag = 20
                 let turretPos = [
-                    radius * Math.cos( angle ) + this.user.position[ 0 ],
-                    radius * Math.sin( angle ) + this.user.position[ 1 ]
+                    radius * Math.cos( angle ) + this.user.interpolatedPosition[ 0 ],
+                    radius * Math.sin( angle ) + this.user.interpolatedPosition[ 1 ]
                 ]
                 let bulletVel = [
                     mag * Math.cos( angle ) + this.user.velocity[ 0 ],
@@ -201,7 +192,7 @@ export default class Main extends React.Component {
                 let bullet = new Bullet({
                     position: turretPos,
                     velocity: bulletVel,
-                    angle: this.user.angle
+                    angle: this.user.interpolatedAngle
                 })
 
                 // Applying a force doesnt really cut, just manually calc velocity

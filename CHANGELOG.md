@@ -1,3 +1,7 @@
+#
+
+* _update_ render loop interpolation to keep logic update rate consistent
+
 # 0.0.2
 
 * _add_ user craft banking maneuver

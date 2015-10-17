@@ -10,10 +10,10 @@ export default class Bullet extends Entity {
     constructor( opts = {} ) {
         super( Object.assign({
             radius: 3,
-            mass: 5
+            mass: .25
         }, opts ))
 
-        this.damping = .0005
+        this.damping = .005
 
         // @TODO set velocity to match that of firer
         // Easy enough, extract this into a craft class and use it on

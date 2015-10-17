@@ -33,7 +33,7 @@ export default class User extends Entity {
         this.bankThrust = 50
 
         this.position[1] = 80
-        this.angularDamping = .25
+        this.angularDamping = .75
 
         this.damping = .1
 
