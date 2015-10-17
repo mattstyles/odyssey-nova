@@ -1,6 +1,8 @@
-#
+# 0.0.3
 
 * _update_ render loop interpolation to keep logic update rate consistent
+* _fix_ 0,0 render twitch when creating new entities
+* _add_ rendering is now fairly smooth while fps fluctuates thanks to interpolated values
 
 # 0.0.2
 
