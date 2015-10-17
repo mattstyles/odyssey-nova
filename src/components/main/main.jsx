@@ -57,12 +57,9 @@ export default class Main extends React.Component {
         this.renderer = renderer.get( id )
 
         try {
-
-
             // Set up a user
             this.user = new User()
-            this.user.update()
-            this.user._debugRender()
+            // this.user.position[ 1 ] = 80
 
             // Set up input
             this.quay = new Quay()
@@ -139,6 +136,7 @@ export default class Main extends React.Component {
         this.renderTick = new Tick()
             // .on( 'data', this.onUpdate )
             .on( 'data', this.onRender )
+            .once( 'data', this.onInitialRender )
 
         // requestAnimationFrame( this.animLoop )
 
@@ -231,6 +229,12 @@ export default class Main extends React.Component {
         )
 
         this.stars.update()
+    }
+
+    onInitialRender = () => {
+        //this.user.render()
+        this.engine.update( 1 / 60 )
+        this.user.render()
     }
 
     onRender = dt => {

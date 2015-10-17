@@ -22,11 +22,15 @@ export default class PhysicalEntity extends Entity {
             angle: 0
         }, options )
 
-        // Create the body, it has no mass until shapes are assigned
+        // Create the body, it has super mass until shapes are assigned
+        // Using 0 mass would change the body type, which is just a pain later on
         this.body = new P2.Body({
+            mass: Number.MAX_VALUE,
             position: this.position,
-            angle: opts.angle
+            angle: opts.angle,
         })
+
+        //this.body.interpolatedPosition = [ this.position[ 0 ], this.position[ 1 ] ]
 
         this.position = this.body.interpolatedPosition
         this.angle = this.body.interpolatedAngle
@@ -38,8 +42,8 @@ export default class PhysicalEntity extends Entity {
 
         // For now hard-code these, although might be nice if they were calculated
         // somehow based on the materials used to build the entity.
-        this.damping = .05
-        this.angularDamping = .01
+        this.body.damping = .05
+        this.body.angularDamping = .01
 
         // Renderable—this is stuck as a sprite for now, but can be changed
         // after instantiation. It may end up as multiple sprites etc etc
@@ -66,6 +70,11 @@ export default class PhysicalEntity extends Entity {
         this.setMass()
     }
 
+    // Doesnt work right
+    setPosition( x, y ) {
+        this.position = this.body.interpolatedPosition = [ x, y ]
+    }
+
     /**
      * If mass is supplied then it’ll just use it to set the body.mass, otherwise
      * it’ll work it out from the shapes and shape materials attributed to
@@ -88,10 +97,10 @@ export default class PhysicalEntity extends Entity {
             throw new Error( 'Can not set mass on physical entity ' + this.id + ' with no shapes attached' )
         }
 
-        this.body.mass = this.body.shapes.reduce( total, shape => {
+        this.body.mass = this.body.shapes.reduce( ( total, shape ) => {
             // Just use area for now, should multiple by material.density to
             // give final mass of the shape
-            return total + shape.area
+            return total + ( shape.area * .006 )
         }, 0 )
         this.body.updateMassProperties()
     }
@@ -120,9 +129,15 @@ export default class PhysicalEntity extends Entity {
 
     render() {
         // nothing at the moment
+        if ( this._debug ) {
+            this._debugRender()
+        }
     }
 
     update() {
+        // this.position = this.body.interpolatedPosition
+        this.angle = this.body.interpolatedAngle
+
         this._debugSprite.position.set( ...this.position )
         this._debugSprite.rotation = this.angle
 

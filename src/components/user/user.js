@@ -22,40 +22,48 @@ function updateDebug( obj ) {
  */
 export default class User extends PhysicalEntity {
     constructor() {
-        super({
-            radius: 10,
-            mass: 2
-        })
+        super()
+
+        // @TODO wont need this in the end, only used to set up a single
+        // shape body to represent the user craft and draw a crude vector craft
+        this.radius = 10
+
+        this.addShape( new P2.Circle({
+            radius: this.radius
+        }))
 
         this.turnThrust = .25
         this.thrust = 150
         this.bankThrust = 50
 
-        this.position[1] = 80
-        this.angularDamping = .75
-
-        this.damping = .1
+        this.body.damping = .1
+        this.body.angularDamping = .75
 
 
         // @TODO replace with sprite
-        this.ship = new Pixi.Graphics()
-        this.container.addChild( this.ship )
+        this.sprite = new Pixi.Graphics()
+        this.container.addChild( this.sprite )
 
-        this.update()
-        this._drawShip()
+        // @TODO
+        this._debug = true
+
+        // this.update()
+        // this.render()
     }
 
-    _drawShip() {
-        this.ship.beginFill( 0x040414 )
-        this.ship.lineStyle( 1, 0xb3e5fc, 1 )
-        this.ship.arc(
+    render() {
+        super()
+
+        this.sprite.beginFill( 0x040414 )
+        this.sprite.lineStyle( 1, 0xb3e5fc, 1 )
+        this.sprite.arc(
             0,
             0,
             this.radius * .5,
             toRadians( 220 ), toRadians( 320 ), false
         )
-        this.ship.lineTo( 0, this.radius * .75 )
-        this.ship.endFill()
+        this.sprite.lineTo( 0, this.radius * .75 )
+        this.sprite.endFill()
     }
 
     update() {
@@ -74,9 +82,6 @@ export default class User extends PhysicalEntity {
                 'fy': this.body.force[ 1 ].toFixed( 6 )
             }
         })
-
-        this.ship.position.set( ...this.position )
-        this.ship.rotation = this.angle
     }
 
     forward = () => {

@@ -28,8 +28,8 @@ export default class Engine {
             gravity: [ 0, 0 ]
         })
 
-        this.world.applyGravity = false
-        this.world.applySpringForces = false
+        // this.world.applyGravity = false
+        // this.world.applySpringForces = false
 
         this.lastTime = null
 
@@ -38,9 +38,7 @@ export default class Engine {
         this.container = new Pixi.Container()
         this.container.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )
 
-        // Keep as an array for now -is it even needed? We can grab bodies and containers
-        // from their own lists to remove them, no need for more splicing
-        // The engine.bodies list becomes the entity list
+        // Master list of all entities
         this.entities = []
 
         // Play with detecting collisions
@@ -69,6 +67,7 @@ export default class Engine {
     addEntity( entity ) {
         // @TODO draw the entity into the world container here
 
+
         if ( entity.body ) {
             this.world.addBody( entity.body )
         }
@@ -76,7 +75,7 @@ export default class Engine {
         if ( entity.container ) {
             this.container.addChild( entity.container )
         }
-        
+
         this.entities.push( entity )
     }
 
