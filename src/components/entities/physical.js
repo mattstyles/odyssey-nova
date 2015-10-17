@@ -64,8 +64,8 @@ export default class PhysicalEntity extends Entity {
      * Wrapper around p2.Body.shape which also sets mass and provides an
      * extendable method for subclasses
      */
-    addShape( shape ) {
-        this.body.addShape( shape )
+    addShape( shape, offset, angle ) {
+        this.body.addShape( shape, offset, angle )
 
         this.setMass()
         this.body.updateBoundingRadius()

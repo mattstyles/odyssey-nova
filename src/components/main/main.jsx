@@ -95,27 +95,27 @@ export default class Main extends React.Component {
             //     this.engine.addEntity( entity )
             // }
 
-            // Create a complex entity
-            // let entity = new PhysicalEntity({
-            //     radius: 40,
-            //     mass: 50,
-            //     position: [ 0, 0 ],
-            //     angle: 0
-            // })
-            //
-            // entity.addShape( new P2.Circle({
-            //     radius: 20,
-            //     material: materials.get( '_default' )
-            // }), [ 32, -32 ], Math.PI )
-            // entity.addShape( new P2.Circle({
-            //     radius: 20,
-            //     material: materials.get( '_default' )
-            // }), [ -32, -32 ], Math.PI )
-            //
-            // entity.update()
-            // entity._debugRender()
+            //Create a complex entity
+            let entity = new PhysicalEntity({
+                position: [ 0, 0 ],
+                angle: 0
+            })
 
-            // this.engine.addEntity( entity )
+            entity.addShape( new P2.Circle({
+                radius: 40,
+                materials: materials.get( '_default' )
+            }))
+            entity.addShape( new P2.Circle({
+                radius: 20,
+                material: materials.get( '_default' )
+            }), [ 32, -32 ], Math.PI )
+            entity.addShape( new P2.Circle({
+                radius: 20,
+                material: materials.get( '_default' )
+            }), [ -32, -32 ], Math.PI )
+
+            entity._debug = true
+            this.engine.addEntity( entity )
 
             // @TODO debug user render
             window.stage = this.stage
@@ -234,7 +234,9 @@ export default class Main extends React.Component {
     onInitialRender = () => {
         //this.user.render()
         this.engine.update( 1 / 60 )
-        this.user.render()
+        //this.user.render()
+
+        this.engine.entities.forEach( entity => entity.render() )
     }
 
     onRender = dt => {

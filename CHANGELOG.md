@@ -1,3 +1,7 @@
+# 0.0.4
+
+* _update_ refactor entities and entity inheritance chain
+
 # 0.0.3
 
 * _update_ render loop interpolation to keep logic update rate consistent
