@@ -4,6 +4,7 @@ import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 import PhysicalEntity from 'entities/physical'
+import materials from 'world/materials'
 
 // @TODO only for registering debug info
 import appState from 'stores/appState'
@@ -29,7 +30,8 @@ export default class User extends PhysicalEntity {
         this.radius = 10
 
         this.addShape( new P2.Circle({
-            radius: this.radius
+            radius: this.radius,
+            material: materials.get( '_default' )
         }))
 
         this.turnThrust = .25

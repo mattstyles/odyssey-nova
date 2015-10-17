@@ -2,16 +2,13 @@
 import P2 from 'p2'
 import Pixi from 'pixi.js'
 
-import Entity from 'entities/entity'
+import PhysicalEntity from 'entities/physical'
 
 
 
-export default class Bullet extends Entity {
+export default class Bullet extends PhysicalEntity {
     constructor( opts = {} ) {
-        super( Object.assign({
-            radius: 3,
-            mass: .25
-        }, opts ))
+        super( opts )
 
         this.damping = .005
 

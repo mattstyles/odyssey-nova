@@ -83,17 +83,17 @@ export default class Main extends React.Component {
 
             // Create a few extra entities, just for funsies
             this.entities = []
-            // for ( let i = 0; i < random( 100, 150 ); i++ ) {
-            //     let splat = random( 1, 3 )
-            //     let entity = new Entity({
-            //         radius: splat * 10,
-            //         mass: splat,
-            //         position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
-            //     })
-            //     entity.update()
-            //     entity._drawDebug()
-            //     this.engine.addEntity( entity )
-            // }
+            for ( let i = 0; i < random( 100, 150 ); i++ ) {
+                let entity = new PhysicalEntity({
+                    position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+                })
+                entity.addShape( new P2.Circle({
+                    radius: random( 5, 20 ),
+                    materal: materials.get( '_default' )
+                }))
+                entity._debug = true
+                this.engine.addEntity( entity )
+            }
 
             //Create a complex entity
             let entity = new PhysicalEntity({
@@ -103,7 +103,7 @@ export default class Main extends React.Component {
 
             entity.addShape( new P2.Circle({
                 radius: 40,
-                materials: materials.get( '_default' )
+                material: materials.get( '_default' )
             }))
             entity.addShape( new P2.Circle({
                 radius: 20,
@@ -128,7 +128,7 @@ export default class Main extends React.Component {
             // window.ent = entity
 
         } catch ( err ) {
-            console.warn( err )
+            console.warn( err, err.stack )
         }
 
 
@@ -137,8 +137,6 @@ export default class Main extends React.Component {
             // .on( 'data', this.onUpdate )
             .on( 'data', this.onRender )
             .once( 'data', this.onInitialRender )
-
-        // requestAnimationFrame( this.animLoop )
 
 
         window.pause = () => {
@@ -172,43 +170,54 @@ export default class Main extends React.Component {
         var lastFire = 0
         var reloadTime = .75
 
-        // this.quay.stream( '<space>' )
-        //     .on( 'data', () => {
-        //         if ( this.engine.world.time - lastFire < reloadTime ) {
-        //             return
-        //         }
-        //
-        //         console.log( 'firing' )
-        //
-        //         lastFire = this.engine.world.time
-        //
-        //         // User radius plus bullet radius plus a little extra
-        //         let radius = ( this.user.radius + 3 ) + 1.2
-        //         let angle = this.user.interpolatedAngle + Math.PI * .5
-        //         let mag = 50
-        //         let turretPos = [
-        //             radius * Math.cos( angle ) + this.user.interpolatedPosition[ 0 ],
-        //             radius * Math.sin( angle ) + this.user.interpolatedPosition[ 1 ]
-        //         ]
-        //         let bulletVel = [
-        //             mag * Math.cos( angle ) + this.user.velocity[ 0 ],
-        //             mag * Math.sin( angle ) + this.user.velocity[ 1 ]
-        //         ]
-        //         let bullet = new Bullet({
-        //             position: turretPos,
-        //             velocity: bulletVel,
-        //             angle: this.user.interpolatedAngle
-        //         })
-        //
-        //         // Applying a force doesnt really cut, just manually calc velocity
-        //         // based on craft velocity and magnitude
-        //         // bullet.applyForceLocal([ 0, .5 ])
-        //
-        //         bullet.update()
-        //         bullet._drawDebug()
-        //
-        //         this.engine.addEntity( bullet )
-        //     })
+        this.quay.stream( '<space>' )
+            .on( 'data', () => {
+                if ( this.engine.world.time - lastFire < reloadTime ) {
+                    return
+                }
+
+                console.log( 'firing' )
+
+                lastFire = this.engine.world.time
+
+                // User radius plus bullet radius plus a little extra
+                // @TODO User radius probably wont exist for much longer
+                let radius = ( this.user.radius + 3 ) * 1.5
+                let angle = this.user.angle + Math.PI * .5
+                let mag = 50
+                let turretPos = [
+                    radius * Math.cos( angle ) + this.user.position[ 0 ],
+                    radius * Math.sin( angle ) + this.user.position[ 1 ]
+                ]
+                let bulletVel = [
+                    mag * Math.cos( angle ) + this.user.body.velocity[ 0 ],
+                    mag * Math.sin( angle ) + this.user.body.velocity[ 1 ]
+                ]
+                // @TODO create bullet with a different material then set up the
+                // material scalar for calculating PhysicalEntity mass
+                let bullet = new Bullet({
+                    position: turretPos,
+                    velocity: bulletVel,
+                    angle: this.user.angle
+                })
+
+                bullet.addShape( new P2.Circle({
+                    radius: 2
+                }))
+
+                // bullet.setPosition( ...turretPos )
+
+                // Applying a force doesnt really cut, just manually calc velocity
+                // based on craft velocity and magnitude
+                // bullet.applyForceLocal([ 0, .5 ])
+
+                // bullet.update()
+                // bullet._drawDebug()
+                bullet._debug = true
+                bullet.render()
+
+                this.engine.addEntity( bullet )
+            })
     }
 
     onUpdate = dt => {

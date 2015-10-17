@@ -19,16 +19,23 @@ export default class PhysicalEntity extends Entity {
 
         // Extend with defaults, then with instantiation parameter override
         let opts = Object.assign({
+            velocity: [ 0, 0 ],
             angle: 0
         }, options )
+
 
         // Create the body, it has super mass until shapes are assigned
         // Using 0 mass would change the body type, which is just a pain later on
         this.body = new P2.Body({
             mass: Number.MAX_VALUE,
-            position: this.position,
+            position: opts.position || this.position,
+            velocity: opts.velocity,
             angle: opts.angle,
         })
+
+        if ( opts.position ) {
+            this.setPosition( ...opts.position )
+        }
 
         //this.body.interpolatedPosition = [ this.position[ 0 ], this.position[ 1 ] ]
 
