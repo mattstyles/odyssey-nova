@@ -83,9 +83,9 @@ export default class Main extends React.Component {
         // Create a few extra entities, just for funsies
         this.entities = []
         for ( let i = 0; i < random( 10, 20 ); i++ ) {
-            let splat = random( 10, 30 )
+            let splat = random( 1, 3 )
             let entity = new Entity({
-                radius: splat,
+                radius: splat * 10,
                 mass: splat,
                 position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
             })
@@ -133,12 +133,24 @@ export default class Main extends React.Component {
             // .on( 'data', this.onUpdate )
             .on( 'data', this.onRender )
 
+        // requestAnimationFrame( this.animLoop )
+
+
         window.pause = () => {
             this.renderTick.pause()
         }
         window.resume = () => {
             this.renderTick.resume()
         }
+    }
+
+    animLoop = t => {
+        requestAnimationFrame( this.animLoop )
+        var timeSeconds = t / 1000
+        var lastTimeSeconds = lastTimeSeconds || timeSeconds
+
+        deltaTime = timeSeconds - lastTimeSeconds
+        this.engine.world.step( 1 / 60, deltaTime, 10 )
     }
 
     addHandlers() {

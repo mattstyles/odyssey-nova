@@ -8,11 +8,16 @@ import config from 'stores/config'
 
 import { XOR } from 'utils/logical'
 
+const FRAMERATE = 1 / 60
+const FRAME_SUBSTEPS = 10
+
 export default class Engine {
     constructor() {
         this.world = new P2.World({
             gravity: [ 0, 0 ]
         })
+
+        this.lastTime = null
 
         this.world.addContactMaterial( materials.get( '_defaultContact' ) )
 
@@ -49,7 +54,11 @@ export default class Engine {
 
     update( dt ) {
         this.world.bodies.forEach( entity => entity.update() )
-        this.world.step( dt )
+
+        var t = performance.now() / 1000
+        this.lastTime = this.lastTime || t
+
+        this.world.step( FRAMERATE, t - this.lastTime, FRAME_SUBSTEPS )
     }
 
 }

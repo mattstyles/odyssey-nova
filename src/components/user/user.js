@@ -25,21 +25,24 @@ export default class User extends Entity {
     constructor() {
         super({
             radius: 10,
-            mass: 20
+            mass: 2
         })
 
-        this.turnThrust = .005
-        this.thrust = .05
-        this.bankThrust = .025
+        this.turnThrust = .25
+        this.thrust = 150
+        this.bankThrust = 50
 
         this.position[1] = 80
-        this.angularDamping = .05
+        this.angularDamping = .25
+
+        this.damping = .1
 
 
         // @TODO replace with sprite
         this.ship = new Pixi.Graphics()
         this.container.addChild( this.ship )
 
+        this.update()
         this._drawShip()
     }
 
@@ -73,8 +76,8 @@ export default class User extends Entity {
             }
         })
 
-        this.ship.position.set( ...this.position )
-        this.ship.rotation = this.angle
+        this.ship.position.set( ...this.interpolatedPosition )
+        this.ship.rotation = this.interpolatedAngle
     }
 
     forward = () => {
@@ -82,15 +85,6 @@ export default class User extends Entity {
         // Apply force from behind the craft, simulating a single engine mounted
         // centrally at the back of the craft
         this.applyForceLocal( [ 0, this.thrust ], [ 0, -1 ] )
-
-        // This has to be set here because by the time we get to the next update
-        // the force has already dissipated
-        // appState.get().cursor([ 'main', 'debug', 'user' ]).update( cursor => {
-        //     return cursor.merge( {
-        //         'fx': this.force[ 0 ].toFixed( 6 ),
-        //         'fy': this.force[ 1 ].toFixed( 6 )
-        //     } )
-        // })
     }
 
     backward = () => {

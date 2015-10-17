@@ -9,7 +9,7 @@ export default class Entity extends P2.Body {
     constructor( options = {} ) {
         opts = Object.assign({
             radius: random( 10, 30 ),
-            mass: random( 10, 30 ),
+            mass: random( 1, 3 ),
             position: [ 0, 0 ],
             velocity: [ 0, 0 ],
             angle: 0
@@ -29,8 +29,8 @@ export default class Entity extends P2.Body {
         }))
 
         //Play with the damping
-        this.damping = .0025
-        this.angularDamping = .00085
+        this.damping = .05
+        this.angularDamping = .01
 
         this.container = new Pixi.Container()
         this.graphics = new Pixi.Graphics()
@@ -71,10 +71,10 @@ export default class Entity extends P2.Body {
      * Moves visuals in line with the underlying physics body
      */
     update() {
-        this.graphics.position.set( ...this.position )
-        this.graphics.rotation = this.angle
+        this.graphics.position.set( ...this.interpolatedPosition )
+        this.graphics.rotation = this.interpolatedAngle
 
-        this.sprite.position.set( ...this.position )
-        this.sprite.rotation = this.angle
+        this.sprite.position.set( ...this.interpolatedPosition )
+        this.sprite.rotation = this.interpolatedAngle
     }
 }
