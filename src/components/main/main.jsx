@@ -165,7 +165,7 @@ export default class Main extends React.Component {
             })
 
         var lastFire = 0
-        var reloadTime = 1.2
+        var reloadTime = .75
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
@@ -180,7 +180,7 @@ export default class Main extends React.Component {
                 // User radius plus bullet radius plus a little extra
                 let radius = ( this.user.radius + 3 ) + 1.2
                 let angle = this.user.interpolatedAngle + Math.PI * .5
-                let mag = 20
+                let mag = 50
                 let turretPos = [
                     radius * Math.cos( angle ) + this.user.interpolatedPosition[ 0 ],
                     radius * Math.sin( angle ) + this.user.interpolatedPosition[ 1 ]

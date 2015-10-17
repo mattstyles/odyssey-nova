@@ -11,6 +11,13 @@ import { XOR } from 'utils/logical'
 const FRAMERATE = 1 / 60
 const FRAME_SUBSTEPS = 10
 
+function updateDebug( obj ) {
+    // These are expensive for cycles, not sure its going to work like this
+    appState.get().cursor([ 'main', 'debug', 'world' ]).update( cursor => {
+        return cursor.merge( obj )
+    })
+}
+
 export default class Engine {
     constructor() {
         this.world = new P2.World({
@@ -44,6 +51,13 @@ export default class Engine {
             this.world.removeBody( bullet )
             this.container.removeChild( bullet.container )
         })
+
+        // Add a world debug prop
+        appState.get().cursor([ 'main', 'debug' ]).update( cursor => {
+            return cursor.merge({
+                'world': {}
+            })
+        })
     }
 
     addEntity( entity ) {
@@ -54,12 +68,16 @@ export default class Engine {
     }
 
     update( dt ) {
-        this.world.bodies.forEach( entity => entity.update() )
+        this.entities.forEach( entity => entity.update() )
 
         var t = performance.now() / 1000
         this.lastTime = this.lastTime || t
 
         this.world.step( FRAMERATE, t - this.lastTime, FRAME_SUBSTEPS )
+
+        updateDebug({
+            'entities': this.entities.length
+        })
     }
 
 }
