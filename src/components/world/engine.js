@@ -41,23 +41,22 @@ export default class Engine {
         // Keep as an array for now -is it even needed? We can grab bodies and containers
         // from their own lists to remove them, no need for more splicing
         // The engine.bodies list becomes the entity list
-        //this.entities = []
-        this.entities = this.world.bodies
+        this.entities = []
 
         // Play with detecting collisions
-        this.world.on( 'impact', event => {
-            if ( !XOR( event.bodyA instanceof Bullet, event.bodyB instanceof Bullet ) ) {
-                // Not a bullet involved, ignore for now
-                // Or maybe 2 bullets? I've gone cross-eyed
-                return
-            }
-
-            let bullet = event.bodyA instanceof Bullet ? event.bodyA : event.bodyB
-
-            // If perf becomes an issue consider pooling rather than GC and create
-            this.world.removeBody( bullet )
-            this.container.removeChild( bullet.container )
-        })
+        // this.world.on( 'impact', event => {
+        //     if ( !XOR( event.bodyA instanceof Bullet, event.bodyB instanceof Bullet ) ) {
+        //         // Not a bullet involved, ignore for now
+        //         // Or maybe 2 bullets? I've gone cross-eyed
+        //         return
+        //     }
+        //
+        //     let bullet = event.bodyA instanceof Bullet ? event.bodyA : event.bodyB
+        //
+        //     // If perf becomes an issue consider pooling rather than GC and create
+        //     this.world.removeBody( bullet )
+        //     this.container.removeChild( bullet.container )
+        // })
 
         // Add a world debug prop
         appState.get().cursor([ 'main', 'debug' ]).update( cursor => {
@@ -69,9 +68,16 @@ export default class Engine {
 
     addEntity( entity ) {
         // @TODO draw the entity into the world container here
-        this.world.addBody( entity.body )
-        this.container.addChild( entity.container )
-        // this.entities.push( entity )
+
+        if ( entity.body ) {
+            this.world.addBody( entity.body )
+        }
+
+        if ( entity.container ) {
+            this.container.addChild( entity.container )
+        }
+        
+        this.entities.push( entity )
     }
 
     update( dt ) {
