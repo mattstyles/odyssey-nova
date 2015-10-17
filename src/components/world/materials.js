@@ -21,8 +21,8 @@ class Materials {
             this.get( '_default' ),
             this.get( '_default' ),
             {
-                friction: .25,
-                restitution: 1.25
+                friction: .175,
+                restitution: .45
             }
         ))
         this.add( 'metal', new P2.Material() )

@@ -15,11 +15,12 @@ import Stats from './stats'
 import Engine from 'world/engine'
 import Stars from 'world/stars'
 import Entity from 'entities/entity'
+import PhysicalEntity from 'entities/physical'
 import Bullet from 'entities/bullet'
 import User from 'user/user'
 import Debug from 'debug/debug'
 
-import materials from 'entities/materials'
+import materials from 'world/materials'
 import resources from 'stores/resources'
 import config from 'stores/config'
 
@@ -55,77 +56,83 @@ export default class Main extends React.Component {
         renderer.create( id, canvas.get( id ) )
         this.renderer = renderer.get( id )
 
-        // Set up a user
-        this.user = new User()
-        this.user.update()
-        this.user._drawDebug()
-
-        // Set up input
-        this.quay = new Quay()
-        this.addHandlers()
+        try {
 
 
-        // Master stage, renderer renders this
-        this.stage = new Pixi.Container()
+            // Set up a user
+            this.user = new User()
+            this.user.update()
+            this.user._debugRender()
 
-        // Use Engine class
-        this.engine = new Engine()
-        this.engine.addEntity( this.user )
-
-        // Generate background
-        this.stars = new Stars()
+            // Set up input
+            this.quay = new Quay()
+            this.addHandlers()
 
 
-        // Add actors to the stage
-        this.stage.addChild( this.stars.container )
-        this.stage.addChild( this.engine.container )
+            // Master stage, renderer renders this
+            this.stage = new Pixi.Container()
 
-        // Create a few extra entities, just for funsies
-        this.entities = []
-        for ( let i = 0; i < random( 10, 20 ); i++ ) {
-            let splat = random( 1, 3 )
-            let entity = new Entity({
-                radius: splat * 10,
-                mass: splat,
-                position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
-            })
-            entity.update()
-            entity._drawDebug()
-            this.engine.addEntity( entity )
+            // Use Engine class
+            this.engine = new Engine()
+            this.engine.addEntity( this.user )
+
+            // Generate background
+            this.stars = new Stars()
+
+
+            // Add actors to the stage
+            this.stage.addChild( this.stars.container )
+            this.stage.addChild( this.engine.container )
+
+            // Create a few extra entities, just for funsies
+            this.entities = []
+            // for ( let i = 0; i < random( 100, 150 ); i++ ) {
+            //     let splat = random( 1, 3 )
+            //     let entity = new Entity({
+            //         radius: splat * 10,
+            //         mass: splat,
+            //         position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+            //     })
+            //     entity.update()
+            //     entity._drawDebug()
+            //     this.engine.addEntity( entity )
+            // }
+
+            // Create a complex entity
+            // let entity = new PhysicalEntity({
+            //     radius: 40,
+            //     mass: 50,
+            //     position: [ 0, 0 ],
+            //     angle: 0
+            // })
+            //
+            // entity.addShape( new P2.Circle({
+            //     radius: 20,
+            //     material: materials.get( '_default' )
+            // }), [ 32, -32 ], Math.PI )
+            // entity.addShape( new P2.Circle({
+            //     radius: 20,
+            //     material: materials.get( '_default' )
+            // }), [ -32, -32 ], Math.PI )
+            //
+            // entity.update()
+            // entity._debugRender()
+
+            // this.engine.addEntity( entity )
+
+            // @TODO debug user render
+            window.stage = this.stage
+            window.engine = this.engine
+            window.user = this.user
+            window.starfield = this.starfield
+            window.entities = this.entities
+            window.config = config
+            window.materials = materials
+            // window.ent = entity
+
+        } catch ( err ) {
+            console.warn( err )
         }
-
-        // Create a complex entity
-        let entity = new Entity({
-            radius: 40,
-            mass: 50,
-            position: [ 0, 0 ],
-            angle: 0
-        })
-
-        entity.addShape( new P2.Circle({
-            radius: 20,
-            material: materials.get( '_default' )
-        }), [ 32, -32 ], Math.PI )
-        entity.addShape( new P2.Circle({
-            radius: 20,
-            material: materials.get( '_default' )
-        }), [ -32, -32 ], Math.PI )
-
-        entity.update()
-        entity._drawDebug()
-
-        this.engine.addEntity( entity )
-
-
-        // @TODO debug user render
-        window.stage = this.stage
-        window.engine = this.engine
-        window.user = this.user
-        window.starfield = this.starfield
-        window.entities = this.entities
-        window.config = config
-        window.materials = materials
-        window.ent = entity
 
 
         // Set up the render tick
@@ -167,43 +174,43 @@ export default class Main extends React.Component {
         var lastFire = 0
         var reloadTime = .75
 
-        this.quay.stream( '<space>' )
-            .on( 'data', () => {
-                if ( this.engine.world.time - lastFire < reloadTime ) {
-                    return
-                }
-
-                console.log( 'firing' )
-
-                lastFire = this.engine.world.time
-
-                // User radius plus bullet radius plus a little extra
-                let radius = ( this.user.radius + 3 ) + 1.2
-                let angle = this.user.interpolatedAngle + Math.PI * .5
-                let mag = 50
-                let turretPos = [
-                    radius * Math.cos( angle ) + this.user.interpolatedPosition[ 0 ],
-                    radius * Math.sin( angle ) + this.user.interpolatedPosition[ 1 ]
-                ]
-                let bulletVel = [
-                    mag * Math.cos( angle ) + this.user.velocity[ 0 ],
-                    mag * Math.sin( angle ) + this.user.velocity[ 1 ]
-                ]
-                let bullet = new Bullet({
-                    position: turretPos,
-                    velocity: bulletVel,
-                    angle: this.user.interpolatedAngle
-                })
-
-                // Applying a force doesnt really cut, just manually calc velocity
-                // based on craft velocity and magnitude
-                // bullet.applyForceLocal([ 0, .5 ])
-
-                bullet.update()
-                bullet._drawDebug()
-
-                this.engine.addEntity( bullet )
-            })
+        // this.quay.stream( '<space>' )
+        //     .on( 'data', () => {
+        //         if ( this.engine.world.time - lastFire < reloadTime ) {
+        //             return
+        //         }
+        //
+        //         console.log( 'firing' )
+        //
+        //         lastFire = this.engine.world.time
+        //
+        //         // User radius plus bullet radius plus a little extra
+        //         let radius = ( this.user.radius + 3 ) + 1.2
+        //         let angle = this.user.interpolatedAngle + Math.PI * .5
+        //         let mag = 50
+        //         let turretPos = [
+        //             radius * Math.cos( angle ) + this.user.interpolatedPosition[ 0 ],
+        //             radius * Math.sin( angle ) + this.user.interpolatedPosition[ 1 ]
+        //         ]
+        //         let bulletVel = [
+        //             mag * Math.cos( angle ) + this.user.velocity[ 0 ],
+        //             mag * Math.sin( angle ) + this.user.velocity[ 1 ]
+        //         ]
+        //         let bullet = new Bullet({
+        //             position: turretPos,
+        //             velocity: bulletVel,
+        //             angle: this.user.interpolatedAngle
+        //         })
+        //
+        //         // Applying a force doesnt really cut, just manually calc velocity
+        //         // based on craft velocity and magnitude
+        //         // bullet.applyForceLocal([ 0, .5 ])
+        //
+        //         bullet.update()
+        //         bullet._drawDebug()
+        //
+        //         this.engine.addEntity( bullet )
+        //     })
     }
 
     onUpdate = dt => {

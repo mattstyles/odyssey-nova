@@ -3,7 +3,7 @@ import Pixi from 'pixi.js'
 import P2 from 'p2'
 
 import Bullet from 'entities/bullet'
-import materials from 'entities/materials'
+import materials from 'world/materials'
 import config from 'stores/config'
 
 import { XOR } from 'utils/logical'
@@ -18,11 +18,18 @@ function updateDebug( obj ) {
     })
 }
 
+/**
+ * Engine handles both the physics world and the main game container for graphics
+ * @class
+ */
 export default class Engine {
     constructor() {
         this.world = new P2.World({
             gravity: [ 0, 0 ]
         })
+
+        this.world.applyGravity = false
+        this.world.applySpringForces = false
 
         this.lastTime = null
 
@@ -62,7 +69,7 @@ export default class Engine {
 
     addEntity( entity ) {
         // @TODO draw the entity into the world container here
-        this.world.addBody( entity )
+        this.world.addBody( entity.body )
         this.container.addChild( entity.container )
         // this.entities.push( entity )
     }
