@@ -20,6 +20,8 @@ export default class Entity extends P2.Body {
         this.sprite = new Pixi.Sprite()
 
         this.radius = opts.radius
+        this.interpolatedPosition = this.position
+        this.interpolatedAngle = this.angle
 
         this.addShape( new P2.Circle({
             radius: this.radius,

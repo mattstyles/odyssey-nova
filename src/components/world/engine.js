@@ -47,6 +47,7 @@ export default class Engine {
     }
 
     addEntity( entity ) {
+        // @TODO draw the entity into the world container here
         this.world.addBody( entity )
         this.container.addChild( entity.container )
         // this.entities.push( entity )
