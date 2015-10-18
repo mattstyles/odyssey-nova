@@ -31,8 +31,9 @@ export default class Engine {
             gravity: [ 0, 0 ]
         })
 
-        // this.world.applyGravity = false
-        // this.world.applySpringForces = false
+        // This is maybe a tiny perf gain
+        this.world.applyGravity = false
+        this.world.applySpringForces = false
 
         this.lastTime = null
 

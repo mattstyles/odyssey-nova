@@ -83,9 +83,11 @@ export default class Main extends React.Component {
 
             // Create a few extra entities, just for funsies
             this.entities = []
-            for ( let i = 0; i < random( 100, 150 ); i++ ) {
+            let numEntities = random( 10, 20 )
+            let bound = numEntities * 100
+            for ( let i = 0; i < numEntities; i++ ) {
                 let entity = new PhysicalEntity({
-                    position: [ ~random( -1000, 1000 ), ~random( -1000, 1000 ) ]
+                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ]
                 })
                 entity.addShape( new P2.Circle({
                     radius: random( 5, 20 ),
