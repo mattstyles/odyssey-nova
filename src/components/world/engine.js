@@ -8,8 +8,8 @@ import config from 'stores/config'
 
 import { XOR } from 'utils/logical'
 
-const FRAMERATE = 1 / 60
-const FRAME_SUBSTEPS = 10
+// @TODO only for registering debug info
+import appState from 'stores/appState'
 
 function updateDebug( obj ) {
     // These are expensive for cycles, not sure its going to work like this
@@ -17,6 +17,9 @@ function updateDebug( obj ) {
         return cursor.merge( obj )
     })
 }
+
+const FRAMERATE = 1 / 60
+const FRAME_SUBSTEPS = 10
 
 /**
  * Engine handles both the physics world and the main game container for graphics

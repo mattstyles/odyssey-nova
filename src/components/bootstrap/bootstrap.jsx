@@ -32,7 +32,7 @@ class Loading extends React.Component {
             logger.info( 'Bootstrap event' )
 
             this.props.progress.update( cursor => {
-                progress = this.props.progress.push( true )
+                let progress = this.props.progress.push( true )
                 return progress
             })
         }

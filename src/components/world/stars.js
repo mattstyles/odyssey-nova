@@ -4,6 +4,7 @@ import Bezier from 'bezier-easing'
 import Starfield from 'pixi-starfield'
 
 import config from 'stores/config'
+import resources from 'stores/resources'
 
 /**
  * Holds the various bits that make up the background.
