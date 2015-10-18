@@ -15,6 +15,19 @@ export default class Bullet extends PhysicalEntity {
         // occur which is probably desirable
         this.body.damping = 0
 
+        // Turning off angular damping also gives a perf boost (damping and
+        // angular damping at 0 is a good fps gain) but there is a consideration:
+        // Currently bullet velocity is worked out by taking ship angle and
+        // velocity and simply increasing it, meaning that the bullets own angle
+        // doesnt matter, therefore it can spin (some visual effects could rely
+        // on this spinning), this should be ok even if a large force is added to
+        // it when it fires (like a real gun). However, if the bullet adds force
+        // during its lifetime, like a rocket, then it'll need some angular damping.
+        // Thats probably cool though as rocket-type projectiles wont fire as
+        // often (they might also need targeting or tracking AI depending on the
+        // type of rocket)
+        this.body.angularDamping = 0
+
         // Kinematic might work with no collision response, certainly see a massive
         // fps boost with kinematic over dynamic bodies. The problem with kinematic
         // bodies is the massive mass
