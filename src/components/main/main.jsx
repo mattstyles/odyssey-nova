@@ -170,7 +170,7 @@ export default class Main extends React.Component {
             })
 
         var lastFire = 0
-        var reloadTime = .75
+        var reloadTime = 1 / 60    // Fire data stream is clamped to 60 fps so max reload is 1000/60
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
@@ -204,7 +204,7 @@ export default class Main extends React.Component {
                 })
 
                 bullet.addShape( new P2.Circle({
-                    radius: 2
+                    radius: .75
                 }))
 
                 // bullet.setPosition( ...turretPos )

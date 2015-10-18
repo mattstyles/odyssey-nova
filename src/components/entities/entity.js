@@ -43,85 +43,13 @@ export default class Entity {
     update() {
 
     }
+
+    /**
+     * In order to save state there needs to be a way to stringify each entity,
+     * this gets tricky when p2.bodies and p2.shapes are pixi stuff are added
+     * the entity object. A dedicated toString or toJSON will help.
+     */
+    toJSON() {
+
+    }
 }
-
-
-// export default class Entity {
-//     constructor( options = {} ) {
-//         opts = Object.assign({
-//             radius: random( 10, 30 ),
-//             mass: random( 1, 3 ),
-//             position: [ 0, 0 ],
-//             velocity: [ 0, 0 ],
-//             angle: 0
-//         }, options )
-//
-//         super( opts )
-//
-//
-//
-//         this.radius = opts.radius
-//         this.interpolatedPosition = this.position
-//         this.interpolatedAngle = this.angle
-//
-//
-//         this.body = new P2.Body( opts )
-//         this.sprite = new Pixi.Sprite()
-//
-//         this.addShape( new P2.Circle({
-//             radius: this.radius,
-//             material: materials.get( '_default' ),
-//             position: [ 0, 0 ],
-//             angle: this.angle + Math.PI * .5
-//         }))
-//
-//         //Play with the damping
-//         this.damping = .05
-//         this.angularDamping = .01
-//
-//         this.container = new Pixi.Container()
-//         this.graphics = new Pixi.Graphics()
-//
-//         this.container.addChild( this.graphics )
-//     }
-//
-//     // All movement values are relative to graphics.position, which is body.position
-//     _drawDebug() {
-//         this.graphics.clear()
-//
-//         var drawCircle = ( x, y, r, angle ) => {
-//             this.graphics.moveTo( x, y )
-//             this.graphics.beginFill( 0xffffff, .1 )
-//             this.graphics.drawCircle(
-//                 x,
-//                 y,
-//                 r
-//             )
-//             this.graphics.endFill()
-//             this.graphics.lineStyle( 1, 0xffffff, .3 )
-//             this.graphics.arc(
-//                 x,
-//                 y,
-//                 r,
-//                 angle + Math.PI * .5, angle + Math.PI * 2.5, false
-//             )
-//             this.graphics.lineTo( x, y )
-//         }
-//
-//         this.shapes.forEach( shape => {
-//             drawCircle( shape.position[ 0 ], shape.position[ 1 ], shape.radius, shape.angle )
-//         })
-//
-//     }
-//
-//     /**
-//      * Moves visuals in line with the underlying physics body
-//      */
-//     update() {
-//         this.graphics.position.set( ...this.interpolatedPosition )
-//         this.graphics.rotation = this.interpolatedAngle
-//
-//         this.sprite.position.set( ...this.interpolatedPosition )
-//         this.sprite.rotation = this.interpolatedAngle
-//     }
-// }
