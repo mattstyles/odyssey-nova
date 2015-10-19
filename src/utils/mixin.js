@@ -8,7 +8,7 @@ import noop from 'utils/noop'
 export default function mixin( ...components ) {
     // Add methods here to avoid throwing errors
     var base = class {
-        update() {}
+        // update() {}
         render() {}
     }
 

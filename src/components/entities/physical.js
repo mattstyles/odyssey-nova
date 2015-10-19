@@ -2,7 +2,8 @@
 import Pixi from 'pixi.js'
 import P2 from 'p2'
 
-import Entity from './entity'
+import Entity from 'entities/entity'
+import mixin from 'utils/mixin'
 
 /**
  * A physical entity has both a renderable and a physics body.
@@ -10,7 +11,7 @@ import Entity from './entity'
  * is, its worth taking the risk of a clean implementation.
  * @class
  */
-export default class PhysicalEntity extends Entity {
+export default Base => class PhysicalEntity extends Base {
     /**
      * @constructs
      * @return this
@@ -181,4 +182,11 @@ export default class PhysicalEntity extends Entity {
         this.sprite.position.set( ...this.position )
         this.sprite.rotation = this.angle
     }
+}
+
+/**
+ * Use as a mixin
+ */
+export function physicalEntityMixin( base ) {
+    return PhysicalEntity
 }

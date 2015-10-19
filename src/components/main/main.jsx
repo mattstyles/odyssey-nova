@@ -167,44 +167,48 @@ export default class Main extends React.Component {
 
         this.quay.stream( '<space>' )
             .on( 'data', () => {
-                if ( this.engine.world.time - lastFire < reloadTime ) {
-                    return
-                }
-
-                console.log( 'firing' )
-
-                lastFire = this.engine.world.time
-
-                // User radius plus bullet radius plus a little extra
-                // @TODO User radius probably wont exist for much longer
-                let radius = ( this.user.radius + 3 ) * 1.5
-                let angle = this.user.angle + Math.PI * .5
-                let mag = 50
-                let turretPos = [
-                    radius * Math.cos( angle ) + this.user.position[ 0 ],
-                    radius * Math.sin( angle ) + this.user.position[ 1 ]
-                ]
-                let bulletVel = [
-                    mag * Math.cos( angle ) + this.user.body.velocity[ 0 ],
-                    mag * Math.sin( angle ) + this.user.body.velocity[ 1 ]
-                ]
-                // @TODO create bullet with a different material then set up the
-                // material scalar for calculating PhysicalEntity mass
-                let bullet = new Bullet({
-                    position: turretPos,
-                    velocity: bulletVel,
-                    angle: this.user.angle
-                })
-
-                bullet.addShape( new P2.Circle({
-                    radius: .75
-                }))
-
-                bullet._debug = true
-                bullet.render()
-
-                this.engine.addEntity( bullet )
+                this.user.fire()
             })
+        // this.quay.stream( '<space>' )
+        //     .on( 'data', () => {
+            //     if ( this.engine.world.time - lastFire < reloadTime ) {
+            //         return
+            //     }
+            //
+            //     console.log( 'firing' )
+            //
+            //     lastFire = this.engine.world.time
+            //
+            //     // User radius plus bullet radius plus a little extra
+            //     // @TODO User radius probably wont exist for much longer
+            //     let radius = ( this.user.radius + 3 ) * 1.5
+            //     let angle = this.user.angle + Math.PI * .5
+            //     let mag = 50
+            //     let turretPos = [
+            //         radius * Math.cos( angle ) + this.user.position[ 0 ],
+            //         radius * Math.sin( angle ) + this.user.position[ 1 ]
+            //     ]
+            //     let bulletVel = [
+            //         mag * Math.cos( angle ) + this.user.body.velocity[ 0 ],
+            //         mag * Math.sin( angle ) + this.user.body.velocity[ 1 ]
+            //     ]
+            //     // @TODO create bullet with a different material then set up the
+            //     // material scalar for calculating PhysicalEntity mass
+            //     let bullet = new Bullet({
+            //         position: turretPos,
+            //         velocity: bulletVel,
+            //         angle: this.user.angle
+            //     })
+            //
+            //     bullet.addShape( new P2.Circle({
+            //         radius: .75
+            //     }))
+            //
+            //     bullet._debug = true
+            //     bullet.render()
+            //
+            //     this.engine.addEntity( bullet )
+            // })
     }
 
     onUpdate = dt => {

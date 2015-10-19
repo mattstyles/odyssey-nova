@@ -2,14 +2,22 @@
 import P2 from 'p2'
 import Pixi from 'pixi.js'
 
+import mixin from 'utils/mixin'
+import { physicalEntityMixin } from 'entities/physical'
 import PhysicalEntity from 'entities/physical'
+import Entity from 'entities/entity'
 import materials from 'world/materials'
+
+import ThrustModule from 'entities/modules/thrust'
+import AttackModule from 'entities/modules/attack'
 
 /**
  * Main ship entity
+ * @TODO having to compose Entity into PhysicalEntity is a bit pap, there must
+ * be a way around it, surely. @see modules/README.md
  * @class
  */
-export default class Ship extends PhysicalEntity {
+export default class Ship extends mixin( Entity, PhysicalEntity, AttackModule, ThrustModule ) {
     /**
      * @constructs
      * @return this
@@ -56,30 +64,47 @@ export default class Ship extends PhysicalEntity {
      *
      *-----------------------------------------------------------*/
 
-    applyMainThruster = () => {
-        this.linearThrust.forEach( thruster => {
-            this.body.applyForceLocal( thruster.magnitude, thruster.offset )
-        })
-    }
-
-    applyTurnLeft = () => {
-        this.body.angularVelocity = -this.turnThrust
-    }
-
-    applyTurnRight = () => {
-        this.body.angularVelocity = this.turnThrust
-    }
-
-    // Banking is almost like strafing, but results in a slight opposite turn as well
-    // The slight offset implies the banking thrusters are located behind the
-    // center of gravity, which accounts for the slight turn imparted
-    applyBankLeft = () => {
-        this.body.applyForceLocal( [ this.bankThrust, 0 ], [ 0, -1 ] )
-    }
-
-    applyBankRight = () => {
-        this.body.applyForceLocal( [ -this.bankThrust, 0 ], [ 0, -1 ] )
-    }
-
-
+    // applyMainThruster = () => {
+    //     this.linearThrust.forEach( thruster => {
+    //         this.body.applyForceLocal( thruster.magnitude, thruster.offset )
+    //     })
+    // }
+    //
+    // applyTurnLeft = () => {
+    //     this.body.angularVelocity = -this.turnThrust
+    // }
+    //
+    // applyTurnRight = () => {
+    //     this.body.angularVelocity = this.turnThrust
+    // }
+    //
+    // // Banking is almost like strafing, but results in a slight opposite turn as well
+    // // The slight offset implies the banking thrusters are located behind the
+    // // center of gravity, which accounts for the slight turn imparted
+    // applyBankLeft = () => {
+    //     this.body.applyForceLocal( [ this.bankThrust, 0 ], [ 0, -1 ] )
+    // }
+    //
+    // applyBankRight = () => {
+    //     this.body.applyForceLocal( [ -this.bankThrust, 0 ], [ 0, -1 ] )
+    // }
 }
+
+// var Thrust = thrust( function() {} )
+// console.log( 'trhusting' )
+//
+// var asThrust = function() {
+//     this.thrust = function() {
+//         console.log( 'Thrust? I am thrust' )
+//     }
+//
+//     this.update = function() {
+//         super()
+//
+//         console.log( 'update mixin' )
+//     }
+// }
+//
+// asThrust.call( Ship.prototype )
+//
+// export default Ship
