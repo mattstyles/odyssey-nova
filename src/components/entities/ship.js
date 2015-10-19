@@ -5,6 +5,10 @@ import Pixi from 'pixi.js'
 import PhysicalEntity from 'entities/physical'
 import materials from 'world/materials'
 
+/**
+ * Main ship entity
+ * @class
+ */
 export default class Ship extends PhysicalEntity {
     /**
      * @constructs
@@ -72,7 +76,7 @@ export default class Ship extends PhysicalEntity {
     applyBankLeft = () => {
         this.body.applyForceLocal( [ this.bankThrust, 0 ], [ 0, -1 ] )
     }
-    
+
     applyBankRight = () => {
         this.body.applyForceLocal( [ -this.bankThrust, 0 ], [ 0, -1 ] )
     }

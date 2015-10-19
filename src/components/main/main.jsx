@@ -147,19 +147,19 @@ export default class Main extends React.Component {
             logger.warn( 'Quay not instantiated' )
             return
         }
-        this.quay.on( '<up>', this.user.forward )
-        this.quay.on( '<down>', this.user.backward )
-        this.quay.on( '<left>', this.user.left )
-        this.quay.on( '<right>', this.user.right )
-        this.quay.on( 'Q', this.user.bankLeft )
-        this.quay.on( 'E', this.user.bankRight )
+        this.quay.on( '<up>', this.user.applyMainThruster )
+        // this.quay.on( '<down>', this.user.backward )
+        this.quay.on( '<left>', this.user.applyTurnLeft )
+        this.quay.on( '<right>', this.user.applyTurnRight )
+        this.quay.on( 'Q', this.user.applyBankLeft )
+        this.quay.on( 'E', this.user.applyBankRight )
 
         this.quay.stream( '<shift>' )
             .on( 'keydown', () => {
-                this.user.thrust = 190
+                this.user.linearThrust[ 0 ].magnitude[ 1 ] = 220
             })
             .on( 'keyup', () => {
-                this.user.thrust = 150
+                this.user.linearThrust[ 0 ].magnitude[ 1 ] = 150
             })
 
         var lastFire = 0
