@@ -31,6 +31,8 @@ export default class User extends Ship {
         this.body.damping = .1
         this.body.angularDamping = .75
 
+        this.lineColor = 0xb3e5fc
+
         // @TODO replace with sprite
         this.sprite = new Pixi.Graphics()
         this.container.addChild( this.sprite )
@@ -40,7 +42,7 @@ export default class User extends Ship {
         super()
 
         this.sprite.beginFill( 0x040414 )
-        this.sprite.lineStyle( 1, 0xb3e5fc, 1 )
+        this.sprite.lineStyle( 1, this.lineColor, 1 )
         this.sprite.arc(
             0,
             0,
