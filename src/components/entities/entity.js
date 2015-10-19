@@ -11,10 +11,8 @@ import mixin from 'utils/mixin'
  * Entity is a fairly abstract class, usually it’ll be instantiated with either
  * a body (ShellEntity), a renderable (GhostEntity) or both (PhysicalEntity).
  */
-export default Base => class Entity extends Base {
+export default class Entity {
     constructor( opts = {} ) {
-        super()
-
         // Id is assigned when the entity joins an engine
         this.id = null
 

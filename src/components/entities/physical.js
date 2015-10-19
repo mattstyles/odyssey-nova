@@ -11,7 +11,7 @@ import mixin from 'utils/mixin'
  * is, its worth taking the risk of a clean implementation.
  * @class
  */
-export default Base => class PhysicalEntity extends Base {
+export default class PhysicalEntity extends Entity {
     /**
      * @constructs
      * @return this

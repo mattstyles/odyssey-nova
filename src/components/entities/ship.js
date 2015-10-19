@@ -13,11 +13,10 @@ import AttackModule from 'entities/modules/attack'
 
 /**
  * Main ship entity
- * @TODO having to compose Entity into PhysicalEntity is a bit pap, there must
- * be a way around it, surely. @see modules/README.md
+ * @see modules/README.md for the use of the mixin function
  * @class
  */
-export default class Ship extends mixin( Entity, PhysicalEntity, AttackModule, ThrustModule ) {
+export default class Ship extends mixin( physicalEntityMixin, AttackModule, ThrustModule ) {
     /**
      * @constructs
      * @return this

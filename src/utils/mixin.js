@@ -5,15 +5,26 @@
 
 import noop from 'utils/noop'
 
-export default function mixin( ...components ) {
+/**
+ * @see modules/README.md for the use of the mixin function
+ * In essence, the first argument can be a function that simply returns a class
+ * (this allows that class to extend whatever it likes),
+ * although all other argument must return a function that extends the its
+ * argument to return a new class that inherits from the argument.
+ * This function then composes those modules together by chaining one class
+ * into the last, hence, order is important and the first class can inherit
+ * nothing or whatever it likes whereas subsequent classes must inherit the
+ * previous class in the list.
+ */
+export default function mixin( ...modules ) {
     // Add methods here to avoid throwing errors
     var base = class {
-        // update() {}
+        update() {}
         render() {}
     }
 
-    components.forEach( component => {
-        base = component( base )
+    modules.forEach( mod => {
+        base = mod( base )
     })
 
     return base
