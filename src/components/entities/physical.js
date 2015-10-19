@@ -13,6 +13,7 @@ import Entity from './entity'
 export default class PhysicalEntity extends Entity {
     /**
      * @constructs
+     * @return this
      */
     constructor( options = {} ) {
         super( options )
@@ -65,40 +66,56 @@ export default class PhysicalEntity extends Entity {
         // be a bit smarter about this when optimisations start happening
         this.container.addChild( this.sprite )
         this.container.addChild( this._debugSprite )
+
+        return this
     }
 
     /**
      * Wrapper around p2.Body.shape which also sets mass and provides an
      * extendable method for subclasses
+     * @param shape <P2.Shape>
+     * @param offset <Float32Array || Array> position relative to entity center
+     * @param angle <Number> rotational angle
+     * @return this
      */
     addShape( shape, offset, angle ) {
         this.body.addShape( shape, offset, angle )
 
         this.setMass()
         this.body.updateBoundingRadius()
+
+        return this
     }
 
-    // Doesnt work right
+    /**
+     * Apply position to all the various position attributes
+     * @param x <Number>
+     * @param y <Number>
+     * @return this
+     */
     setPosition( x, y ) {
         this.position = this.body.interpolatedPosition = this.body.position = [ x, y ]
+        return this
     }
 
     /**
      * If mass is supplied then it’ll just use it to set the body.mass, otherwise
      * it’ll work it out from the shapes and shape materials attributed to
      * this entity
+     * @param mass <Number> _optional_ if omitted will calculate mass from components
+     * @return this
      */
     setMass( mass ) {
         if ( mass ) {
             this.body.mass = mass
             this.body.updateMassProperties()
-            return
+            return this
         }
 
         // If trying to auto set mass (no mass param supplied) but is mass
         // locked then bail
         if ( this.isMassLocked ) {
-            return
+            return this
         }
 
         if ( !this.body.shapes.length ) {
@@ -111,8 +128,13 @@ export default class PhysicalEntity extends Entity {
             return total + ( shape.area * .006 )
         }, 0 )
         this.body.updateMassProperties()
+
+        return this
     }
 
+    /**
+     * Iterates through shapes/components and renders their debug info
+     */
     _debugRender() {
         this._debugSprite.clear()
 
@@ -135,6 +157,9 @@ export default class PhysicalEntity extends Entity {
         })
     }
 
+    /**
+     * Actual render of entity
+     */
     render() {
         // nothing at the moment
         if ( this._debug ) {
@@ -142,6 +167,11 @@ export default class PhysicalEntity extends Entity {
         }
     }
 
+    /**
+     * Called every tick, although most of the physics calculations are handled
+     * by P2.World.step
+     * Should probably accept a delta time
+     */
     update() {
         this.angle = this.body.interpolatedAngle
 

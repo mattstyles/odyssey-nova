@@ -207,14 +207,6 @@ export default class Main extends React.Component {
                     radius: .75
                 }))
 
-                // bullet.setPosition( ...turretPos )
-
-                // Applying a force doesnt really cut, just manually calc velocity
-                // based on craft velocity and magnitude
-                // bullet.applyForceLocal([ 0, .5 ])
-
-                // bullet.update()
-                // bullet._drawDebug()
                 bullet._debug = true
                 bullet.render()
 
@@ -229,7 +221,6 @@ export default class Main extends React.Component {
         // Dampen star movement
         // Entities should move fast compared to each other, not compared to the backdrop
         // There might also need to be a planet layer that sits somewhere in between speeds
-        //this.starfield.setPosition( this.user.body.position[ 0 ] / 10, this.user.body.position[ 1 ] / 10 )
         this.stars.setPosition( ...this.user.position )
 
         // This translation effectively simulates the camera moving, although simple
