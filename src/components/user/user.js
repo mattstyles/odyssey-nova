@@ -19,7 +19,9 @@ function updateDebug( obj ) {
 
 /**
  * User data should be bounced back to the appState, but, benchmark it once there
- * are some tick updates updating the physics
+ * are some tick updates updating the physics.
+ *
+ * @TODO should extend Ship class, or compose it
  */
 export default class User extends PhysicalEntity {
     constructor() {

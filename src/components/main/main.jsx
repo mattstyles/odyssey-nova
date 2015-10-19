@@ -16,6 +16,7 @@ import Engine from 'world/engine'
 import Stars from 'world/stars'
 import Entity from 'entities/entity'
 import PhysicalEntity from 'entities/physical'
+import Ship from 'entities/ship'
 import Bullet from 'entities/bullet'
 import User from 'user/user'
 import Debug from 'debug/debug'
@@ -81,32 +82,13 @@ export default class Main extends React.Component {
             this.stage.addChild( this.stars.container )
             this.stage.addChild( this.engine.container )
 
-            // Create a few extra entities, just for funsies
-            this.entities = []
-            let numEntities = random( 10, 20 )
-            let bound = numEntities * 100
-            for ( let i = 0; i < numEntities; i++ ) {
-                let entity = new PhysicalEntity({
-                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ]
-                })
-                entity.addShape( new P2.Circle({
-                    radius: random( 5, 20 ),
-                    materal: materials.get( '_default' )
-                }))
-                entity._debug = true
-                this.engine.addEntity( entity )
-            }
-
             //Create a complex entity
-            let entity = new PhysicalEntity({
+            let entity = new Ship({
                 position: [ 0, 0 ],
+                radius: 40,
                 angle: 0
             })
 
-            entity.addShape( new P2.Circle({
-                radius: 40,
-                material: materials.get( '_default' )
-            }))
             entity.addShape( new P2.Circle({
                 radius: 20,
                 material: materials.get( '_default' )
@@ -116,8 +98,19 @@ export default class Main extends React.Component {
                 material: materials.get( '_default' )
             }), [ -32, -32 ], Math.PI )
 
-            entity._debug = true
             this.engine.addEntity( entity )
+
+
+            // Create a few extra entities, just for funsies
+            this.entities = []
+            let numEntities = random( 10, 20 )
+            let bound = numEntities * 100
+            for ( let i = 0; i < numEntities; i++ ) {
+                this.engine.addEntity( new Ship({
+                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
+                    radius: random( 5, 30 )
+                }))
+            }
 
             // @TODO debug user render
             window.stage = this.stage
