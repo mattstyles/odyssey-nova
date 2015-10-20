@@ -2,6 +2,8 @@
 import Projectile from 'entities/projectile'
 
 import config from 'stores/config'
+import EVENTS from 'constants/events'
+import engineDispatcher from 'dispatchers/engineDispatcher'
 
 /**
  * Composed modules should call the super constructor to use the inheritance
@@ -64,5 +66,11 @@ export default Base => class AttackModule extends Base {
         })
 
         // Now need some way of adding the entity to the engine world
+        engineDispatcher.dispatch({
+            type: EVENTS.get( 'ENTITY_ADD' ),
+            payload: {
+                entities: [ projectile ]
+            }
+        })
     }
 }

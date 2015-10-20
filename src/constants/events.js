@@ -5,7 +5,13 @@ import toMap from 'to-map'
 const EVENTS = toMap({
     UPDATE: 'app:update',
 
-    CHANGE_STATE: 'app:changeState'
+    CHANGE_STATE: 'app:changeState',
+
+    /**
+     * Engine level dispatches
+     */
+    ENTITY_ADD: 'engine:entity:add',
+    ENTITY_REMOVE: 'engine:entity:remove'
 })
 
 

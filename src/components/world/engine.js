@@ -5,6 +5,8 @@ import P2 from 'p2'
 //import Bullet from 'entities/bullet'
 import materials from 'world/materials'
 import config from 'stores/config'
+import engineDispatcher from 'dispatchers/engineDispatcher'
+import EVENTS from 'constants/events'
 
 import { XOR } from 'utils/logical'
 
@@ -59,6 +61,24 @@ export default class Engine {
         //     this.world.removeBody( bullet )
         //     this.container.removeChild( bullet.container )
         // })
+
+        engineDispatcher.register( dispatch => {
+            if ( dispatch.type === EVENTS.get( 'ENTITY_ADD' ) ) {
+                if ( !dispatch.payload.entities || !dispatch.payload.entities.length ) {
+                    console.warn( 'Trying to add entities without adding them to the dispatch payload' )
+                    return
+                }
+
+                //this.entities = this.entities.concat( dispatch.payload.entities )
+
+                dispatch.payload.entities.forEach( entity => {
+                    // @TODO is this quicker than just concatting? Got to iterate anyway.
+                    //this.entities.push( entity )
+
+                    this.addEntity( entity )
+                })
+            }
+        })
 
         // Add a world debug prop
         appState.get().cursor([ 'main', 'debug' ]).update( cursor => {
