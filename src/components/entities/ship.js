@@ -10,13 +10,18 @@ import materials from 'world/materials'
 
 import ThrustModule from 'entities/modules/thrust'
 import AttackModule from 'entities/modules/attack'
+import DebugModule from 'entities/modules/debug'
 
 /**
  * Main ship entity
  * @see modules/README.md for the use of the mixin function
  * @class
  */
-export default class Ship extends mixin( physicalEntityMixin, AttackModule, ThrustModule ) {
+export default class Ship extends mixin(
+    physicalEntityMixin,
+    AttackModule,
+    ThrustModule,
+    DebugModule ) {
     /**
      * @constructs
      * @return this
@@ -56,54 +61,4 @@ export default class Ship extends mixin( physicalEntityMixin, AttackModule, Thru
 
         return this
     }
-
-    /*-----------------------------------------------------------*
-     *
-     *  Add thrust behaviours
-     *
-     *-----------------------------------------------------------*/
-
-    // applyMainThruster = () => {
-    //     this.linearThrust.forEach( thruster => {
-    //         this.body.applyForceLocal( thruster.magnitude, thruster.offset )
-    //     })
-    // }
-    //
-    // applyTurnLeft = () => {
-    //     this.body.angularVelocity = -this.turnThrust
-    // }
-    //
-    // applyTurnRight = () => {
-    //     this.body.angularVelocity = this.turnThrust
-    // }
-    //
-    // // Banking is almost like strafing, but results in a slight opposite turn as well
-    // // The slight offset implies the banking thrusters are located behind the
-    // // center of gravity, which accounts for the slight turn imparted
-    // applyBankLeft = () => {
-    //     this.body.applyForceLocal( [ this.bankThrust, 0 ], [ 0, -1 ] )
-    // }
-    //
-    // applyBankRight = () => {
-    //     this.body.applyForceLocal( [ -this.bankThrust, 0 ], [ 0, -1 ] )
-    // }
 }
-
-// var Thrust = thrust( function() {} )
-// console.log( 'trhusting' )
-//
-// var asThrust = function() {
-//     this.thrust = function() {
-//         console.log( 'Thrust? I am thrust' )
-//     }
-//
-//     this.update = function() {
-//         super()
-//
-//         console.log( 'update mixin' )
-//     }
-// }
-//
-// asThrust.call( Ship.prototype )
-//
-// export default Ship
