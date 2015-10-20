@@ -1,6 +1,10 @@
 # 0.0.4
 
 * _update_ refactor entities and entity inheritance chain
+* _add_ functional compositional to add behaviours to entities
+* _add_ thrust and debug rendering behaviour modules to entities
+* _add_ interpolation has saved my lag!
+* _update_ small perf updates to world tick
 
 # 0.0.3
 
