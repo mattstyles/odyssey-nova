@@ -1,5 +1,4 @@
 
-import mixin from 'utils/mixin'
 
 export default Base => class ThrustModule extends Base {
     applyMainThruster = () => {

@@ -17,7 +17,7 @@ import Stars from 'world/stars'
 import Entity from 'entities/entity'
 import PhysicalEntity from 'entities/physical'
 import Ship from 'entities/ship'
-import Bullet from 'entities/bullet'
+//import Bullet from 'entities/bullet'
 import User from 'user/user'
 import Debug from 'debug/debug'
 

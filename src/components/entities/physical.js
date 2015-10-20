@@ -12,6 +12,17 @@ import mixin from 'utils/mixin'
  * @class
  */
 export default class PhysicalEntity extends Entity {
+
+    /**
+     * Can be used to add to the compose function for creating an inheritance
+     * chain
+     * @static
+     * @see utils/compose
+     */
+    static compose = () => {
+        return PhysicalEntity
+    }
+
     /**
      * @constructs
      * @return this
@@ -146,17 +157,7 @@ export default class PhysicalEntity extends Entity {
     update() {
         this.angle = this.body.interpolatedAngle
 
-        // this._debugSprite.position.set( ...this.position )
-        // this._debugSprite.rotation = this.angle
-
         this.sprite.position.set( ...this.position )
         this.sprite.rotation = this.angle
     }
-}
-
-/**
- * Use as a mixin
- */
-export function physicalEntityMixin( base ) {
-    return PhysicalEntity
 }

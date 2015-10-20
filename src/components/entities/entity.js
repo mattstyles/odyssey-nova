@@ -21,14 +21,6 @@ export default class Entity {
     }
 
     /**
-     * Each entity in the world should have the capacity to perform a debug
-     * render for stuff like position, size, orientation, forces etc
-     */
-    _debugRender() {
-        // abstract
-    }
-
-    /**
      * Render is called as infrequently as possible, usually at instantiation
      * but also after entity mutations which alter appearance
      */

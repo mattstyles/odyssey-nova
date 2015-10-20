@@ -6,7 +6,7 @@ import PhysicalEntity from 'entities/physical'
 
 
 
-export default class Bullet extends PhysicalEntity {
+export default class Projectile extends PhysicalEntity {
     constructor( opts = {} ) {
         super( opts )
 

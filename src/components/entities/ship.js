@@ -2,7 +2,7 @@
 import P2 from 'p2'
 import Pixi from 'pixi.js'
 
-import mixin from 'utils/mixin'
+import compose from 'utils/compose'
 import { physicalEntityMixin } from 'entities/physical'
 import PhysicalEntity from 'entities/physical'
 import Entity from 'entities/entity'
@@ -17,8 +17,8 @@ import DebugModule from 'entities/modules/debug'
  * @see modules/README.md for the use of the mixin function
  * @class
  */
-export default class Ship extends mixin(
-    physicalEntityMixin,
+export default class Ship extends compose(
+    PhysicalEntity.compose,
     AttackModule,
     ThrustModule,
     DebugModule ) {

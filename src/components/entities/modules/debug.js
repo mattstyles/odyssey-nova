@@ -1,18 +1,22 @@
 
 import Pixi from 'pixi.js'
 
-import mixin from 'utils/mixin'
-
 export default Base => class DebugModule extends Base {
     constructor( opts ) {
         super( opts )
 
+        this._debug = true
         this._debugSprite = new Pixi.Graphics()
 
         this.container.addChild( this._debugSprite )
     }
 
     render() {
+        if ( !this._debug ) {
+            super()
+            return
+        }
+
         this._debugSprite.clear()
 
         if ( !this.body.shapes.length ) {
