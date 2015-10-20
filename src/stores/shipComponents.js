@@ -7,6 +7,11 @@ import materials from 'world/materials'
 
 const _comps = Symbol( '_components' )
 
+var uuid = 0
+function getUuid() {
+    return ++uuid
+}
+
 /**
  * Holds all the data regarding the different components that can be added to
  * ship entities.
@@ -26,17 +31,17 @@ class ShipComponents {
              * Hulls
              */
             'defaultHull': () => new Hull({
-                id: 'defaultHull',
+                id: 'defaultHull' + getUuid(),
                 radius: 15,
                 material: materials.get( 'metal' )
             }),
             'userHull': () => new Hull({
-                id: 'userHull',
+                id: 'userHull' + getUuid(),
                 radius: 10,
                 material: materials.get( 'metal' )
             }),
             'cruiserHull': () => new Hull({
-                id: 'cruiserHull',
+                id: 'cruiserHull' + getUuid(),
                 radius: 40,
                 material: materials.get( 'metal' )
             }),
@@ -45,9 +50,16 @@ class ShipComponents {
              * Thrusters
              */
             'defaultThruster': () => new Thruster({
-                id: 'defaultThruster',
+                id: 'defaultThruster' + getUuid(),
                 radius: 5,
                 magnitude: [ 0, 150 ],
+                offset: [ 0, -1 ],
+                material: materials.get( 'metal' )
+            }),
+            'megaThruster': () => new Thruster({
+                id: 'megaThruster' + getUuid(),
+                radius: 20,
+                magnitude: [ 0, 350 ],
                 offset: [ 0, -1 ],
                 material: materials.get( 'metal' )
             })

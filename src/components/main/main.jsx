@@ -91,14 +91,22 @@ export default class Main extends React.Component {
             entity.addComponent( hull )
             entity.radius = hull.radius
 
-            entity.addShape( new P2.Circle({
-                radius: 20,
-                material: materials.get( '_default' )
-            }), [ 32, -32 ], Math.PI )
-            entity.addShape( new P2.Circle({
-                radius: 20,
-                material: materials.get( '_default' )
-            }), [ -32, -32 ], Math.PI )
+            let thruster1 = shipComponents.get( 'megaThruster' )
+            thruster1.offset = [ 32, -32 ]
+            entity.addComponent( thruster1 )
+
+            let thruster2 = shipComponents.get( 'megaThruster' )
+            thruster2.offset = [ -32, -32 ]
+            entity.addComponent( thruster2 )
+
+            // entity.addShape( new P2.Circle({
+            //     radius: 20,
+            //     material: materials.get( '_default' )
+            // }), [ 32, -32 ], Math.PI )
+            // entity.addShape( new P2.Circle({
+            //     radius: 20,
+            //     material: materials.get( '_default' )
+            // }), [ -32, -32 ], Math.PI )
 
             this.engine.addEntity( entity )
 
@@ -107,19 +115,19 @@ export default class Main extends React.Component {
             this.entities = []
             let numEntities = random( 10, 20 )
             let bound = numEntities * 100
-            for ( let i = 0; i < numEntities; i++ ) {
-                let entity = new Ship({
-                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
-                    radius: random( 5, 30 )
-                })
-
-                let hull = shipComponents.get( 'defaultHull' )
-
-                entity.addComponent( hull )
-                entity.radius = hull.radius
-
-                this.engine.addEntity( entity )
-            }
+            // for ( let i = 0; i < numEntities; i++ ) {
+            //     let entity = new Ship({
+            //         position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
+            //         radius: random( 5, 30 )
+            //     })
+            //
+            //     let hull = shipComponents.get( 'defaultHull' )
+            //
+            //     entity.addComponent( hull )
+            //     entity.radius = hull.radius
+            //
+            //     this.engine.addEntity( entity )
+            // }
 
             // @TODO debug user render
             window.stage = this.stage

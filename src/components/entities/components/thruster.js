@@ -23,4 +23,9 @@ export default class Thruster {
             material: this.material
         })
     }
+
+    setRadius( r ) {
+        this.radius = r
+        this.shape.radius = this.radius
+    }
 }
