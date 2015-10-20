@@ -5,6 +5,7 @@ import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 import Ship from 'entities/ship'
 import materials from 'world/materials'
+import shipComponents from 'stores/shipComponents'
 
 // @TODO only for registering debug info
 import appState from 'stores/appState'
@@ -36,6 +37,9 @@ export default class User extends Ship {
         // @TODO replace with sprite
         this.sprite = new Pixi.Graphics()
         this.container.addChild( this.sprite )
+
+        // Add a hull component
+        this.addComponent( shipComponents.get( 'userHull' ) )
     }
 
     render() {

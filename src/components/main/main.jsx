@@ -18,6 +18,7 @@ import Stars from 'world/stars'
 import Ship from 'entities/ship'
 import User from 'user/user'
 
+import shipComponents from 'stores/shipComponents'
 import materials from 'world/materials'
 import resources from 'stores/resources'
 import config from 'stores/config'
@@ -86,6 +87,10 @@ export default class Main extends React.Component {
                 angle: 0
             })
 
+            let hull = shipComponents.get( 'cruiserHull' )
+            entity.addComponent( hull )
+            entity.radius = hull.radius
+
             entity.addShape( new P2.Circle({
                 radius: 20,
                 material: materials.get( '_default' )
@@ -103,10 +108,17 @@ export default class Main extends React.Component {
             let numEntities = random( 10, 20 )
             let bound = numEntities * 100
             for ( let i = 0; i < numEntities; i++ ) {
-                this.engine.addEntity( new Ship({
+                let entity = new Ship({
                     position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
                     radius: random( 5, 30 )
-                }))
+                })
+
+                let hull = shipComponents.get( 'defaultHull' )
+
+                entity.addComponent( hull )
+                entity.radius = hull.radius
+
+                this.engine.addEntity( entity )
             }
 
             // @TODO debug user render

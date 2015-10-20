@@ -61,9 +61,6 @@ export default class Ship extends compose(
         this.body.damping = .05
         this.body.angularDamping = .01
 
-        // @TODO
-        this._debug = true
-
         return this
     }
 
