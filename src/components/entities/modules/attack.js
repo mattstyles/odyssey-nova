@@ -45,6 +45,8 @@ export default Base => class AttackModule extends Base {
         // For now assume a turret position of ship center and dictate that
         // the projectile creation zone is directly in front, to stop instant
         // collisions with the firer
+        // @TODO so much can be done to make this faster, although the main
+        // bottleneck is adding lots of entities to the game world
         let r = ( this.radius + 3 ) * 1.5
         let angle = this.angle + Math.PI * .5
         let mag = 50

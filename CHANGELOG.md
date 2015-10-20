@@ -1,6 +1,6 @@
 #
 
-*
+* _add_ attack module adds projectile entities to the engine
 
 # 0.0.4
 

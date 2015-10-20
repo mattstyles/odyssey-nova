@@ -3,7 +3,8 @@ import Pixi from 'pixi.js'
 import P2 from 'p2'
 
 import Entity from 'entities/entity'
-import mixin from 'utils/mixin'
+import compose from 'utils/compose'
+
 
 /**
  * A physical entity has both a renderable and a physics body.
