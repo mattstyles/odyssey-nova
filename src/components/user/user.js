@@ -42,7 +42,9 @@ export default class User extends Ship {
         this.addComponent( shipComponents.get( 'userHull' ) )
 
         // Add a main engine thruster
-        this.addComponent( shipComponents.get( 'defaultThruster' ) )
+        let thruster = shipComponents.get( 'defaultThruster' )
+        thruster.offset = [ 0, -this.radius ]
+        this.addComponent( thruster )
     }
 
     render() {

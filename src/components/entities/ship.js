@@ -3,12 +3,11 @@ import P2 from 'p2'
 import Pixi from 'pixi.js'
 
 import compose from 'utils/compose'
-import { physicalEntityMixin } from 'entities/physical'
-import PhysicalEntity from 'entities/physical'
-import Entity from 'entities/entity'
+import SC_TYPES from 'constants/shipComponentTypes'
 import materials from 'world/materials'
 import shipComponents from 'stores/shipComponents'
 
+import PhysicalEntity from 'entities/physical'
 import ThrustModule from 'entities/modules/thrust'
 import AttackModule from 'entities/modules/attack'
 import DebugModule from 'entities/modules/debug'
@@ -47,13 +46,17 @@ export default class Ship extends compose(
         // applied per action i.e. main forward thrust should be a composite of
         // all the thrusters connected with the 'main:thrust' behaviour
         this.turnThrust = .25
+        this.bankThrust = 50
+
+        // Linear thrust is now recalculated from thrust components
+        // @TODO Currently all thrust components contribute, this needs further
+        // refinement
         this.linearThrust = [
             {
                 offset: [ 0, 0 ],
                 magnitude: [ 0, 150 ]
             }
         ]
-        this.bankThrust = 50
 
         // Set up damping
         // @TODO again, this should be calculated as damping components are added
@@ -68,7 +71,11 @@ export default class Ship extends compose(
         this.components.set( component.id, component )
 
         if ( component.shape ) {
-            this.addShape( component.shape )
+            this.addShape( component.shape, component.offset || [ 0, 0 ], component.angle || 0 )
+        }
+
+        if ( component.type === SC_TYPES.get( 'THRUSTER' ) ) {
+            this.calcLinearThrust()
         }
 
         return this
@@ -82,5 +89,28 @@ export default class Ship extends compose(
         }
 
         return this
+    }
+
+    /**
+     * Loops through components, grabs thruster components and appends their
+     * data to the linearThrust array.
+     * This is done every time a component is added, which is better than doing
+     * it every time we need to use the linear thrust to calculate momentum.
+     * @returns this
+     */
+    calcLinearThrust() {
+        // Filter component map to thruster types and generate a new array of
+        // linear thrust components
+        this.linearThrust = []
+        this.components.forEach( component => {
+            if ( component.type !== SC_TYPES.get( 'THRUSTER' ) ) {
+                return
+            }
+
+            this.linearThrust.push({
+                offset: component.offset,
+                magnitude: component.magnitude
+            })
+        })
     }
 }

@@ -1,6 +1,7 @@
 
 import P2 from 'p2'
 
+import SC_TYPES from 'constants/shipComponentTypes'
 import logger from 'utils/logger'
 import materials from 'world/materials'
 
@@ -10,6 +11,10 @@ export default class Thruster {
         this.type = SC_TYPES.get( 'THRUSTER' )
         this.material = opts.material || materials.get( 'metal' )
         this.radius = opts.radius || 10
+        this.angle = Math.PI
+
+        // @TODO magnitude should be calculated from angle and a value
+        // so that the thruster can be rotated
         this.magnitude = opts.magnitude || [ 0, 150 ]
         this.offset = opts.offset || [ 0, 0 ]
 
