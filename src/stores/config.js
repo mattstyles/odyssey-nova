@@ -7,14 +7,17 @@ const conf = Symbol( 'conf' )
 /**
  * @class
  * Wrapper around a native map
- * Holds app-level config
+ * Holds app-level config in a flat map, dont get fancy and use a nested structure,
+ * its more trouble than its worth here
  */
 class Config {
     constructor() {
         this[ conf ] = toMap({
             width: window.innerWidth,
             height: window.innerHeight,
-            dp: window.devicePixelRatio
+            dp: window.devicePixelRatio,
+
+            worldTime: 0
         })
     }
 

@@ -2,11 +2,21 @@
 import P2 from 'p2'
 import Pixi from 'pixi.js'
 
+import compose from 'utils/compose'
 import PhysicalEntity from 'entities/physical'
+import DebugModule from 'entities/modules/debug'
 
 
+/**
+ * @class
+ */
+export default class Projectile extends compose(
+    PhysicalEntity.compose,
+    DebugModule ) {
 
-export default class Projectile extends PhysicalEntity {
+    /**
+     * @constructs
+     */
     constructor( opts = {} ) {
         super( opts )
 
@@ -62,6 +72,15 @@ export default class Projectile extends PhysicalEntity {
         // only if kinematic emit collision events - nope, they emit but they also
         // provide collisions, they just dont have force or damping and max mass
         // Bullets should almost certainly not collide with each other
+
+        // Set up a shape and a debug level, will this get overwritten by mixin?
+        this.addShape( new P2.Circle({
+            radius: .75
+        }))
+
+        this._debug = true
+        this.render()
+
     }
 
     update() {

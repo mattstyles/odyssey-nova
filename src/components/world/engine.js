@@ -2,7 +2,7 @@
 import Pixi from 'pixi.js'
 import P2 from 'p2'
 
-import Bullet from 'entities/bullet'
+//import Bullet from 'entities/bullet'
 import materials from 'world/materials'
 import config from 'stores/config'
 
@@ -90,6 +90,8 @@ export default class Engine {
         this.lastTime = this.lastTime || t
 
         this.world.step( FRAMERATE, t - this.lastTime, FRAME_SUBSTEPS )
+
+        config.set( 'worldTime', this.world.time )
 
         updateDebug({
             'entities': this.entities.length
