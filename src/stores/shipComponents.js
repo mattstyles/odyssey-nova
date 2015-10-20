@@ -2,6 +2,7 @@
 import toMap from 'to-map'
 
 import Hull from 'entities/components/hull'
+import Thruster from 'entities/components/thruster'
 import materials from 'world/materials'
 
 const _comps = Symbol( '_components' )
@@ -17,7 +18,13 @@ const _comps = Symbol( '_components' )
  */
 class ShipComponents {
     constructor() {
+        /**
+         * @TODO this should be gathered from data stored externally
+         */
         this[ _comps ] = new toMap({
+            /**
+             * Hulls
+             */
             'defaultHull': () => new Hull({
                 id: 'defaultHull',
                 radius: 15,
@@ -31,6 +38,17 @@ class ShipComponents {
             'cruiserHull': () => new Hull({
                 id: 'cruiserHull',
                 radius: 40,
+                material: materials.get( 'metal' )
+            }),
+
+            /**
+             * Thrusters
+             */
+            'defaultThruster': () => new Thruster({
+                id: 'defaultThruster',
+                radius: 5,
+                magnitude: [ 0, 150 ],
+                offset: [ 0, -1 ],
                 material: materials.get( 'metal' )
             })
         })

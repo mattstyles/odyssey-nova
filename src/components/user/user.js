@@ -40,6 +40,9 @@ export default class User extends Ship {
 
         // Add a hull component
         this.addComponent( shipComponents.get( 'userHull' ) )
+
+        // Add a main engine thruster
+        this.addComponent( shipComponents.get( 'defaultThruster' ) )
     }
 
     render() {
