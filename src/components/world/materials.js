@@ -26,6 +26,14 @@ class Materials {
             }
         ))
         this.add( 'metal', new P2.Material() )
+        this.addContact( 'metalContact', new P2.ContactMaterial(
+            this.get( 'metal' ),
+            this.get( 'metal' ),
+            {
+                friction: .175,
+                restitution: .45
+            }
+        ))
         this.add( 'plasma', new P2.Material() )
     }
 

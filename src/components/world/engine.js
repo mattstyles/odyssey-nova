@@ -40,6 +40,7 @@ export default class Engine {
         this.lastTime = null
 
         this.world.addContactMaterial( materials.get( '_defaultContact' ) )
+        this.world.addContactMaterial( materials.get( 'metalContact' ) )
 
         this.container = new Pixi.Container()
         this.container.position.set( config.get( 'width' ) / 2, config.get( 'height' ) / 2 )

@@ -7,6 +7,7 @@ import { physicalEntityMixin } from 'entities/physical'
 import PhysicalEntity from 'entities/physical'
 import Entity from 'entities/entity'
 import materials from 'world/materials'
+import shipComponents from 'stores/shipComponents'
 
 import ThrustModule from 'entities/modules/thrust'
 import AttackModule from 'entities/modules/attack'
@@ -35,12 +36,10 @@ export default class Ship extends compose(
          */
         this.components = new Map()
 
-        // @TODO Apply hull component, for now just set a radius and add a shape
+        // Ships dont have components by default, they need to be added when the
+        // ship is instantiated. They can have a default radius though.
         this.radius = opts.radius || 10
-        this.addShape( new P2.Circle({
-            radius: this.radius,
-            material: materials.get( '_default' )
-        }))
+
 
         // Set application forces
         // @TODO should be calculated from components
@@ -69,10 +68,22 @@ export default class Ship extends compose(
     }
 
     addComponent( component ) {
-        this.component.set( component.id, component )
+        this.components.set( component.id, component )
 
         if ( component.shape ) {
             this.addShape( component.shape )
         }
+
+        return this
+    }
+
+    removeComponent( component ) {
+        this.components.delete( component.id )
+
+        if ( component.shape ) {
+            this.removeShape( component.shape )
+        }
+
+        return this
     }
 }
