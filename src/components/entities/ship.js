@@ -29,6 +29,12 @@ export default class Ship extends compose(
     constructor( opts ) {
         super( opts )
 
+        /**
+         * The components refer to things installed on the ship, like thrusters,
+         * weapons and shields
+         */
+        this.components = new Map()
+
         // @TODO Apply hull component, for now just set a radius and add a shape
         this.radius = opts.radius || 10
         this.addShape( new P2.Circle({
@@ -60,5 +66,13 @@ export default class Ship extends compose(
         this._debug = true
 
         return this
+    }
+
+    addComponent( component ) {
+        this.component.set( component.id, component )
+
+        if ( component.shape ) {
+            this.addShape( component.shape )
+        }
     }
 }

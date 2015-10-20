@@ -7,11 +7,11 @@ import engineDispatcher from 'dispatchers/engineDispatcher'
 
 /**
  * Composed modules should call the super constructor to use the inheritance
- * chain and then add properties within a namespace, in this case 'attack' is
+ * chain and then add properties within a namespace, in this case 'weapon' is
  * used as a namespace
  * @function returns @class
  */
-export default Base => class AttackModule extends Base {
+export default Base => class WeaponModule extends Base {
     /**
      * 'attack' namespaced properties
      * @constructs
@@ -22,16 +22,16 @@ export default Base => class AttackModule extends Base {
         /**
          * @namespace attack
          */
-        this.attack = {}
+        this.weapon = {}
 
         // Attack is currently rate limited to the user event registered with Quay,
         // which is clamped to the animation frame refresh rate.
-        this.attack.fireRate = 1 / 60
+        this.weapon.fireRate = 1 / 60
 
         // Turrets should implement their own refresh rate, which determines their
         // rate of fire. This module should just attempt to fire as quickly as
         // possible and let the turret component sort out fulfilling that request.
-        this.attack.lastTime = 0
+        this.weapon.lastTime = 0
     }
 
     /**

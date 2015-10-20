@@ -99,6 +99,20 @@ export default class PhysicalEntity extends Entity {
     }
 
     /**
+     * Wrapper around p2.Body.shape, also resets mass
+     * @param shape <P2.Shape>
+     * @return this
+     */
+    removeShape( shape ) {
+        this.body.removeShape( shape )
+
+        this.setMass()
+        this.body.updateBoundingRadius()
+
+        return this
+    }
+
+    /**
      * Apply position to all the various position attributes
      * @param x <Number>
      * @param y <Number>
@@ -134,7 +148,7 @@ export default class PhysicalEntity extends Entity {
         }
 
         this.body.mass = this.body.shapes.reduce( ( total, shape ) => {
-            // Just use area for now, should multiple by material.density to
+            // Just use area for now, should multiply by material.density to
             // give final mass of the shape
             return total + ( shape.area * .006 )
         }, 0 )
