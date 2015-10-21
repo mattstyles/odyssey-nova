@@ -83,7 +83,6 @@ export default class Main extends React.Component {
             //Create a complex entity
             let entity = new Ship({
                 position: [ 0, 0 ],
-                radius: 40,
                 angle: 0
             })
 

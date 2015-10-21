@@ -24,9 +24,7 @@ function updateDebug( obj ) {
  */
 export default class User extends Ship {
     constructor() {
-        super({
-            radius: 10
-        })
+        super()
 
         // Update damping for the user to make it more controllable
         this.body.damping = .1
@@ -43,26 +41,30 @@ export default class User extends Ship {
         this.hardpoints.set( 'linearThrust', null )
 
         // Add a hull component
-        this.mountHardpoint( 'hull', shipComponents.get( 'userHull' ) )
+        let hull = shipComponents.get( 'userHull' )
+        this.mountHardpoint( 'hull', hull )
 
         // Add a main engine thruster
         let thruster = shipComponents.get( 'defaultThruster' )
-        thruster.offset = [ 0, thruster.radius - this.radius ]
+        // @TODO hardpoints should have the position, not the component
+        thruster.offset = [ 0, thruster.radius - hull.radius ]
         this.mountHardpoint( 'linearThrust', thruster )
     }
 
     render() {
         super()
 
+        let radius = this.hardpoints.get( 'hull' ).radius
+
         this.sprite.beginFill( 0x040414 )
         this.sprite.lineStyle( 1, this.lineColor, 1 )
         this.sprite.arc(
             0,
             0,
-            this.radius * .5,
+            radius * .5,
             toRadians( 220 ), toRadians( 320 ), false
         )
-        this.sprite.lineTo( 0, this.radius * .75 )
+        this.sprite.lineTo( 0, radius * .75 )
         this.sprite.endFill()
     }
 

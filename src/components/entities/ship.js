@@ -31,14 +31,11 @@ export default class Ship extends compose(
 
         /**
          * Hardpoints refer to external positions that components can be mounted
-         * on to
+         * on to.
+         * @TODO hardpoints should have a function associated with them, i.e.
+         * only thrusters can go on thrust-mounts etc etc
          */
         this.hardpoints = new Map()
-
-        // Ships dont have components by default, they need to be added when the
-        // ship is instantiated. They can have a default radius though.
-        this.radius = opts.radius || 10
-
 
         // Set application forces
         // @TODO should be calculated from components
