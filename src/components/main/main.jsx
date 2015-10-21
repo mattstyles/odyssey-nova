@@ -119,21 +119,29 @@ export default class Main extends React.Component {
             this.entities = []
             let numEntities = random( 10, 20 )
             let bound = numEntities * 100
-            // for ( let i = 0; i < numEntities; i++ ) {
-            //     let entity = new Ship({
-            //         position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
-            //         radius: random( 5, 30 )
-            //     })
-            //
-            //     let hull = shipComponents.get( 'defaultHull' )
-            //     let thruster = shipComponents.get( 'defaultThruster' )
-            //     thruster.offset = [ 0, thruster.radius - entity.radius ]
-            //
-            //     entity.addComponent( hull )
-            //     entity.addComponent( thruster )
-            //
-            //     this.engine.addEntity( entity )
-            // }
+            for ( let i = 0; i < numEntities; i++ ) {
+                let entity = new Ship({
+                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
+                    radius: random( 5, 30 )
+                })
+
+                let hull = shipComponents.get( 'defaultHull' )
+                let thruster = shipComponents.get( 'defaultThruster' )
+
+                entity.addHardpoint( new Hardpoint({
+                    id: 'hull',
+                    offset: [ 0, 0 ]
+                }))
+                entity.addHardpoint( new Hardpoint({
+                    id: 'linearThrust',
+                    offset: [ 0, thruster.radius - hull.radius ]
+                }))
+
+                entity.mountHardpoint( 'hull', hull )
+                entity.mountHardpoint( 'linearThrust', thruster )
+
+                this.engine.addEntity( entity )
+            }
 
             // @TODO debug user render
             window.stage = this.stage
