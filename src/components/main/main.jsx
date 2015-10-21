@@ -18,6 +18,7 @@ import Stars from 'world/stars'
 import Ship from 'entities/ship'
 import User from 'user/user'
 
+import Hardpoint from 'entities/shipComponents/hardpoint'
 import shipComponents from 'stores/shipComponents'
 import materials from 'world/materials'
 import resources from 'stores/resources'
@@ -87,19 +88,28 @@ export default class Main extends React.Component {
             })
 
             // Add hardpoints
-            entity.hardpoints.set( 'hull', null )
-            entity.hardpoints.set( 'thruster1', null )
-            entity.hardpoints.set( 'thruster2', null )
+            entity.addHardpoint( new Hardpoint({
+                id: 'hull',
+                offset: [ 0, 0 ]
+            }))
+            entity.addHardpoint( new Hardpoint({
+                id: 'thruster1',
+                offset: [ 32, -32 ]
+            }))
+            entity.addHardpoint( new Hardpoint({
+                id: 'thruster2',
+                offset: [ -32, -32 ]
+            }))
 
             let hull = shipComponents.get( 'cruiserHull' )
             entity.mountHardpoint( 'hull', hull )
 
             let thruster1 = shipComponents.get( 'megaThruster' )
-            thruster1.offset = [ 32, -32 ]
+            // thruster1.offset = [ 32, -32 ]
             entity.mountHardpoint( 'thruster1', thruster1 )
 
             let thruster2 = shipComponents.get( 'megaThruster' )
-            thruster2.offset = [ -32, -32 ]
+            // thruster2.offset = [ -32, -32 ]
             entity.mountHardpoint( 'thruster2', thruster2 )
 
             this.engine.addEntity( entity )

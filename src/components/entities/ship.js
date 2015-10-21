@@ -26,8 +26,10 @@ export default class Ship extends compose(
      * @constructs
      * @return this
      */
-    constructor( opts ) {
+    constructor( opts = {} ) {
         super( opts )
+
+        this.id = opts.id || '_defaultShip'
 
         /**
          * Hardpoints refer to external positions that components can be mounted
@@ -64,21 +66,31 @@ export default class Ship extends compose(
         return this
     }
 
+    addHardpoint( hardpoint ) {
+        if ( this.hardpoints.has( hardpoint.id ) ) {
+            throw new Error( 'A hardpoint with the id ' + hardpoint.id + ' is already added to ship ' + this.id )
+        }
+
+        this.hardpoints.set( hardpoint.id, hardpoint )
+    }
+
     /**
      * Adds a component to a ship hardpoint
      */
-    mountHardpoint( hardpoint, component ) {
+    mountHardpoint( hardpointID, component ) {
         if ( !component ) {
             throw new Error( 'Adding a component requires a component and hardpoint be specified' )
         }
-        if ( !hardpoint ) {
+        if ( !hardpointID ) {
             throw new Error( 'Component must be mounted to a hardpoint' )
         }
-        if ( !this.hardpoints.has( hardpoint ) ) {
+        if ( !this.hardpoints.has( hardpointID ) ) {
             throw new Error( 'Hardpoint not recognised on this entity' )
         }
 
-        this.hardpoints.set( hardpoint, component )
+        this.hardpoints
+            .get( hardpointID )
+            .mountComponent( component )
 
         if ( component.shape ) {
             this.addShape( component.shape, component.offset || [ 0, 0 ], component.angle || 0 )
@@ -97,14 +109,14 @@ export default class Ship extends compose(
     /**
      * Removes a component from a hardpoint
      */
-    unmountHardpoint( hardpoint ) {
-        let component = this.hardpoints.get( hardpoint )
+    unmountHardpoint( hardpointID ) {
+        let component = this.hardpoints
+            .get( hardpointID )
+            .unmountHardpoint()
 
         if ( component.shape ) {
             this.removeShape( component.shape )
         }
-
-        this.hardpoints.set( hardpoint, null )
 
         return this
     }
@@ -122,7 +134,9 @@ export default class Ship extends compose(
         this.linearThrust = []
 
         // @TODO proper filter functions for maps
-        this.hardpoints.forEach( ( component, hardpoint ) => {
+        this.hardpoints.forEach( ( hardpoint, id ) => {
+            let component = hardpoint.mounted
+
             // A null value for a hardpoint is valid, so just bail
             if ( !component ) {
                 return

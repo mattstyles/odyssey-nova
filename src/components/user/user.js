@@ -4,6 +4,7 @@ import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 import Ship from 'entities/ship'
+import Hardpoint from 'entities/shipComponents/hardpoint'
 import materials from 'world/materials'
 import shipComponents from 'stores/shipComponents'
 
@@ -26,6 +27,8 @@ export default class User extends Ship {
     constructor() {
         super()
 
+        this.id = 'user'
+
         // Update damping for the user to make it more controllable
         this.body.damping = .1
         this.body.angularDamping = .75
@@ -37,8 +40,14 @@ export default class User extends Ship {
         this.container.addChild( this.sprite )
 
         // Add hardpoints
-        this.hardpoints.set( 'hull', null )
-        this.hardpoints.set( 'linearThrust', null )
+        this.addHardpoint( new Hardpoint({
+            id: 'hull',
+            offset: [ 0, 0 ]
+        }))
+        this.addHardpoint( new Hardpoint({
+            id: 'linearThrust',
+            offset: [ 0, -1 ]
+        }))
 
         // Add a hull component
         let hull = shipComponents.get( 'userHull' )
@@ -47,7 +56,9 @@ export default class User extends Ship {
         // Add a main engine thruster
         let thruster = shipComponents.get( 'defaultThruster' )
         // @TODO hardpoints should have the position, not the component
-        thruster.offset = [ 0, thruster.radius - hull.radius ]
+        this.hardpoints
+            .get( 'linearThrust' )
+            .setOffset( 0, thruster.radius - hull.radius )
         this.mountHardpoint( 'linearThrust', thruster )
     }
 
