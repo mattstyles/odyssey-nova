@@ -125,7 +125,13 @@ export default class Ship extends compose(
         this.linearThrust = []
 
         // @TODO proper filter functions for maps
-        for ( var component of this.hardpoints.values() ) {
+        this.hardpoints.forEach( ( component, hardpoint ) => {
+            // A null value for a hardpoint is valid, so just bail
+            if ( !component ) {
+                return
+            }
+
+            // Filter for thruster types
             if ( component.type !== SC_TYPES.get( 'THRUSTER' ) ) {
                 return
             }
@@ -134,6 +140,6 @@ export default class Ship extends compose(
                 offset: component.offset,
                 magnitude: component.magnitude
             })
-        }
+        })
     }
 }
