@@ -55,7 +55,7 @@ export default class User extends Ship {
 
         // Add a main engine thruster
         let thruster = shipComponents.get( 'defaultThruster' )
-        // @TODO hardpoints should have the position, not the component
+        // Update linear thrust hardpoint based on component size
         this.hardpoints
             .get( 'linearThrust' )
             .setOffset( 0, thruster.radius - hull.radius )
@@ -65,7 +65,7 @@ export default class User extends Ship {
     render() {
         super()
 
-        let radius = this.hardpoints.get( 'hull' ).radius
+        let radius = this.hardpoints.get( 'hull' ).mounted.radius
 
         this.sprite.beginFill( 0x040414 )
         this.sprite.lineStyle( 1, this.lineColor, 1 )
