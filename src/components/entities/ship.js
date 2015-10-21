@@ -3,8 +3,8 @@ import P2 from 'p2'
 import Pixi from 'pixi.js'
 
 import compose from 'utils/compose'
-import SC_TYPES from 'constants/shipComponentTypes'
 import materials from 'world/materials'
+import SC_TYPES from 'constants/shipComponentTypes'
 import shipComponents from 'stores/shipComponents'
 
 import PhysicalEntity from 'entities/physical'

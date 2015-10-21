@@ -1,8 +1,8 @@
 
 import toMap from 'to-map'
 
-import Hull from 'entities/components/hull'
-import Thruster from 'entities/components/thruster'
+import Hull from 'entities/shipComponents/hull'
+import Thruster from 'entities/shipComponents/thruster'
 import materials from 'world/materials'
 
 const _comps = Symbol( '_components' )

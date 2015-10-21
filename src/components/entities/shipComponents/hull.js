@@ -1,16 +1,15 @@
 
 import P2 from 'p2'
 
-import logger from 'utils/logger'
+import ShipComponent from 'entities/shipComponents/shipComponent'
 import materials from 'world/materials'
 import SC_TYPES from 'constants/shipComponentTypes'
 
-export default class Hull {
+export default class Hull extends ShipComponent {
     constructor( opts ) {
-        this.id = opts.id || '_default ID'
+        super( opts )
+        
         this.type = SC_TYPES.get( 'HULL' )
-        this.material = opts.material || materials.get( 'metal' )
-        this.radius = opts.radius || 10
 
         this.shape = new P2.Circle({
             radius: this.radius,

@@ -1,16 +1,16 @@
 
 import P2 from 'p2'
 
+import ShipComponent from 'entities/shipComponents/shipComponent'
 import SC_TYPES from 'constants/shipComponentTypes'
 import logger from 'utils/logger'
 import materials from 'world/materials'
 
-export default class Thruster {
+export default class Thruster extends ShipComponent {
     constructor( opts ) {
-        this.id = opts.id || '_default ID'
+        super( opts )
+
         this.type = SC_TYPES.get( 'THRUSTER' )
-        this.material = opts.material || materials.get( 'metal' )
-        this.radius = opts.radius || 10
         this.angle = Math.PI
 
         // @TODO magnitude should be calculated from angle and a value
@@ -22,10 +22,5 @@ export default class Thruster {
             radius: this.radius,
             material: this.material
         })
-    }
-
-    setRadius( r ) {
-        this.radius = r
-        this.shape.radius = this.radius
     }
 }
