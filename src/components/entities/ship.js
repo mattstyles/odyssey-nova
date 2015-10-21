@@ -30,10 +30,10 @@ export default class Ship extends compose(
         super( opts )
 
         /**
-         * The components refer to things installed on the ship, like thrusters,
-         * weapons and shields
+         * Hardpoints refer to external positions that components can be mounted
+         * on to
          */
-        this.components = new Map()
+        this.hardpoints = new Map()
 
         // Ships dont have components by default, they need to be added when the
         // ship is instantiated. They can have a default radius though.
@@ -67,13 +67,29 @@ export default class Ship extends compose(
         return this
     }
 
-    addComponent( component ) {
-        this.components.set( component.id, component )
+    /**
+     * Adds a component to a ship hardpoint
+     */
+    mountHardpoint( hardpoint, component ) {
+        if ( !component ) {
+            throw new Error( 'Adding a component requires a component and hardpoint be specified' )
+        }
+        if ( !hardpoint ) {
+            throw new Error( 'Component must be mounted to a hardpoint' )
+        }
+        if ( !this.hardpoints.has( hardpoint ) ) {
+            throw new Error( 'Hardpoint not recognised on this entity' )
+        }
+
+        this.hardpoints.set( hardpoint, component )
 
         if ( component.shape ) {
             this.addShape( component.shape, component.offset || [ 0, 0 ], component.angle || 0 )
         }
 
+        // @TODO not sure I like this, a component onMount would be better, which
+        // gets passed the entity. This gives the component a lot of control but
+        // makes more sense that handling the logic here.
         if ( component.type === SC_TYPES.get( 'THRUSTER' ) ) {
             this.calcLinearThrust()
         }
@@ -81,12 +97,17 @@ export default class Ship extends compose(
         return this
     }
 
-    removeComponent( component ) {
-        this.components.delete( component.id )
+    /**
+     * Removes a component from a hardpoint
+     */
+    unmountHardpoint( hardpoint ) {
+        let component = this.hardpoints.get( hardpoint )
 
         if ( component.shape ) {
             this.removeShape( component.shape )
         }
+
+        this.hardpoints.set( hardpoint, null )
 
         return this
     }
@@ -102,7 +123,9 @@ export default class Ship extends compose(
         // Filter component map to thruster types and generate a new array of
         // linear thrust components
         this.linearThrust = []
-        this.components.forEach( component => {
+
+        // @TODO proper filter functions for maps
+        for ( var component of this.hardpoints.values() ) {
             if ( component.type !== SC_TYPES.get( 'THRUSTER' ) ) {
                 return
             }
@@ -111,6 +134,6 @@ export default class Ship extends compose(
                 offset: component.offset,
                 magnitude: component.magnitude
             })
-        })
+        }
     }
 }

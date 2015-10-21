@@ -87,26 +87,21 @@ export default class Main extends React.Component {
                 angle: 0
             })
 
+            // Add hardpoints
+            entity.hardpoints.set( 'hull', null )
+            entity.hardpoints.set( 'thruster1', null )
+            entity.hardpoints.set( 'thruster2', null )
+
             let hull = shipComponents.get( 'cruiserHull' )
-            entity.addComponent( hull )
-            entity.radius = hull.radius
+            entity.mountHardpoint( 'hull', hull )
 
             let thruster1 = shipComponents.get( 'megaThruster' )
             thruster1.offset = [ 32, -32 ]
-            entity.addComponent( thruster1 )
+            entity.mountHardpoint( 'thruster1', thruster1 )
 
             let thruster2 = shipComponents.get( 'megaThruster' )
             thruster2.offset = [ -32, -32 ]
-            entity.addComponent( thruster2 )
-
-            // entity.addShape( new P2.Circle({
-            //     radius: 20,
-            //     material: materials.get( '_default' )
-            // }), [ 32, -32 ], Math.PI )
-            // entity.addShape( new P2.Circle({
-            //     radius: 20,
-            //     material: materials.get( '_default' )
-            // }), [ -32, -32 ], Math.PI )
+            entity.mountHardpoint( 'thruster2', thruster2 )
 
             this.engine.addEntity( entity )
 
@@ -122,9 +117,11 @@ export default class Main extends React.Component {
             //     })
             //
             //     let hull = shipComponents.get( 'defaultHull' )
+            //     let thruster = shipComponents.get( 'defaultThruster' )
+            //     thruster.offset = [ 0, thruster.radius - entity.radius ]
             //
             //     entity.addComponent( hull )
-            //     entity.radius = hull.radius
+            //     entity.addComponent( thruster )
             //
             //     this.engine.addEntity( entity )
             // }

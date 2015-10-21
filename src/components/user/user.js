@@ -38,13 +38,17 @@ export default class User extends Ship {
         this.sprite = new Pixi.Graphics()
         this.container.addChild( this.sprite )
 
+        // Add hardpoints
+        this.hardpoints.set( 'hull', null )
+        this.hardpoints.set( 'linearThrust', null )
+
         // Add a hull component
-        this.addComponent( shipComponents.get( 'userHull' ) )
+        this.mountHardpoint( 'hull', shipComponents.get( 'userHull' ) )
 
         // Add a main engine thruster
         let thruster = shipComponents.get( 'defaultThruster' )
-        thruster.offset = [ 0, -this.radius ]
-        this.addComponent( thruster )
+        thruster.offset = [ 0, thruster.radius - this.radius ]
+        this.mountHardpoint( 'linearThrust', thruster )
     }
 
     render() {
