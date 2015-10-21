@@ -88,12 +88,12 @@ export default class Ship extends compose(
             throw new Error( 'Hardpoint not recognised on this entity' )
         }
 
-        this.hardpoints
-            .get( hardpointID )
-            .mountComponent( component )
+        let hardpoint = this.hardpoints.get( hardpointID )
+
+        hardpoint.mountComponent( component )
 
         if ( component.shape ) {
-            this.addShape( component.shape, component.offset || [ 0, 0 ], component.angle || 0 )
+            this.addShape( component.shape, hardpoint.offset || [ 0, 0 ], component.angle || 0 )
         }
 
         // @TODO not sure I like this, a component onMount would be better, which
@@ -112,7 +112,7 @@ export default class Ship extends compose(
     unmountHardpoint( hardpointID ) {
         let component = this.hardpoints
             .get( hardpointID )
-            .unmountHardpoint()
+            .unmountComponent()
 
         if ( component.shape ) {
             this.removeShape( component.shape )
@@ -122,8 +122,8 @@ export default class Ship extends compose(
     }
 
     /**
-     * Loops through components, grabs thruster components and appends their
-     * data to the linearThrust array.
+     * Loops through hardpoints, grabs mounted thruster components and appends
+     * their data to the linearThrust array.
      * This is done every time a component is added, which is better than doing
      * it every time we need to use the linear thrust to calculate momentum.
      * @returns this

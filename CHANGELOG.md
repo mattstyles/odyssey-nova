@@ -4,6 +4,7 @@
 * _add_ ship components
 * _add_ thrust and hull components
 * _add_ ship hardpoints for mounting components
+* _update_ use hardpoint offsets rather than component offset
 
 # 0.0.4
 
