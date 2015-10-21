@@ -105,24 +105,20 @@ export default class Main extends React.Component {
             entity.mountHardpoint( 'hull', hull )
 
             let thruster1 = shipComponents.get( 'megaThruster' )
-            // thruster1.offset = [ 32, -32 ]
             entity.mountHardpoint( 'thruster1', thruster1 )
 
             let thruster2 = shipComponents.get( 'megaThruster' )
-            // thruster2.offset = [ -32, -32 ]
             entity.mountHardpoint( 'thruster2', thruster2 )
 
             this.engine.addEntity( entity )
 
 
             // Create a few extra entities, just for funsies
-            this.entities = []
             let numEntities = random( 10, 20 )
             let bound = numEntities * 100
             for ( let i = 0; i < numEntities; i++ ) {
                 let entity = new Ship({
-                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ],
-                    radius: random( 5, 30 )
+                    position: [ ~random( -bound, bound ), ~random( -bound, bound ) ]
                 })
 
                 let hull = shipComponents.get( 'defaultHull' )
@@ -148,10 +144,9 @@ export default class Main extends React.Component {
             window.engine = this.engine
             window.user = this.user
             window.starfield = this.starfield
-            window.entities = this.entities
             window.config = config
             window.materials = materials
-            // window.ent = entity
+            window.entity = entity
 
         } catch ( err ) {
             console.warn( err, err.stack )
@@ -261,6 +256,10 @@ export default class Main extends React.Component {
         this.stars.update()
     }
 
+    /**
+     * Initial render is a bit of a hack to kickstart the physics simulation to
+     * position everything etc etc and render everything in its initial state
+     */
     onInitialRender = () => {
         //this.user.render()
         this.engine.update( 1 / 60 )

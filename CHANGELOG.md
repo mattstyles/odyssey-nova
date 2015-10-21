@@ -1,4 +1,4 @@
-#
+# 0.0.5
 
 * _add_ attack module adds projectile entities to the engine
 * _add_ ship components
