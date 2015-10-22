@@ -36,9 +36,10 @@ export default Base => class WeaponModule extends Base {
 
     /**
      * Currently fires all turrets associated with the entity
+     * @TODO should loop through turret, for now just assume one front-mounted
      */
     fire() {
-        if ( config.get( 'worldTime' ) - this.attack.lastTime < this.attack.fireRate ) {
+        if ( config.get( 'worldTime' ) - this.weapon.lastTime < this.weapon.fireRate ) {
             return
         }
 
@@ -47,7 +48,7 @@ export default Base => class WeaponModule extends Base {
         // collisions with the firer
         // @TODO so much can be done to make this faster, although the main
         // bottleneck is adding lots of entities to the game world
-        let r = ( this.radius + 3 ) * 1.5
+        let r = ( this.hardpoints.get( 'hull' ).mounted.radius + 3 ) * 1.5
         let angle = this.angle + Math.PI * .5
         let mag = 50
 
