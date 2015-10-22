@@ -1,3 +1,7 @@
+#
+
+* _add_ hardpoint mount types
+
 # 0.0.5
 
 * _add_ attack module adds projectile entities to the engine

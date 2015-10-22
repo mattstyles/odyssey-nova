@@ -3,6 +3,7 @@ import toMap from 'to-map'
 
 import Hull from 'entities/shipComponents/hull'
 import Thruster from 'entities/shipComponents/thruster'
+import Turret from 'entities/shipComponents/turret'
 import materials from 'world/materials'
 
 const _comps = Symbol( '_components' )
@@ -60,6 +61,22 @@ class ShipComponents {
                 id: 'megaThruster' + getUuid(),
                 radius: 20,
                 magnitude: [ 0, 350 ],
+                offset: [ 0, -1 ],
+                material: materials.get( 'metal' )
+            }),
+
+            /**
+             * Turrets
+             */
+            'defaultTurret': () => new Turret({
+                id: 'defaultTurret' + getUuid(),
+                radius: 2,
+                offset: [ 0, -1 ],
+                material: materials.get( 'metal' )
+            }),
+            'peaShooter': () => new Turret({
+                id: 'peaShooter' + getUuid(),
+                radius: 2,
                 offset: [ 0, -1 ],
                 material: materials.get( 'metal' )
             })

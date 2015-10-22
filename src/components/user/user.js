@@ -4,7 +4,9 @@ import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 import Ship from 'entities/ship'
-import { HullHardpoint, ThrusterHardpoint } from 'entities/shipComponents/hardpoints'
+import { HullHardpoint,
+         ThrusterHardpoint,
+         TurretHardpoint} from 'entities/shipComponents/hardpoints'
 import materials from 'world/materials'
 import shipComponents from 'stores/shipComponents'
 import SC_TYPES from 'constants/shipComponentTypes'
@@ -49,6 +51,10 @@ export default class User extends Ship {
             id: 'linearThrust',
             offset: [ 0, -1 ]
         }))
+        this.addHardpoint( new TurretHardpoint({
+            id: 'mainTurret',
+            offset: [ 0, 1 ]
+        }))
 
         // Add a hull component
         let hull = shipComponents.get( 'userHull' )
@@ -61,6 +67,13 @@ export default class User extends Ship {
             .get( 'linearThrust' )
             .setOffset( 0, thruster.radius - hull.radius )
         this.mountHardpoint( 'linearThrust', thruster )
+
+        // Add a main turret component
+        let turret = shipComponents.get( 'peaShooter' )
+        this.hardpoints
+            .get( 'mainTurret' )
+            .setOffset( 0, hull.radius )
+        this.mountHardpoint( 'mainTurret', turret )
     }
 
     render() {

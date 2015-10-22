@@ -92,6 +92,8 @@ export default class Ship extends compose(
 
         hardpoint.mountComponent( component )
 
+        component.parent = this
+
         if ( component.shape ) {
             this.addShape( component.shape, hardpoint.offset || [ 0, 0 ], component.angle || 0 )
         }

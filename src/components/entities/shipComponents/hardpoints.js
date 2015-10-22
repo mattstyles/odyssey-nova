@@ -39,7 +39,6 @@ export default class Hardpoint {
 export class HullHardpoint extends Hardpoint {
     constructor( opts ) {
         super( opts )
-
         this.viableMounts.add( SC_TYPES.get( 'HULL' ) )
     }
 }
@@ -47,7 +46,13 @@ export class HullHardpoint extends Hardpoint {
 export class ThrusterHardpoint extends Hardpoint {
     constructor( opts ) {
         super( opts )
-
         this.viableMounts.add( SC_TYPES.get( 'THRUSTER' ) )
+    }
+}
+
+export class TurretHardpoint extends Hardpoint {
+    constructor( opts ) {
+        super( opts )
+        this.viableMounts.add( SC_TYPES.get( 'TURRET' ) )
     }
 }

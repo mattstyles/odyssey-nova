@@ -48,32 +48,37 @@ export default Base => class WeaponModule extends Base {
         // collisions with the firer
         // @TODO so much can be done to make this faster, although the main
         // bottleneck is adding lots of entities to the game world
-        let r = ( this.hardpoints.get( 'hull' ).mounted.radius + 3 ) * 1.5
-        let angle = this.angle + Math.PI * .5
-        let mag = 50
+        // let r = ( this.hardpoints.get( 'hull' ).mounted.radius + 3 ) * 1.5
+        // let angle = this.angle + Math.PI * .5
+        // let mag = 50
+        //
+        // let turretPos = [
+        //     r * Math.cos( angle ) + this.position[ 0 ],
+        //     r * Math.sin( angle ) + this.position[ 1 ],
+        // ]
+        //
+        // let velocity = [
+        //     mag * Math.cos( angle ) + this.body.velocity[ 0 ],
+        //     mag * Math.sin( angle ) + this.body.velocity[ 1 ]
+        // ]
+        //
+        // let projectile = new Projectile({
+        //     position: turretPos,
+        //     velocity: velocity,
+        //     angle: this.angle
+        // })
+        //
+        // // Now need some way of adding the entity to the engine world
+        // engineDispatcher.dispatch({
+        //     type: EVENTS.get( 'ENTITY_ADD' ),
+        //     payload: {
+        //         entities: [ projectile ]
+        //     }
+        // })
 
-        let turretPos = [
-            r * Math.cos( angle ) + this.position[ 0 ],
-            r * Math.sin( angle ) + this.position[ 1 ],
-        ]
-
-        let velocity = [
-            mag * Math.cos( angle ) + this.body.velocity[ 0 ],
-            mag * Math.sin( angle ) + this.body.velocity[ 1 ]
-        ]
-
-        let projectile = new Projectile({
-            position: turretPos,
-            velocity: velocity,
-            angle: this.angle
-        })
-
-        // Now need some way of adding the entity to the engine world
-        engineDispatcher.dispatch({
-            type: EVENTS.get( 'ENTITY_ADD' ),
-            payload: {
-                entities: [ projectile ]
-            }
-        })
+        // @TODO loop through hardpoints grabbing turrets
+        // @TODO associate turrets with a firing group and only fire groups attached
+        // the current firing group
+        this.hardpoints.get( 'mainTurret' ).mounted.fire()
     }
 }
