@@ -19,9 +19,9 @@ export default class Turret extends ShipComponent {
         super( opts )
 
         this.type = SC_TYPES.get( 'TURRET' )
-        this.angle = Math.PI * .5
+        this.angle = 0
 
-        this.offset = opts.offset || [ 0, 0 ]
+        // this.offset = opts.offset || [ 0, 0 ]
 
         this.projectile = null
 
@@ -55,21 +55,29 @@ export default class Turret extends ShipComponent {
         // }
 
         let r = ( this.radius + 3 ) * 1.5
-        let angle = this.parent.angle + this.angle
+        let angle = ( this.parent.angle + this.angle ) + Math.PI * .5
         let mag = 50
 
-        let turretPos = [
-            r * Math.cos( angle ) + this.parent.position[ 0 ],
-            r * Math.sin( angle ) + this.parent.position[ 1 ],
+        // Translate turret local position to parent position + turret position
+        let position = []
+        P2.vec2.toGlobalFrame( position, this.shape.position, this.parent.position, this.parent.angle )
+
+        // Now that we have the relative turret position given the parent position
+        // and angle we can extend to the get the firing position
+        let firingPos = [
+            r * Math.cos( angle ) + position[ 0 ],
+            r * Math.sin( angle ) + position[ 1 ],
         ]
 
+        // Add a velocity, relative to the turret current travel momentum (which
+        // is equal to the parent velocity)
         let velocity = [
             mag * Math.cos( angle ) + this.parent.body.velocity[ 0 ],
             mag * Math.sin( angle ) + this.parent.body.velocity[ 1 ]
         ]
 
         let projectile = new Projectile({
-            position: turretPos,
+            position: firingPos,
             velocity: velocity,
             angle: this.angle
         })

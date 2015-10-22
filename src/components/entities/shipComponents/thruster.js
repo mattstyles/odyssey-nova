@@ -16,7 +16,7 @@ export default class Thruster extends ShipComponent {
         // @TODO magnitude should be calculated from angle and a value
         // so that the thruster can be rotated
         this.magnitude = opts.magnitude || [ 0, 150 ]
-        this.offset = opts.offset || [ 0, 0 ]
+        // this.offset = opts.offset || [ 0, 0 ]
 
         this.shape = new P2.Circle({
             radius: this.radius,

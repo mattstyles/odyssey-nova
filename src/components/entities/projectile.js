@@ -49,7 +49,7 @@ export default class Projectile extends compose(
         // body type it could work though as bullets/projectiles generally dont
         // require damping to be exerted (setting world damping off gives a big
         // perf boost, its damping thats expensive)
-        // this.body.collisionResponse = false
+        this.body.collisionResponse = false
 
         // @TODO set velocity to match that of firer
         // Easy enough, extract this into a craft class and use it on

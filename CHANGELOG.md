@@ -1,6 +1,7 @@
 #
 
 * _add_ hardpoint mount types
+* _add_ turret component
 
 # 0.0.5
 

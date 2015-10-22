@@ -76,7 +76,7 @@ class ShipComponents {
             }),
             'peaShooter': () => new Turret({
                 id: 'peaShooter' + getUuid(),
-                radius: 2,
+                radius: 8,
                 offset: [ 0, -1 ],
                 material: materials.get( 'metal' )
             })
