@@ -4,9 +4,10 @@ import P2 from 'p2'
 import { Vector2, toRadians, toDegrees, wrap } from 'mathutil'
 
 import Ship from 'entities/ship'
-import Hardpoint from 'entities/shipComponents/hardpoint'
+import { HullHardpoint, ThrusterHardpoint } from 'entities/shipComponents/hardpoints'
 import materials from 'world/materials'
 import shipComponents from 'stores/shipComponents'
+import SC_TYPES from 'constants/shipComponentTypes'
 
 // @TODO only for registering debug info
 import appState from 'stores/appState'
@@ -40,11 +41,11 @@ export default class User extends Ship {
         this.container.addChild( this.sprite )
 
         // Add hardpoints
-        this.addHardpoint( new Hardpoint({
+        this.addHardpoint( new HullHardpoint({
             id: 'hull',
             offset: [ 0, 0 ]
         }))
-        this.addHardpoint( new Hardpoint({
+        this.addHardpoint( new ThrusterHardpoint({
             id: 'linearThrust',
             offset: [ 0, -1 ]
         }))

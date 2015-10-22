@@ -18,7 +18,7 @@ import Stars from 'world/stars'
 import Ship from 'entities/ship'
 import User from 'user/user'
 
-import Hardpoint from 'entities/shipComponents/hardpoint'
+import { HullHardpoint, ThrusterHardpoint } from 'entities/shipComponents/hardpoints'
 import shipComponents from 'stores/shipComponents'
 import materials from 'world/materials'
 import resources from 'stores/resources'
@@ -88,15 +88,15 @@ export default class Main extends React.Component {
             })
 
             // Add hardpoints
-            entity.addHardpoint( new Hardpoint({
+            entity.addHardpoint( new HullHardpoint({
                 id: 'hull',
                 offset: [ 0, 0 ]
             }))
-            entity.addHardpoint( new Hardpoint({
+            entity.addHardpoint( new ThrusterHardpoint({
                 id: 'thruster1',
                 offset: [ 32, -32 ]
             }))
-            entity.addHardpoint( new Hardpoint({
+            entity.addHardpoint( new ThrusterHardpoint({
                 id: 'thruster2',
                 offset: [ -32, -32 ]
             }))
@@ -124,11 +124,11 @@ export default class Main extends React.Component {
                 let hull = shipComponents.get( 'defaultHull' )
                 let thruster = shipComponents.get( 'defaultThruster' )
 
-                entity.addHardpoint( new Hardpoint({
+                entity.addHardpoint( new HullHardpoint({
                     id: 'hull',
                     offset: [ 0, 0 ]
                 }))
-                entity.addHardpoint( new Hardpoint({
+                entity.addHardpoint( new ThrusterHardpoint({
                     id: 'linearThrust',
                     offset: [ 0, thruster.radius - hull.radius ]
                 }))
