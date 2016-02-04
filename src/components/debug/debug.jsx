@@ -30,5 +30,6 @@ export default props => {
     let info = props.data.toSeq().map( ( value, key ) => {
         return <Section key={ key } id={ key } fields={ value } />
     }).toList()
+
     return <ul className="Debug u-nakedList">{ info }</ul>
 }

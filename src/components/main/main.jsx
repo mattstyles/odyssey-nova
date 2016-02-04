@@ -284,7 +284,7 @@ export default class Main extends React.Component {
         // No problems with creating them from document.body and just reffing them
         return (
             <div ref="main" className="js-main u-fit">
-                <Debug data={ this.props.state.cursor( 'debug' ) } />
+                { /* <Debug data={ this.props.state.cursor( 'debug' ) } /> */ }
             </div>
         )
     }
